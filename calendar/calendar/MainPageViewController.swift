@@ -29,6 +29,7 @@ class MainPageViewController: UIViewController {
         
         setCalendarLayoutConstraints()
         setAgendaLayoutConstraints()
+        
     }
     
     func setCalendarLayoutConstraints() {
@@ -36,7 +37,7 @@ class MainPageViewController: UIViewController {
         let top: NSLayoutConstraint = NSLayoutConstraint(item: calendarViewController!.view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.TopMargin, multiplier: 1, constant: 0)
         let left: NSLayoutConstraint = NSLayoutConstraint(item: calendarViewController!.view, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         let right: NSLayoutConstraint = NSLayoutConstraint(item: calendarViewController!.view, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
-        let height: NSLayoutConstraint = NSLayoutConstraint(item: calendarViewController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 200)
+        let height: NSLayoutConstraint = NSLayoutConstraint(item: calendarViewController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 300)
         
         self.view.addConstraints([top, left, right, height])
     }
