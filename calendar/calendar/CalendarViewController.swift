@@ -11,22 +11,29 @@ import UIKit
 class CalendarViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     var collectionView: UICollectionView?
     var collectionViewLayout: UICollectionViewFlowLayout?
+    var itemSide: CGFloat = 0
+    var minimumInteritemSpacing: CGFloat = 0
+    
     var firstDate: NSDate?
     var lastDate: NSDate?
     var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+    
+    var dayHeader: UIView = UIView()
+    var headerColor: UIColor = UIColor.lightGrayColor()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = UIColor.lightGrayColor()
         
-        let side: CGFloat = UIScreen.mainScreen().bounds.width/CGFloat(7) - 1
-        print("Size should be " + String(side))
+        itemSide = UIScreen.mainScreen().bounds.width/CGFloat(7) - 1
+        minimumInteritemSpacing = 1.0
+        print("Size should be " + String(itemSide))
         collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout?.scrollDirection = UICollectionViewScrollDirection.Vertical
-        collectionViewLayout?.minimumInteritemSpacing = 1.0
-        collectionViewLayout?.minimumLineSpacing = 1.0
-        collectionViewLayout?.itemSize = CGSize(width: side, height: side)
+        collectionViewLayout?.minimumInteritemSpacing = minimumInteritemSpacing
+        collectionViewLayout?.minimumLineSpacing = minimumInteritemSpacing
+        collectionViewLayout?.itemSize = CGSize(width: itemSide, height: itemSide)
         
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: collectionViewLayout!)
         collectionView?.backgroundColor = UIColor.clearColor()
@@ -34,24 +41,53 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.delegate = self
         collectionView?.dataSource = self
         
+        dayHeader.backgroundColor = headerColor
+        self.view.addSubview(dayHeader)
         self.view.addSubview(collectionView!)
         setCollectionViewConstraints()
-
+        setDayViewConstraints()
+        
         let offset = NSDateComponents()
         offset.month = -2
         firstDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
         offset.month = 3
         lastDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
         collectionView?.reloadData()
+        
+        setUpDaysOfHeader()
     }
     func setCollectionViewConstraints() {
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: dayHeader, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         let left: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         let right: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
         let bottom: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         
         self.view.addConstraints([top, left, right, bottom])
+    }
+    func setDayViewConstraints() {
+        dayHeader.translatesAutoresizingMaskIntoConstraints = false
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: dayHeader, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: UIApplication.sharedApplication().statusBarFrame.height)
+        let left: NSLayoutConstraint = NSLayoutConstraint(item: dayHeader, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
+        let right: NSLayoutConstraint = NSLayoutConstraint(item: dayHeader, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
+        let height: NSLayoutConstraint = NSLayoutConstraint(item: dayHeader, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
+        
+        self.view.addConstraints([top, left, right, height])
+    }
+    func setUpDaysOfHeader() {
+        //Remove 1 to count from 0
+        var firstWeekDay = calendar.component(.Weekday, fromDate: firstDate!) - 1
+        let symbols = calendar.veryShortWeekdaySymbols
+        for i in 0...(symbols.count-1) {
+            if firstWeekDay + i >= symbols.count {
+                firstWeekDay -= symbols.count
+            }
+            let label = UILabel(frame: CGRectMake(CGFloat(i) * itemSide + CGFloat(i-1) * minimumInteritemSpacing, 0, itemSide, 20))
+            label.text = symbols[firstWeekDay + i]
+            label.textAlignment = .Center
+            label.textColor = UIColor.blackColor()
+            dayHeader.addSubview(label)
+        }
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
