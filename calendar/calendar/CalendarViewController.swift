@@ -47,6 +47,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.registerClass(CalendarViewCell.self, forCellWithReuseIdentifier: calendarCellIdentifier)
         collectionView?.delegate = self
         collectionView?.dataSource = self
+        collectionView?.allowsSelection = true
         
         dayHeader.backgroundColor = headerColor
         self.view.addSubview(dayHeader)
@@ -136,6 +137,10 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         let cell = UICollectionViewCell()
         cell.backgroundColor = UIColor.redColor()
         return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        print("Selected item at indexPath " + String(indexPath))
     }
     
     override func didReceiveMemoryWarning() {
