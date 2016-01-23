@@ -30,12 +30,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.view.backgroundColor = UIColor.lightGrayColor()
         
         monthFormatter.dateFormat = "MMM"
-        let offset = NSDateComponents()
-        offset.month = -2
-        firstDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
-        offset.month = 3
-        lastDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
-        collectionView?.reloadData()
+        self.setDatesLimits()
         
         itemSide = UIScreen.mainScreen().bounds.width/CGFloat(7) - 1
         minimumInteritemSpacing = 1.0
@@ -97,6 +92,19 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
             label.textColor = UIColor.blackColor()
             dayHeader.addSubview(label)
         }
+    }
+    
+    func setDatesLimits() {
+        //Going 3 months before now
+        let monthOffset = NSDateComponents()
+        monthOffset.month = -3
+        let before = calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
+        //Looking for first sunday after this date
+        let sundayComp = NSDateComponents()
+        sundayComp.weekday = 1
+        firstDate = calendar.nextDateAfterDate(before!, matchingComponents: sundayComp, options: NSCalendarOptions.MatchPreviousTimePreservingSmallerUnits)
+        monthOffset.month = 3
+        lastDate = calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
