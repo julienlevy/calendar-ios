@@ -29,6 +29,14 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = UIColor.lightGrayColor()
         
+        monthFormatter.dateFormat = "MMM"
+        let offset = NSDateComponents()
+        offset.month = -2
+        firstDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
+        offset.month = 3
+        lastDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
+        collectionView?.reloadData()
+        
         itemSide = UIScreen.mainScreen().bounds.width/CGFloat(7) - 1
         minimumInteritemSpacing = 1.0
         print("Size should be " + String(itemSide))
@@ -51,15 +59,11 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         setCollectionViewConstraints()
         setDayViewConstraints()
         
-        monthFormatter.dateFormat = "MMM"
-        let offset = NSDateComponents()
-        offset.month = -2
-        firstDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
-        offset.month = 3
-        lastDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
-        collectionView?.reloadData()
-        
         setUpDaysOfHeader()
+    }
+    override func viewDidAppear(animated: Bool) {
+        let index: Int = calendar.components(NSCalendarUnit.Day, fromDate: firstDate!, toDate: NSDate(), options: NSCalendarOptions.MatchFirst).day
+        collectionView?.scrollToItemAtIndexPath(NSIndexPath(forItem: index, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Top, animated: false)
     }
     func setCollectionViewConstraints() {
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
@@ -120,25 +124,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
             }
             return cell
         }
-//        if let cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) {
-//            cell.backgroundColor = UIColor.blueColor().colorWithAlphaComponent(0.2)
-//            if firstDate != nil {
-//                let myComponents = NSDateComponents()
-//                myComponents.day = indexPath.item
-//                let cellDate = calendar.dateByAddingComponents(myComponents, toDate: firstDate!, options: NSCalendarOptions.MatchFirst)
-//                let day: Int = calendar.component(NSCalendarUnit.Day, fromDate: cellDate!)
-//                let month: Int = calendar.component(NSCalendarUnit.Month, fromDate: cellDate!)
-//                if cell.contentView.subviews.count == 0 {
-//                    let label = UILabel(frame: cell.bounds)
-//                    label.text = String(day) + "/" + String(month) // + "\n" + String(indexPath.section) + " " + String(indexPath.item)
-//                    label.numberOfLines = 0
-//                    label.textColor = UIColor.whiteColor()
-//                    cell.contentView.addSubview(label)
-//                }
-//            }
-//            
-//            return cell
-//        }
+
         let cell = UICollectionViewCell()
         cell.backgroundColor = UIColor.redColor()
         return cell
