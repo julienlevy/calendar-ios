@@ -8,6 +8,8 @@
 
 import UIKit
 
+let calendarCellIdentifier: String = "calendarCell"
+
 class CalendarViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     var collectionView: UICollectionView?
     var collectionViewLayout: UICollectionViewFlowLayout?
@@ -17,6 +19,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var firstDate: NSDate?
     var lastDate: NSDate?
     var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+    let monthFormatter: NSDateFormatter = NSDateFormatter()
     
     var dayHeader: UIView = UIView()
     var headerColor: UIColor = UIColor.lightGrayColor()
@@ -38,6 +41,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: collectionViewLayout!)
         collectionView?.backgroundColor = UIColor.clearColor()
         collectionView?.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView?.registerClass(CalendarViewCell.self, forCellWithReuseIdentifier: calendarCellIdentifier)
         collectionView?.delegate = self
         collectionView?.dataSource = self
         
@@ -47,6 +51,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         setCollectionViewConstraints()
         setDayViewConstraints()
         
+        monthFormatter.dateFormat = "MMM"
         let offset = NSDateComponents()
         offset.month = -2
         firstDate = calendar.dateByAddingComponents(offset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
@@ -101,25 +106,39 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         return calendar.components(NSCalendarUnit.Day, fromDate: firstDate!, toDate: lastDate!, options: NSCalendarOptions.MatchFirst).day
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) {
-            cell.backgroundColor = UIColor.blueColor().colorWithAlphaComponent(0.2)
+        if let cell: CalendarViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(calendarCellIdentifier, forIndexPath: indexPath) as? CalendarViewCell {
             if firstDate != nil {
-                let myComponents = NSDateComponents()
-                myComponents.day = indexPath.item
-                let cellDate = calendar.dateByAddingComponents(myComponents, toDate: firstDate!, options: NSCalendarOptions.MatchFirst)
+                let dateComponents = NSDateComponents()
+                dateComponents.day = indexPath.item
+                let cellDate = calendar.dateByAddingComponents(dateComponents, toDate: firstDate!, options: NSCalendarOptions.MatchFirst)
                 let day: Int = calendar.component(NSCalendarUnit.Day, fromDate: cellDate!)
-                let month: Int = calendar.component(NSCalendarUnit.Month, fromDate: cellDate!)
-                if cell.contentView.subviews.count == 0 {
-                    let label = UILabel(frame: cell.bounds)
-                    label.text = String(day) + "/" + String(month) // + "\n" + String(indexPath.section) + " " + String(indexPath.item)
-                    label.numberOfLines = 0
-                    label.textColor = UIColor.whiteColor()
-                    cell.contentView.addSubview(label)
-                }
+                let month: String = monthFormatter.stringFromDate(cellDate!)
+                let isToday: Bool = calendar.isDateInToday(cellDate!)
+                let isPast: Bool = cellDate!.timeIntervalSinceNow.isSignMinus
+                
+                cell.setCellInfo(day, month: month, past: isPast, today: isToday)
             }
-            
             return cell
         }
+//        if let cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) {
+//            cell.backgroundColor = UIColor.blueColor().colorWithAlphaComponent(0.2)
+//            if firstDate != nil {
+//                let myComponents = NSDateComponents()
+//                myComponents.day = indexPath.item
+//                let cellDate = calendar.dateByAddingComponents(myComponents, toDate: firstDate!, options: NSCalendarOptions.MatchFirst)
+//                let day: Int = calendar.component(NSCalendarUnit.Day, fromDate: cellDate!)
+//                let month: Int = calendar.component(NSCalendarUnit.Month, fromDate: cellDate!)
+//                if cell.contentView.subviews.count == 0 {
+//                    let label = UILabel(frame: cell.bounds)
+//                    label.text = String(day) + "/" + String(month) // + "\n" + String(indexPath.section) + " " + String(indexPath.item)
+//                    label.numberOfLines = 0
+//                    label.textColor = UIColor.whiteColor()
+//                    cell.contentView.addSubview(label)
+//                }
+//            }
+//            
+//            return cell
+//        }
         let cell = UICollectionViewCell()
         cell.backgroundColor = UIColor.redColor()
         return cell
