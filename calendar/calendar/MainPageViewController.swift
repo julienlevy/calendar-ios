@@ -61,7 +61,7 @@ class MainPageViewController: UIViewController {
     }
     func orderEventsByDay() {
         let numberOfDays = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: self.lastDate!, options: NSCalendarOptions.MatchFirst).day
-        let savedEvents: [Event] = [firstEvent] //Should get events from local database and API check
+        let savedEvents: [Event] = [firstEvent, thirdEvent, secondEvent] //Should get events from local database and API check
         
         self.eventsByDays = [[Event]?](count: numberOfDays, repeatedValue: nil)
         for event in savedEvents {
@@ -70,6 +70,11 @@ class MainPageViewController: UIViewController {
                 self.eventsByDays[dayIndex] = [Event]()
             }
             self.eventsByDays[dayIndex]?.append(event)
+        }
+        for i in 0..<numberOfDays {
+            if self.eventsByDays[i] != nil {
+                self.eventsByDays[i] = self.eventsByDays[i]!.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
+            }
         }
     }
     
