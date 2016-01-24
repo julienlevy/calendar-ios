@@ -23,6 +23,11 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var dayHeader: UIView = UIView()
     var headerColor: UIColor = UIColor.lightGrayColor()
     
+    func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate) {
+        self.firstDate = calendarFirstDate
+        self.lastDate = calendarLastDate
+        self.collectionView?.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +35,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.view.backgroundColor = UIColor.lightGrayColor()
         
         self.monthFormatter.dateFormat = "MMM"
-        self.setDatesLimits()
         
         self.itemSide = UIScreen.mainScreen().bounds.width/CGFloat(7) - 1
         self.minimumInteritemSpacing = 1.0
@@ -51,12 +55,15 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.dayHeader.backgroundColor = self.headerColor
         self.view.addSubview(self.dayHeader)
         self.view.addSubview(collectionView!)
-        setCollectionViewConstraints()
-        setDayViewConstraints()
+        self.setCollectionViewConstraints()
+        self.setDayHeaderConstraints()
         
-        setUpDaysOfHeader()
+        self.setUpDaysOfHeader()
     }
     override func viewDidAppear(animated: Bool) {
+        if firstDate == nil {
+            return
+        }
         let index: Int = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: NSDate(), options: NSCalendarOptions.MatchFirst).day
         self.collectionView?.scrollToItemAtIndexPath(NSIndexPath(forItem: index, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Top, animated: false)
     }
@@ -69,7 +76,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         self.view.addConstraints([top, left, right, bottom])
     }
-    func setDayViewConstraints() {
+    func setDayHeaderConstraints() {
         self.dayHeader.translatesAutoresizingMaskIntoConstraints = false
         let top: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: UIApplication.sharedApplication().statusBarFrame.height)
         let left: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
@@ -80,31 +87,15 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     func setUpDaysOfHeader() {
         //Remove 1 to count from 0
-        var firstWeekDay = self.calendar.component(.Weekday, fromDate: self.firstDate!) - 1
+        //TODO replace with normal order
         let symbols = self.calendar.veryShortWeekdaySymbols
         for i in 0...(symbols.count-1) {
-            if firstWeekDay + i >= symbols.count {
-                firstWeekDay -= symbols.count
-            }
             let label = UILabel(frame: CGRectMake(CGFloat(i) * itemSide + CGFloat(i-1) * minimumInteritemSpacing, 0, itemSide, 20))
-            label.text = symbols[firstWeekDay + i]
+            label.text = symbols[i]
             label.textAlignment = .Center
             label.textColor = UIColor.blackColor()
             self.dayHeader.addSubview(label)
         }
-    }
-    
-    func setDatesLimits() {
-        //Going 3 months before now
-        let monthOffset = NSDateComponents()
-        monthOffset.month = -3
-        let before = self.calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
-        //Looking for first sunday after this date
-        let sundayComp = NSDateComponents()
-        sundayComp.weekday = 1
-        self.firstDate = self.calendar.nextDateAfterDate(before!, matchingComponents: sundayComp, options: NSCalendarOptions.MatchPreviousTimePreservingSmallerUnits)
-        monthOffset.month = 3
-        self.lastDate = self.calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -114,7 +105,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         if self.firstDate == nil || self.lastDate == nil {
             return 0
         }
-        //nil doesnt work for the NSCalendarOptions
+        //nil doesn't work for the NSCalendarOptions
         return self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: self.lastDate!, options: NSCalendarOptions.MatchFirst).day
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
