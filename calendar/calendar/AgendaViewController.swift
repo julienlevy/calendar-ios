@@ -10,18 +10,22 @@ import UIKit
 
 let noEventCellIdentifier: String = "noEventCellIdentifier"
 let weatherCellIdentifier: String = "weatherCellIdentifier"
+let eventCellIdentifier: String = "eventCellIdentifier"
 
 class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var tableView: UITableView = UITableView()
+    
+    var eventsByDays: [[Event]?] = [[Event]?]()
     
     var firstDate: NSDate?
     var lastDate: NSDate?
     var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
     var dayFormatter: NSDateFormatter = NSDateFormatter()
     
-    func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate) {
+    func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
         self.firstDate = calendarFirstDate
         self.lastDate = calendarLastDate
+        self.eventsByDays = savedEventsByDays
         self.tableView.reloadData()
     }
     
@@ -36,6 +40,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         self.tableView.registerClass(NoEventAgendaCell.self, forCellReuseIdentifier: noEventCellIdentifier)
         self.tableView.registerClass(WeatherAgendaCell.self, forCellReuseIdentifier: weatherCellIdentifier)
+        self.tableView.registerClass(EventAgendaCell.self, forCellReuseIdentifier: eventCellIdentifier)
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = minimalRowHeight
@@ -70,7 +75,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: self.lastDate!, options: NSCalendarOptions.MatchFirst).day
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfEvents: Int = 0
+        // TODO: maybe refacto eventsByDay to be initialized with empty array and not optional arrays...
+        let numberOfEvents: Int = (self.eventsByDays[section] != nil ? self.eventsByDays[section]!.count : 0)
         var additionalCells: Int = 0
         if self.firstDate != nil {
             let cellDate = dateForSection(section)
@@ -91,9 +97,15 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         let cellDate = dateForSection(indexPath.section)
         if self.calendar.isDateInToday(cellDate!) || self.calendar.isDateInTomorrow(cellDate!) {
-            if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
-                cell.label.text = ["Morning", "Afternoon", "Evening"][indexPath.row]
-                cell.weatherIcon.backgroundColor = UIColor.yellowColor()
+            if indexPath.row < 3 {
+                if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
+                    cell.label.text = ["Morning", "Afternoon", "Evening"][indexPath.row]
+                    cell.weatherIcon.backgroundColor = UIColor.yellowColor()
+                    return cell
+                }
+            }
+            if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
+                
                 return cell
             }
         }

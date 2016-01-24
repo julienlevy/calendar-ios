@@ -16,17 +16,20 @@ class MainPageViewController: UIViewController {
     var lastDate: NSDate?
     var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
     
+    var eventsByDays: [[Event]?] = [[Event]?]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.setDatesLimits()
+        self.orderEventsByDay()
         
         self.calendarViewController = CalendarViewController()
         self.agendaViewController = AgendaViewController()
         
         if self.firstDate != nil && self.lastDate != nil {
             self.calendarViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!)
-            self.agendaViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!)
+            self.agendaViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!, savedEventsByDays: self.eventsByDays)
         }
         
         self.view.addSubview(calendarViewController!.view)
@@ -44,16 +47,30 @@ class MainPageViewController: UIViewController {
     }
     
     func setDatesLimits() {
-        //Going 3 months before now
+        //Going 3 months before now & then getting for first sunday after this date
         let monthOffset = NSDateComponents()
         monthOffset.month = -3
         let before = self.calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
-        //Looking for first sunday after this date
         let sundayComp = NSDateComponents()
         sundayComp.weekday = 1
         self.firstDate = self.calendar.nextDateAfterDate(before!, matchingComponents: sundayComp, options: NSCalendarOptions.MatchPreviousTimePreservingSmallerUnits)
+        
+        //Last date anyday 3 months from now
         monthOffset.month = 3
         self.lastDate = self.calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
+    }
+    func orderEventsByDay() {
+        let numberOfDays = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: self.lastDate!, options: NSCalendarOptions.MatchFirst).day
+        let savedEvents: [Event] = [firstEvent] //Should get events from local database and API check
+        
+        self.eventsByDays = [[Event]?](count: numberOfDays, repeatedValue: nil)
+        for event in savedEvents {
+            let dayIndex = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: event.date, options: NSCalendarOptions.MatchFirst).day
+            if self.eventsByDays[dayIndex] == nil {
+                self.eventsByDays[dayIndex] = [Event]()
+            }
+            self.eventsByDays[dayIndex]?.append(event)
+        }
     }
     
     func setCalendarLayoutConstraints() {
