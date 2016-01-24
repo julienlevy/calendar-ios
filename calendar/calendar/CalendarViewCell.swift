@@ -17,7 +17,7 @@ let normalBackgroundColor: UIColor = UIColor.whiteColor()
 class CalendarViewCell: UICollectionViewCell {
     var isPast: Bool = false
     var isToday: Bool = false
-    var day: Int = 2
+    var day: Int = 0
     var month: String = "Jan"
     
     let dayLabel = UILabel()

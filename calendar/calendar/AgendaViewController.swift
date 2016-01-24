@@ -8,6 +8,8 @@
 
 import UIKit
 
+let noEventCellIdentifier: String = "noEventCellIdentifier"
+
 class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var tableView: UITableView = UITableView()
     
@@ -30,10 +32,12 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let format = NSDateFormatter.dateFormatFromTemplate("EEEE d MMMM", options: 0, locale: NSLocale(localeIdentifier: "en_US"))
         dayFormatter.dateFormat = format
         
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.delegate = self
-        tableView.dataSource = self
-        self.view.addSubview(tableView)
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.registerClass(NoEventAgendaCell.self, forCellReuseIdentifier: noEventCellIdentifier)
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.estimatedRowHeight = minimalRowHeight
+        self.view.addSubview(self.tableView)
         setTableViewConstraints()
     }
     override func viewDidAppear(animated: Bool) {
@@ -44,11 +48,11 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: section), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
     }
     func setTableViewConstraints() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
-        let left: NSLayoutConstraint = NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
-        let right: NSLayoutConstraint = NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
-        let bottom: NSLayoutConstraint = NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
+        let left: NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
+        let right: NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
+        let bottom: NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         
         self.view.addConstraints([top, left, right, bottom])
     }
@@ -79,11 +83,18 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return (numberOfEvents + additionalCells == 0 ? 1 : numberOfEvents + additionalCells)
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let rows: Int = tableView.numberOfRowsInSection(indexPath.section)
+        if rows == 1 {
+            if let cell = tableView.dequeueReusableCellWithIdentifier(noEventCellIdentifier) as? NoEventAgendaCell {
+                return cell
+            }
+        }
         if let cell = tableView.dequeueReusableCellWithIdentifier("cell") {
             return cell
         }
         return UITableViewCell()
     }
+
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var prefix: String = ""
         var dayString: String = ""
@@ -124,6 +135,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 prefix = "Yesterday • "
             }
         }
-        return AgendaDayHeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 25), title: prefix + dayString, isToday: isToday)
+        return AgendaDayHeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: prefix + dayString, isToday: isToday)
     }
 }
