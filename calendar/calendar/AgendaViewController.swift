@@ -9,6 +9,7 @@
 import UIKit
 
 let noEventCellIdentifier: String = "noEventCellIdentifier"
+let weatherCellIdentifier: String = "weatherCellIdentifier"
 
 class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var tableView: UITableView = UITableView()
@@ -34,6 +35,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         self.tableView.registerClass(NoEventAgendaCell.self, forCellReuseIdentifier: noEventCellIdentifier)
+        self.tableView.registerClass(WeatherAgendaCell.self, forCellReuseIdentifier: weatherCellIdentifier)
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = minimalRowHeight
@@ -71,9 +73,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let numberOfEvents: Int = 0
         var additionalCells: Int = 0
         if self.firstDate != nil {
-            let dateComponents = NSDateComponents()
-            dateComponents.day = section
-            let cellDate = self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
+            let cellDate = dateForSection(section)
             if self.calendar.isDateInToday(cellDate!) || self.calendar.isDateInTomorrow(cellDate!) {
                 //Adding 3 cells for the weather forecasts
                 additionalCells = 3
@@ -89,6 +89,14 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 return cell
             }
         }
+        let cellDate = dateForSection(indexPath.section)
+        if self.calendar.isDateInToday(cellDate!) || self.calendar.isDateInTomorrow(cellDate!) {
+            if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
+                cell.label.text = ["Morning", "Afternoon", "Evening"][indexPath.row]
+                cell.weatherIcon.backgroundColor = UIColor.yellowColor()
+                return cell
+            }
+        }
         if let cell = tableView.dequeueReusableCellWithIdentifier("cell") {
             return cell
         }
@@ -99,9 +107,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         var prefix: String = ""
         var dayString: String = ""
         if self.firstDate != nil {
-            let dateComponents = NSDateComponents()
-            dateComponents.day = section
-            let cellDate = self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
+            let cellDate = dateForSection(section)
             dayString = dayFormatter.stringFromDate(cellDate!)
             if self.calendar.isDateInToday(cellDate!) {
                 prefix = "Today • "
@@ -120,9 +126,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         var dayString: String = ""
         var isToday: Bool = false
         if self.firstDate != nil {
-            let dateComponents = NSDateComponents()
-            dateComponents.day = section
-            let cellDate = self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
+            let cellDate = dateForSection(section)
             dayString = dayFormatter.stringFromDate(cellDate!)
             if self.calendar.isDateInToday(cellDate!) {
                 prefix = "Today • "
@@ -136,5 +140,11 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         return AgendaDayHeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: prefix + dayString, isToday: isToday)
+    }
+    
+    func dateForSection(section: Int) -> NSDate? {
+        let dateComponents = NSDateComponents()
+        dateComponents.day = section
+        return self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
     }
 }

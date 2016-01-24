@@ -8,12 +8,6 @@
 
 import UIKit
 
-let firstOfMonthColor: UIColor = UIColor.redColor()
-let todayColor: UIColor = UIColor.blackColor()
-let normalDayColor: UIColor = UIColor.grayColor()
-let pastBackgroundColor: UIColor = UIColor.lightGrayColor()
-let normalBackgroundColor: UIColor = UIColor.whiteColor()
-
 class CalendarViewCell: UICollectionViewCell {
     var isPast: Bool = false
     var isToday: Bool = false
@@ -35,7 +29,7 @@ class CalendarViewCell: UICollectionViewCell {
         self.backgroundColor = (isPast && !isToday ? pastBackgroundColor : normalBackgroundColor)
         if day == 1 {
             setupMonthLabel()
-            dayLabel.textColor = firstOfMonthColor
+            dayLabel.textColor = sunriseSpecialColor
         }
         else {
             //Necessary because of UICollectioview Bug that reorders cells...
@@ -51,7 +45,7 @@ class CalendarViewCell: UICollectionViewCell {
     func setupMonthLabel() {
         monthLabel.text = month
         monthLabel.textAlignment = .Center
-        monthLabel.textColor = firstOfMonthColor
+        monthLabel.textColor = sunriseSpecialColor
         monthLabel.font = UIFont.systemFontOfSize(10)
         monthLabel.frame = CGRectMake(0, 0, self.frame.width, self.frame.height/4)
         self.addSubview(monthLabel)

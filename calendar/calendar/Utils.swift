@@ -9,5 +9,14 @@
 import UIKit
 
 let minimalRowHeight: CGFloat = 30
-let rowLeftInset: CGFloat = 5.0
+let rowLateralInset: CGFloat = 5.0
 let rowHeaderHeight: CGFloat = 27.0
+let temperatureRowVerticalInset: CGFloat = 10.0
+
+
+let sunriseSpecialColor: UIColor = UIColor.redColor()
+
+let todayColor: UIColor = UIColor.blackColor()
+let normalDayColor: UIColor = UIColor.grayColor()
+let pastBackgroundColor: UIColor = UIColor.lightGrayColor()
+let normalBackgroundColor: UIColor = UIColor.whiteColor()
