@@ -139,7 +139,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 prefix = "Yesterday • "
             }
         }
-        return AgendaDayHeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: prefix + dayString, isToday: isToday)
+        return DayHeaderViewAgenda(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: prefix + dayString, isToday: isToday)
     }
     
     func dateForSection(section: Int) -> NSDate? {

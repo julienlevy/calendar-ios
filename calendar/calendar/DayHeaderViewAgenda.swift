@@ -1,5 +1,5 @@
 //
-//  AgendaDayHeaderView.swift
+//  DayHeaderViewAgenda.swift
 //  calendar
 //
 //  Created by Julien Levy on 24/01/2016.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AgendaDayHeaderView: UIView {
+class DayHeaderViewAgenda: UIView {
     var titleLabel: UILabel = UILabel()
     
     init(frame: CGRect, title: String, isToday: Bool) {

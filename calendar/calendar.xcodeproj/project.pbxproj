@@ -20,7 +20,7 @@
 		0D3687871C5393D7007622D3 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687861C5393D7007622D3 /* CalendarViewController.swift */; };
 		0D3687891C53940A007622D3 /* AgendaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687881C53940A007622D3 /* AgendaViewController.swift */; };
 		0D3687BB1C53F061007622D3 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687BA1C53F061007622D3 /* CalendarViewCell.swift */; };
-		0D7B5CAF1C54D8FD00E1FA93 /* AgendaDayHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CAE1C54D8FD00E1FA93 /* AgendaDayHeaderView.swift */; };
+		0D7B5CAF1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */; };
 		0D7B5CB11C54E7DB00E1FA93 /* NoEventAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */; };
 		0D7B5CB31C54EA8100E1FA93 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB21C54EA8100E1FA93 /* Utils.swift */; };
 		0D7B5CB51C54EECC00E1FA93 /* WeatherAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */; };
@@ -42,7 +42,7 @@
 		0D3687861C5393D7007622D3 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		0D3687881C53940A007622D3 /* AgendaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaViewController.swift; sourceTree = "<group>"; };
 		0D3687BA1C53F061007622D3 /* CalendarViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
-		0D7B5CAE1C54D8FD00E1FA93 /* AgendaDayHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaDayHeaderView.swift; sourceTree = "<group>"; };
+		0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayHeaderViewAgenda.swift; sourceTree = "<group>"; };
 		0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoEventAgendaCell.swift; sourceTree = "<group>"; };
 		0D7B5CB21C54EA8100E1FA93 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherAgendaCell.swift; sourceTree = "<group>"; };
@@ -102,7 +102,7 @@
 				0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */,
 				0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */,
 				0D0E5F2F1C551C74005F88EE /* EventAgendaCell.swift */,
-				0D7B5CAE1C54D8FD00E1FA93 /* AgendaDayHeaderView.swift */,
+				0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */,
 			);
 			name = Agenda;
 			sourceTree = "<group>";
@@ -193,7 +193,7 @@
 				0D7B5CB11C54E7DB00E1FA93 /* NoEventAgendaCell.swift in Sources */,
 				0D0E5F301C551C74005F88EE /* EventAgendaCell.swift in Sources */,
 				0D7B5CB31C54EA8100E1FA93 /* Utils.swift in Sources */,
-				0D7B5CAF1C54D8FD00E1FA93 /* AgendaDayHeaderView.swift in Sources */,
+				0D7B5CAF1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift in Sources */,
 				0D0E5F2C1C551647005F88EE /* SimplifiedEvent.swift in Sources */,
 				0D3687871C5393D7007622D3 /* CalendarViewController.swift in Sources */,
 				0D3687751C537A67007622D3 /* ViewController.swift in Sources */,
