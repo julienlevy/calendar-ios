@@ -12,6 +12,9 @@ let minimalRowHeight: CGFloat = 30
 let rowLateralInset: CGFloat = 5.0
 let rowHeaderHeight: CGFloat = 27.0
 let temperatureRowVerticalInset: CGFloat = 10.0
+let rowVerticalInset: CGFloat = 15.0
+let rowEventTypeCenterX: CGFloat = 60.0
+let rowEventTitleYOrigin: CGFloat = 80.0
 
 
 let sunriseSpecialColor: UIColor = UIColor.redColor()
