@@ -11,7 +11,7 @@ import UIKit
 class EventAgendaCell: UITableViewCell {
     var timeLabel: UILabel = UILabel()
     var durationLabel: UILabel = UILabel()
-    var eventTypeView: UIView = UIView()
+    var eventTypeView: EventTypeView = EventTypeView()
     var titleLabel: UILabel = UILabel()
     
     var memberView: UIView = UIView()
@@ -65,7 +65,8 @@ class EventAgendaCell: UITableViewCell {
         let centerYType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 2)
         let centerXType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: rowEventTypeCenterX)
         let proportionType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.eventTypeView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
-        let widthType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 15)
+        let widthMinType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 10)
+        let widthMaxType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         
         self.memberView.translatesAutoresizingMaskIntoConstraints = false
         let topMember: NSLayoutConstraint = NSLayoutConstraint(item: self.memberView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 2)
@@ -79,6 +80,6 @@ class EventAgendaCell: UITableViewCell {
         let bottomDuration: NSLayoutConstraint = NSLayoutConstraint(item: self.durationLabel, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: -rowVerticalInset)
         let bottomLocation: NSLayoutConstraint = NSLayoutConstraint(item: self.locationView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: -rowVerticalInset)
         
-        self.addConstraints([topTime, leftTime, topDuration, leftDuration, topTitle, leftTitle, centerXType, centerYType, proportionType, widthType, topMember, leftMember, topLocation, leftLocation, bottomDuration, bottomLocation])
+        self.addConstraints([topTime, leftTime, topDuration, leftDuration, topTitle, leftTitle, centerXType, centerYType, proportionType,widthMinType, widthMaxType, topMember, leftMember, topLocation, leftLocation, bottomDuration, bottomLocation])
     }
 }
