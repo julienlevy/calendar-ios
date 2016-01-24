@@ -25,7 +25,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.view.backgroundColor = UIColor.grayColor()
+        self.view.backgroundColor = UIColor.groupTableViewBackgroundColor()
         
         let format = NSDateFormatter.dateFormatFromTemplate("EEEE d MMMM", options: 0, locale: NSLocale(localeIdentifier: "en_US"))
         dayFormatter.dateFormat = format
@@ -103,5 +103,27 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         return prefix + dayString
+    }
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var prefix: String = ""
+        var dayString: String = ""
+        var isToday: Bool = false
+        if self.firstDate != nil {
+            let dateComponents = NSDateComponents()
+            dateComponents.day = section
+            let cellDate = self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
+            dayString = dayFormatter.stringFromDate(cellDate!)
+            if self.calendar.isDateInToday(cellDate!) {
+                prefix = "Today • "
+                isToday = true
+            }
+            else if self.calendar.isDateInTomorrow(cellDate!) {
+                prefix = "Tomorrow • "
+            }
+            else if self.calendar.isDateInYesterday(cellDate!) {
+                prefix = "Yesterday • "
+            }
+        }
+        return AgendaDayHeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 25), title: prefix + dayString, isToday: isToday)
     }
 }
