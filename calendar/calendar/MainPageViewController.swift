@@ -26,6 +26,7 @@ class MainPageViewController: UIViewController {
         
         if self.firstDate != nil && self.lastDate != nil {
             self.calendarViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!)
+            self.agendaViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!)
         }
         
         self.view.addSubview(calendarViewController!.view)
