@@ -21,6 +21,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var lastDate: NSDate?
     var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
     var dayFormatter: NSDateFormatter = NSDateFormatter()
+    var timeFormatter: NSDateFormatter = NSDateFormatter()
     
     func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
         self.firstDate = calendarFirstDate
@@ -34,8 +35,10 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = UIColor.groupTableViewBackgroundColor()
         
-        let format = NSDateFormatter.dateFormatFromTemplate("EEEE d MMMM", options: 0, locale: NSLocale(localeIdentifier: "en_US"))
-        dayFormatter.dateFormat = format
+        let dayFormat = NSDateFormatter.dateFormatFromTemplate("EEEE d MMMM", options: 0, locale: NSLocale(localeIdentifier: "en_US"))
+        self.dayFormatter.dateFormat = dayFormat
+        let hourFormat = NSDateFormatter.dateFormatFromTemplate("HHmm", options: 0, locale: NSLocale(localeIdentifier: "en_US"))
+        self.timeFormatter.dateFormat = hourFormat
         
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         self.tableView.registerClass(NoEventAgendaCell.self, forCellReuseIdentifier: noEventCellIdentifier)
@@ -105,7 +108,22 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
             if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
-                
+                if self.eventsByDays[indexPath.section] != nil {
+                    //Minus 3 for weather cells
+                    if indexPath.row - 3 < self.eventsByDays[indexPath.section]!.count {
+                        let event: Event = self.eventsByDays[indexPath.section]![indexPath.row - 3]
+                        
+                        cell.titleLabel.text = event.title
+                        cell.timeLabel.text = self.timeFormatter.stringFromDate(event.date)
+                        cell.durationLabel.text = readableDurationFromMinutes(event.duration)
+                    }
+                    else {
+                        print("Problem with eventsByDay in date " + String(dateForSection(indexPath.section)))
+                    }
+                }
+                else {
+                    print("Problem with eventsByDay in date " + String(dateForSection(indexPath.section)))
+                }
                 return cell
             }
         }
@@ -158,5 +176,13 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let dateComponents = NSDateComponents()
         dateComponents.day = section
         return self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
+    }
+    
+    func readableDurationFromMinutes(duration: Int) -> String {
+        let hours = Int(duration / 60)
+        let minutes = duration % 60
+
+        //Prints 0m if the duration if null
+        return (hours != 0 ? String(hours) + "h " : "") + (minutes != 0 || hours == 0 ? String(minutes) + "m" : "")
     }
 }

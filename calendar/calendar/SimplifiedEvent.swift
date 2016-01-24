@@ -11,7 +11,7 @@ import Foundation
 class Event {
     var title: String
     var date: NSDate
-    var duration: NSDate
+    var duration: Int //in minutes
     var containingCalendar: String
     var description: String = ""
     
@@ -19,7 +19,7 @@ class Event {
     var locationCoordinate: (Float, Float)?
     var people: [Contact]?
     
-    init(eventTitle: String, eventDate: NSDate, eventDuration: NSDate, eventContainingCalendar: String) {
+    init(eventTitle: String, eventDate: NSDate, eventDuration: Int, eventContainingCalendar: String) {
         self.title = eventTitle
         self.date = eventDate
         self.duration = eventDuration

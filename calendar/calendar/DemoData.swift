@@ -10,4 +10,7 @@ import Foundation
 
 let kPersonalCalendar = "kPersonalCalendar"
 
-let firstEvent: Event = Event(eventTitle: "First event", eventDate: NSDate(), eventDuration: NSDate(), eventContainingCalendar: kPersonalCalendar)
+//let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+
+let firstEvent: Event = Event(eventTitle: "First event", eventDate: NSDate(), eventDuration: 140, eventContainingCalendar: kPersonalCalendar)
+//let secondEvent: Event = calendar?.dateByAddingComponents(hourOffset, toDate: firstEvent, options: NSCalendarOptions.MatchFirst)
