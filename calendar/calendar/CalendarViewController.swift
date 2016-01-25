@@ -18,8 +18,8 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var delegate: CalendarDelegate?
     
     var collectionView: UICollectionView?
-    var itemSide: CGFloat = 0
-    var minimumInteritemSpacing: CGFloat = 0
+    var itemSide: Int = 0
+    var missingPixelsWithDivision: Int = 0
     var currentSelectedCell: CalendarViewCell?
     
     var firstDate: NSDate?
@@ -49,13 +49,14 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.shortMonthFormatter.dateFormat = "MMM"
         self.longMonthFormatter.dateFormat = "MMMM"
         
-        self.itemSide = UIScreen.mainScreen().bounds.width/CGFloat(7) - 1
-        self.minimumInteritemSpacing = 1.0
+        let screen = UIScreen.mainScreen().bounds.width
+        self.itemSide = Int(screen / 7.0)
+        self.missingPixelsWithDivision = Int(screen - CGFloat(Int(screen/7.0) * 7))
+        
         let collectionViewLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionViewLayout.scrollDirection = UICollectionViewScrollDirection.Vertical
-        collectionViewLayout.minimumInteritemSpacing = self.minimumInteritemSpacing
-        collectionViewLayout.minimumLineSpacing = self.minimumInteritemSpacing
-        collectionViewLayout.itemSize = CGSize(width: self.itemSide, height: self.itemSide)
+        collectionViewLayout.minimumInteritemSpacing = 0
+        collectionViewLayout.minimumLineSpacing = 0.5
         
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: collectionViewLayout)
         self.collectionView?.backgroundColor = UIColor.clearColor()
@@ -80,6 +81,16 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         self.setUpDaysOfHeader()
     }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        if self.collectionView == nil {
+            return CGSizeZero
+        }
+        let indexInRow = indexPath.item % 7
+        
+        //Only integer width and adds 1 pixel to first in row according to missing pixels by division so that the sum reaches the end of the line perfectly
+        return CGSize(width: CGFloat(self.itemSide + (self.missingPixelsWithDivision - indexInRow > 0 ? 1 : 0)), height: CGFloat(self.itemSide))
+    }
+
     override func viewDidAppear(animated: Bool) {
         if firstDate == nil {
             return
@@ -120,7 +131,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         //TODO replace with normal order
         let symbols = self.calendar.veryShortWeekdaySymbols
         for i in 0...(symbols.count-1) {
-            let label = UILabel(frame: CGRectMake(CGFloat(i) * itemSide + CGFloat(i-1) * minimumInteritemSpacing, 0, itemSide, 20))
+            let label = UILabel(frame: CGRectMake(CGFloat(i * itemSide), 0, CGFloat(itemSide), 20))
             label.text = symbols[i]
             label.textAlignment = .Center
             label.textColor = UIColor.blackColor()
@@ -138,7 +149,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         label.frame = CGRectMake(0, onRowOfCell.frame.origin.y, self.view.bounds.width, onRowOfCell.frame.height)
         self.overlayView.addSubview(label)
     }
-
     func hideOverlay(hidden: Bool) {
         UIView.animateWithDuration(0.3, animations: {
             self.overlayView.alpha = (hidden ? 0 : 1)
