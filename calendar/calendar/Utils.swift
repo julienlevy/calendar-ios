@@ -8,6 +8,8 @@
 
 import UIKit
 
+let dayHeaderViewHeight: CGFloat = 20
+
 let minimalRowHeight: CGFloat = 30
 let rowLateralInset: CGFloat = 5.0
 let rowHeaderHeight: CGFloat = 27.0

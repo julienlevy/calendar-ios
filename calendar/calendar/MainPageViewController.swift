@@ -11,6 +11,8 @@ import UIKit
 class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate {
     var calendarViewController: CalendarViewController?
     var agendaViewController: AgendaViewController?
+    var calendarCellSide: CGFloat = 0
+    var calendarHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
     
     var firstDate: NSDate?
     var lastDate: NSDate?
@@ -23,6 +25,8 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
 
         self.setDatesLimits()
         self.orderEventsByDay()
+        let screen = UIScreen.mainScreen().bounds.width
+        self.calendarCellSide = screen / 7.0
         
         self.calendarViewController = CalendarViewController()
         self.agendaViewController = AgendaViewController()
@@ -83,12 +87,12 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     
     func setCalendarLayoutConstraints() {
         self.calendarViewController?.view.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.TopMargin, multiplier: 1, constant: 0)
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.TopMargin, multiplier: 1, constant: UIApplication.sharedApplication().statusBarFrame.height)
         let left: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         let right: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
-        let height: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 300)
+        calendarHeightConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 5 * self.calendarCellSide + dayHeaderViewHeight)
         
-        self.view.addConstraints([top, left, right, height])
+        self.view.addConstraints([top, left, right, calendarHeightConstraint])
     }
     func setAgendaLayoutConstraints() {
         self.agendaViewController?.view.translatesAutoresizingMaskIntoConstraints = false
@@ -104,9 +108,19 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     func calendarSelectedDayFromFirst(day: Int) {
         self.agendaViewController?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: day), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
     }
+    func calendarWillBeginDragging() {
+        calendarHeightConstraint.constant = 5 * self.calendarCellSide + dayHeaderViewHeight
+        UIView.animateWithDuration(0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
     func agendaScrolledToDay(day: Int) {
-//        self.calendarViewController?.collectionView?.selectItemAtIndexPath(NSIndexPath(forItem: day, inSection: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.None)
         self.calendarViewController?.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: day, inSection: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.None)
+        
+        calendarHeightConstraint.constant = 2 * self.calendarCellSide + dayHeaderViewHeight
+        UIView.animateWithDuration(0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
     }
     
     override func didReceiveMemoryWarning() {

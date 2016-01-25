@@ -12,13 +12,14 @@ let calendarCellIdentifier: String = "calendarCell"
 
 protocol CalendarDelegate {
     func calendarSelectedDayFromFirst(day: Int)
+    func calendarWillBeginDragging()
 }
 
 class CalendarViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     var delegate: CalendarDelegate?
     
     var collectionView: UICollectionView?
-    var itemSide: Int = 0
+    var itemSide: CGFloat = 0
     var missingPixelsWithDivision: Int = 0
     var currentSelectedCell: CalendarViewCell?
     
@@ -50,7 +51,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.longMonthFormatter.dateFormat = "MMMM"
         
         let screen = UIScreen.mainScreen().bounds.width
-        self.itemSide = Int(screen / 7.0)
+        self.itemSide = CGFloat(Int(screen / 7.0))
         self.missingPixelsWithDivision = Int(screen - CGFloat(Int(screen/7.0) * 7))
         
         let collectionViewLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -88,7 +89,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         let indexInRow = indexPath.item % 7
         
         //Only integer width and adds 1 pixel to first in row according to missing pixels by division so that the sum reaches the end of the line perfectly
-        return CGSize(width: CGFloat(self.itemSide + (self.missingPixelsWithDivision - indexInRow > 0 ? 1 : 0)), height: CGFloat(self.itemSide))
+        return CGSize(width: self.itemSide + (self.missingPixelsWithDivision - indexInRow > 0 ? 1 : 0), height: self.itemSide)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -110,10 +111,10 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     func setDayHeaderConstraints() {
         self.dayHeader.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: UIApplication.sharedApplication().statusBarFrame.height)
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
         let left: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         let right: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
-        let height: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
+        let height: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: dayHeaderViewHeight)
         
         self.view.addConstraints([top, left, right, height])
     }
@@ -131,7 +132,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         //TODO replace with normal order
         let symbols = self.calendar.veryShortWeekdaySymbols
         for i in 0...(symbols.count-1) {
-            let label = UILabel(frame: CGRectMake(CGFloat(i * itemSide), 0, CGFloat(itemSide), 20))
+            let label = UILabel(frame: CGRectMake(CGFloat(i) * itemSide, 0, CGFloat(itemSide), 20))
             label.text = symbols[i]
             label.textAlignment = .Center
             label.textColor = UIColor.blackColor()
@@ -211,6 +212,8 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         overlayHeightConstraint.constant = (self.collectionView?.contentSize.height)!
         self.collectionView?.layoutIfNeeded()
         self.hideOverlay(false)
+        
+        self.delegate?.calendarWillBeginDragging()
     }
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
