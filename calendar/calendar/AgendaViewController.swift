@@ -12,7 +12,13 @@ let noEventCellIdentifier: String = "noEventCellIdentifier"
 let weatherCellIdentifier: String = "weatherCellIdentifier"
 let eventCellIdentifier: String = "eventCellIdentifier"
 
+protocol AgendaDelegate {
+    func agendaScrolledToDay(day: Int)
+}
+
 class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var delegate: AgendaDelegate?
+    
     var tableView: UITableView = UITableView()
     
     var eventsByDays: [[Event]?] = [[Event]?]()
@@ -170,6 +176,15 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         return DayHeaderViewAgenda(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: prefix + dayString, isToday: isToday)
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if let indexPaths = self.tableView.indexPathsForVisibleRows {
+            if indexPaths.first == nil {
+                return
+            }
+            self.delegate?.agendaScrolledToDay(indexPaths.first!.section)
+        }
     }
     
     func dateForSection(section: Int) -> NSDate? {

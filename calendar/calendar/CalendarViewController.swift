@@ -20,6 +20,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var collectionView: UICollectionView?
     var itemSide: CGFloat = 0
     var minimumInteritemSpacing: CGFloat = 0
+    var currentSelectedCell: CalendarViewCell?
     
     var firstDate: NSDate?
     var lastDate: NSDate?
@@ -71,7 +72,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
             return
         }
         let index: Int = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: NSDate(), options: NSCalendarOptions.MatchFirst).day
-        self.collectionView?.selectItemAtIndexPath(NSIndexPath(forItem: index, inSection: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.Top)
+        self.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: index, inSection: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.Top)
     }
     func setCollectionViewConstraints() {
         self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
@@ -137,7 +138,9 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         print("Selected item")
-        (self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell)?.reloadDisplay()
+        let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell
+        cell?.reloadDisplay()
+        self.currentSelectedCell = cell
         self.delegate?.calendarSelectedDayFromFirst(indexPath.item)
     }
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
@@ -148,6 +151,18 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath) {
         (self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell)?.reloadDisplay()
+    }
+    
+    func selectAndDisplayItemInCollectionViewAtIndexPath(indexPath: NSIndexPath?, animated: Bool, scrollPosition: UICollectionViewScrollPosition) {
+        //Selecting new cell, unselects currently selected cell but doesn't triggger UICollectionView delegate functions
+        self.collectionView?.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: scrollPosition)
+        self.currentSelectedCell?.reloadDisplay()
+        if indexPath == nil {
+            return
+        }
+        let cell = self.collectionView?.cellForItemAtIndexPath(indexPath!) as? CalendarViewCell
+        cell?.reloadDisplay()
+        self.currentSelectedCell = cell
     }
     
     override func didReceiveMemoryWarning() {
