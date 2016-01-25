@@ -36,6 +36,14 @@ class CalendarViewCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    func reloadDisplay() {
+        self.setSubviewsAttributes()
+        
+        self.monthHeightConstraint.constant = (self.shouldDisplayMonth() ? 20 : 0)
+        
+        self.layoutIfNeeded()
+    }
 
     func setCellInfo(day: Int, month: String, past: Bool, today: Bool) {
         self.day = day
