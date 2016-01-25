@@ -99,13 +99,15 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rows: Int = tableView.numberOfRowsInSection(indexPath.section)
-        if rows == 1 {
+        //rows == 1 not to display No event for today or tomorrow
+        if rows == 1 && self.eventsByDays[indexPath.section] == nil {
             if let cell = tableView.dequeueReusableCellWithIdentifier(noEventCellIdentifier) as? NoEventAgendaCell {
                 return cell
             }
         }
         let cellDate = dateForSection(indexPath.section)
         if self.calendar.isDateInToday(cellDate!) || self.calendar.isDateInTomorrow(cellDate!) {
+            // TODO: order with weather as well
             if indexPath.row < 3 {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
                     cell.label.text = ["Morning", "Afternoon", "Evening"][indexPath.row]
@@ -123,16 +125,29 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         cell.timeLabel.text = self.timeFormatter.stringFromDate(event.date)
                         cell.durationLabel.text = readableDurationFromMinutes(event.duration)
                     }
-                    else {
-                        print("Problem with eventsByDay in date " + String(dateForSection(indexPath.section)))
-                    }
-                }
-                else {
-                    print("Problem with eventsByDay in date " + String(dateForSection(indexPath.section)))
                 }
                 return cell
             }
         }
+        if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
+            if self.eventsByDays[indexPath.section] != nil {
+                if indexPath.row < self.eventsByDays[indexPath.section]!.count {
+                    let event: Event = self.eventsByDays[indexPath.section]![indexPath.row]
+                    
+                    cell.titleLabel.text = event.title
+                    cell.timeLabel.text = self.timeFormatter.stringFromDate(event.date)
+                    cell.durationLabel.text = readableDurationFromMinutes(event.duration)
+                }
+                else {
+                    print("Problem with eventsByDay in date " + String(dateForSection(indexPath.section)))
+                }
+            }
+            else {
+                print("Problem with eventsByDay in date " + String(dateForSection(indexPath.section)))
+            }
+            return cell
+        }
+        
         if let cell = tableView.dequeueReusableCellWithIdentifier("cell") {
             return cell
         }
@@ -140,22 +155,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var prefix: String = ""
-        var dayString: String = ""
-        if self.firstDate != nil {
-            let cellDate = dateForSection(section)
-            dayString = dayFormatter.stringFromDate(cellDate!)
-            if self.calendar.isDateInToday(cellDate!) {
-                prefix = "Today • "
-            }
-            else if self.calendar.isDateInTomorrow(cellDate!) {
-                prefix = "Tomorrow • "
-            }
-            else if self.calendar.isDateInYesterday(cellDate!) {
-                prefix = "Yesterday • "
-            }
-        }
-        return prefix + dayString
+        return "Template Line Date"
     }
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var prefix: String = ""
