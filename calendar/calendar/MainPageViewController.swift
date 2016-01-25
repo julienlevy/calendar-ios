@@ -108,15 +108,16 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     func calendarSelectedDayFromFirst(day: Int) {
         self.agendaViewController?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: day), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
     }
+    func agendaScrolledToDay(day: Int) {
+        self.calendarViewController?.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: day, inSection: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.None)
+    }
     func calendarWillBeginDragging() {
         calendarHeightConstraint.constant = 5 * self.calendarCellSide + dayHeaderViewHeight
         UIView.animateWithDuration(0.2, animations: {
             self.view.layoutIfNeeded()
         })
     }
-    func agendaScrolledToDay(day: Int) {
-        self.calendarViewController?.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: day, inSection: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.None)
-        
+    func agendaWillBeginDragging() {
         calendarHeightConstraint.constant = 2 * self.calendarCellSide + dayHeaderViewHeight
         UIView.animateWithDuration(0.2, animations: {
             self.view.layoutIfNeeded()

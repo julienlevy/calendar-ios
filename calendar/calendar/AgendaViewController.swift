@@ -14,6 +14,7 @@ let eventCellIdentifier: String = "eventCellIdentifier"
 
 protocol AgendaDelegate {
     func agendaScrolledToDay(day: Int)
+    func agendaWillBeginDragging()
 }
 
 class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -191,6 +192,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.delegate?.agendaWillBeginDragging()
+        
         self.userStartedScrolling = true
     }
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
