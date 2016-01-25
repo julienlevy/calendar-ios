@@ -25,10 +25,12 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var firstDate: NSDate?
     var lastDate: NSDate?
     var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-    let monthFormatter: NSDateFormatter = NSDateFormatter()
+    let shortMonthFormatter: NSDateFormatter = NSDateFormatter()
+    let longMonthFormatter: NSDateFormatter = NSDateFormatter()
     
     var overlayView: UIView = UIView()
     var overlayHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    var alreadyAddedMonths: [String] = [String]()
     
     var dayHeader: UIView = UIView()
     var headerColor: UIColor = UIColor.lightGrayColor()
@@ -44,7 +46,8 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = UIColor.lightGrayColor()
         
-        self.monthFormatter.dateFormat = "MMM"
+        self.shortMonthFormatter.dateFormat = "MMM"
+        self.longMonthFormatter.dateFormat = "MMMM"
         
         self.itemSide = UIScreen.mainScreen().bounds.width/CGFloat(7) - 1
         self.minimumInteritemSpacing = 1.0
@@ -63,7 +66,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView?.allowsSelection = true
         
         self.dayHeader.backgroundColor = self.headerColor
-        self.overlayView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        self.overlayView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.7)
         
         self.overlayView.hidden = true
         
@@ -124,6 +127,17 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
             self.dayHeader.addSubview(label)
         }
     }
+    func addMonthLabel(month: String, onRowOfCell: UICollectionViewCell) {
+        if self.alreadyAddedMonths.contains(month) {
+            return
+        }
+        let label: UILabel = UILabel()
+        label.text = month
+        label.font = UIFont.systemFontOfSize(20)
+        label.textAlignment = .Center
+        label.frame = CGRectMake(0, onRowOfCell.frame.origin.y, self.view.bounds.width, onRowOfCell.frame.height)
+        self.overlayView.addSubview(label)
+    }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
@@ -142,11 +156,15 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
                 dateComponents.day = indexPath.item
                 let cellDate = self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
                 let day: Int = self.calendar.component(NSCalendarUnit.Day, fromDate: cellDate!)
-                let month: String = self.monthFormatter.stringFromDate(cellDate!)
-                let isToday: Bool = self.calendar.isDateInToday(cellDate!)
-                let isPast: Bool = cellDate!.timeIntervalSinceNow.isSignMinus
                 
-                cell.setCellInfo(day, month: month, past: isPast, today: isToday)
+                cell.setCellInfo(day,
+                    month: self.shortMonthFormatter.stringFromDate(cellDate!),
+                    past: cellDate!.timeIntervalSinceNow.isSignMinus,
+                    today: self.calendar.isDateInToday(cellDate!))
+                
+                if day == 15 {
+                    self.addMonthLabel(self.longMonthFormatter.stringFromDate(cellDate!), onRowOfCell: cell)
+                }
             }
             return cell
         }
