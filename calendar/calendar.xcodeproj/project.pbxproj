@@ -26,6 +26,7 @@
 		0D7B5CB11C54E7DB00E1FA93 /* NoEventAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */; };
 		0D7B5CB31C54EA8100E1FA93 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB21C54EA8100E1FA93 /* Utils.swift */; };
 		0D7B5CB51C54EECC00E1FA93 /* WeatherAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */; };
+		0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoEventAgendaCell.swift; sourceTree = "<group>"; };
 		0D7B5CB21C54EA8100E1FA93 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherAgendaCell.swift; sourceTree = "<group>"; };
+		0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			children = (
 				0D3687861C5393D7007622D3 /* CalendarViewController.swift */,
 				0D3687BA1C53F061007622D3 /* CalendarViewCell.swift */,
+				0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */,
 				0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */,
 			);
 			name = Calendar;
@@ -206,6 +209,7 @@
 				0D3687751C537A67007622D3 /* ViewController.swift in Sources */,
 				0D3687851C538F6F007622D3 /* MainPageViewController.swift in Sources */,
 				0D3687891C53940A007622D3 /* AgendaViewController.swift in Sources */,
+				0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */,
 				0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */,
 				0D0E5F361C556860005F88EE /* CalendarCircleViews.swift in Sources */,
 				0D7B5CB51C54EECC00E1FA93 /* WeatherAgendaCell.swift in Sources */,

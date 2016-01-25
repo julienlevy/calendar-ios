@@ -63,7 +63,7 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
         self.firstDate = self.calendar.nextDateAfterDate(before!, matchingComponents: sundayComp, options: NSCalendarOptions.MatchPreviousTimePreservingSmallerUnits)
         
         //Last date anyday 3 months from now
-        monthOffset.month = 3
+        monthOffset.month = 6
         self.lastDate = self.calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
     }
     func orderEventsByDay() {

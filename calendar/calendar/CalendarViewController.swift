@@ -54,7 +54,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.itemSide = CGFloat(Int(screen / 7.0))
         self.missingPixelsWithDivision = Int(screen - CGFloat(Int(screen/7.0) * 7))
         
-        let collectionViewLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        let collectionViewLayout: CalendarViewFlowLayout = CalendarViewFlowLayout()
         collectionViewLayout.scrollDirection = UICollectionViewScrollDirection.Vertical
         collectionViewLayout.minimumInteritemSpacing = 0
         collectionViewLayout.minimumLineSpacing = 0.5
@@ -98,7 +98,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
         let index: Int = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: NSDate(), options: NSCalendarOptions.MatchFirst).day
         self.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: index, inSection: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.Top)
-        print(self.overlayView.frame)
     }
     func setCollectionViewConstraints() {
         self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
@@ -192,7 +191,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        print("Selected item")
         let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell
         cell?.reloadDisplay()
         self.currentSelectedCell = cell
