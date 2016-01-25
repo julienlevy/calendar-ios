@@ -68,7 +68,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.dayHeader.backgroundColor = self.headerColor
         self.overlayView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.7)
         
-        self.overlayView.hidden = true
+        self.overlayView.alpha = 0
         
         self.view.addSubview(self.dayHeader)
         self.view.addSubview(self.collectionView!)
@@ -138,6 +138,12 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         label.frame = CGRectMake(0, onRowOfCell.frame.origin.y, self.view.bounds.width, onRowOfCell.frame.height)
         self.overlayView.addSubview(label)
     }
+
+    func hideOverlay(hidden: Bool) {
+        UIView.animateWithDuration(0.3, animations: {
+            self.overlayView.alpha = (hidden ? 0 : 1)
+        })
+    }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
@@ -194,15 +200,18 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         overlayHeightConstraint.constant = (self.collectionView?.contentSize.height)!
         self.collectionView?.layoutIfNeeded()
-        self.overlayView.hidden = false
+        self.hideOverlay(false)
     }
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            self.overlayView.hidden = true
+            self.hideOverlay(true)
         }
     }
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.overlayView.hidden = true
+        self.hideOverlay(true)
+    }
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        // TODO: to implement to always scroll to full cell?
     }
     
     func selectAndDisplayItemInCollectionViewAtIndexPath(indexPath: NSIndexPath?, animated: Bool, scrollPosition: UICollectionViewScrollPosition) {
