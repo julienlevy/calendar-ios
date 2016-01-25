@@ -133,6 +133,10 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         print("Selected item at indexPath " + String(indexPath))
     }
     
+    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+        print("Highlighted item at index path " + String(indexPath.item))
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

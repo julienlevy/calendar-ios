@@ -12,6 +12,7 @@
 		0D0E5F301C551C74005F88EE /* EventAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F2F1C551C74005F88EE /* EventAgendaCell.swift */; };
 		0D0E5F321C552CCA005F88EE /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F311C552CCA005F88EE /* DemoData.swift */; };
 		0D0E5F341C5556B6005F88EE /* EventTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F331C5556B6005F88EE /* EventTypeView.swift */; };
+		0D0E5F361C556860005F88EE /* CalendarCircleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */; };
 		0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687721C537A67007622D3 /* AppDelegate.swift */; };
 		0D3687751C537A67007622D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687741C537A67007622D3 /* ViewController.swift */; };
 		0D3687781C537A67007622D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D3687761C537A67007622D3 /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 		0D0E5F2F1C551C74005F88EE /* EventAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAgendaCell.swift; sourceTree = "<group>"; };
 		0D0E5F311C552CCA005F88EE /* DemoData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
 		0D0E5F331C5556B6005F88EE /* EventTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTypeView.swift; sourceTree = "<group>"; };
+		0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCircleViews.swift; sourceTree = "<group>"; };
 		0D36876F1C537A67007622D3 /* calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = calendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D3687721C537A67007622D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D3687741C537A67007622D3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			children = (
 				0D3687861C5393D7007622D3 /* CalendarViewController.swift */,
 				0D3687BA1C53F061007622D3 /* CalendarViewCell.swift */,
+				0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				0D3687851C538F6F007622D3 /* MainPageViewController.swift in Sources */,
 				0D3687891C53940A007622D3 /* AgendaViewController.swift in Sources */,
 				0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */,
+				0D0E5F361C556860005F88EE /* CalendarCircleViews.swift in Sources */,
 				0D7B5CB51C54EECC00E1FA93 /* WeatherAgendaCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

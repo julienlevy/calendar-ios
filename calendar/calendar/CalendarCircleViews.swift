@@ -1,5 +1,5 @@
 //
-//  EventTypeView.swift
+//  CalendarCircleViews.swift
 //  calendar
 //
 //  Created by Julien Levy on 24/01/2016.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class EventTypeView: UIView {
+class SelectedView: UIView {
     
     init() {
         super.init(frame: CGRectZero)
-
+        
         self.backgroundColor = UIColor.blueColor()
     }
     override init(frame: CGRect) {
@@ -27,5 +27,25 @@ class EventTypeView: UIView {
         self.layoutIfNeeded()
         self.layer.cornerRadius = self.frame.width/2
     }
+}
 
+class HighlightedView: UIView {
+    
+    init() {
+        super.init(frame: CGRectZero)
+        
+        self.backgroundColor = UIColor.lightGrayColor()
+    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layoutIfNeeded()
+        self.layer.cornerRadius = self.frame.width/2
+    }
 }

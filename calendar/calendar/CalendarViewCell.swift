@@ -16,38 +16,101 @@ class CalendarViewCell: UICollectionViewCell {
     
     let dayLabel = UILabel()
     let monthLabel = UILabel()
+    var selectedView: SelectedView = SelectedView()
+    var highlightedView: HighlightedView = HighlightedView()
     
+    var monthHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.setSubviewsAttributes()
+        
+        self.addSubview(highlightedView)
+        self.addSubview(selectedView)
+        self.addSubview(dayLabel)
+        self.addSubview(monthLabel)
+        
+        self.setConstraints()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
     func setCellInfo(day: Int, month: String, past: Bool, today: Bool) {
         self.day = day
         self.month = month
         self.isPast = past
         self.isToday = today
-        setupView()
+        
+        self.setSubviewsAttributes()
+        
+        self.monthHeightConstraint.constant = (self.shouldDisplayMonth() ? 20 : 0)
+        
+        self.layoutIfNeeded()
+    }
+    func setSubviewsAttributes(){
+        self.backgroundColor = (self.isPast && !self.isToday ? pastBackgroundColor : normalBackgroundColor)
+        
+        self.selectedView.hidden = !self.selected
+        self.highlightedView.hidden = !self.highlighted
+        
+        self.dayLabel.text = String(self.day)
+        self.monthLabel.text = self.month
+        
+        self.dayLabel.textAlignment = .Center
+        self.monthLabel.textAlignment = .Center
+        
+        self.monthLabel.textColor = sunriseSpecialColor
+        self.dayLabel.textColor = textColorForState()
+        
+        self.dayLabel.font = UIFont.systemFontOfSize(16)
+        self.monthLabel.font = UIFont.systemFontOfSize(12)
+        
+//        self.dayLabel.backgroundColor = UIColor.magentaColor()
+//        self.monthLabel.backgroundColor = UIColor.greenColor()
     }
     
-    func setupView() {
-        self.backgroundColor = (isPast && !isToday ? pastBackgroundColor : normalBackgroundColor)
-        if day == 1 {
-            setupMonthLabel()
-            dayLabel.textColor = sunriseSpecialColor
+    func textColorForState() -> UIColor {
+        if self.highlighted || self.selected {
+            return UIColor.whiteColor()
         }
-        else {
-            //Necessary because of UICollectioview Bug that reorders cells...
-            monthLabel.frame = CGRectZero
-            dayLabel.textColor = (isToday ? todayColor : normalDayColor)
+        if self.day == 1 {
+            return sunriseSpecialColor
         }
-        dayLabel.text = String(day)
-        dayLabel.textAlignment = .Center
-        dayLabel.font = UIFont.systemFontOfSize(14)
-        dayLabel.frame = CGRectMake(0, monthLabel.frame.height, self.frame.width, self.frame.height - monthLabel.frame.height)
-        self.addSubview(dayLabel)
+        if self.isToday {
+            return todayColor
+        }
+        return normalDayColor
     }
-    func setupMonthLabel() {
-        monthLabel.text = month
-        monthLabel.textAlignment = .Center
-        monthLabel.textColor = sunriseSpecialColor
-        monthLabel.font = UIFont.systemFontOfSize(10)
-        monthLabel.frame = CGRectMake(0, 0, self.frame.width, self.frame.height/4)
-        self.addSubview(monthLabel)
+    
+    func shouldDisplayMonth() -> Bool {
+        return self.day == 1 && !self.selected && !self.highlighted
+    }
+    
+    func setConstraints() {
+        self.monthLabel.translatesAutoresizingMaskIntoConstraints = false
+        let topMonth: NSLayoutConstraint = NSLayoutConstraint(item: self.monthLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: calendarVerticalInset)
+        let centerXMonth: NSLayoutConstraint = NSLayoutConstraint(item: self.monthLabel, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+        monthHeightConstraint = NSLayoutConstraint(item: self.monthLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 0)
+        
+        self.dayLabel.translatesAutoresizingMaskIntoConstraints = false
+        let topDay: NSLayoutConstraint = NSLayoutConstraint(item: self.dayLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.monthLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        let leftDay: NSLayoutConstraint = NSLayoutConstraint(item: self.dayLabel, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+        let bottomDay: NSLayoutConstraint = NSLayoutConstraint(item: self.dayLabel, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: -calendarVerticalInset)
+        
+        self.selectedView.translatesAutoresizingMaskIntoConstraints = false
+        let selectedCenterX: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+        let selectedCenterY: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+        let selectedWidth: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: -calendarVerticalInset)
+        let selectedProportion: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.selectedView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
+        
+        self.highlightedView.translatesAutoresizingMaskIntoConstraints = false
+        let highlightedCenterX: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+        let highlightedCenterY: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+        let highlightedWidth: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: -calendarVerticalInset)
+        let highlightedProportion: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.highlightedView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
+        
+        self.addConstraints([topMonth, centerXMonth, topDay, leftDay, bottomDay, selectedCenterX, selectedCenterY, selectedWidth, selectedProportion, highlightedCenterX, highlightedCenterY, highlightedWidth, highlightedProportion, monthHeightConstraint])
     }
 }

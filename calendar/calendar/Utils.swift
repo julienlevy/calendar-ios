@@ -16,6 +16,8 @@ let rowVerticalInset: CGFloat = 15.0
 let rowEventTypeCenterX: CGFloat = 60.0
 let rowEventTitleYOrigin: CGFloat = 80.0
 
+let calendarVerticalInset: CGFloat = 5.0
+
 
 let sunriseSpecialColor: UIColor = UIColor.redColor()
 
