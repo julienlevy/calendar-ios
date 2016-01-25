@@ -20,6 +20,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var delegate: AgendaDelegate?
     
     var tableView: UITableView = UITableView()
+    var userStartedScrolling: Bool = false
     
     var eventsByDays: [[Event]?] = [[Event]?]()
     
@@ -179,12 +180,26 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        if !self.userStartedScrolling {
+            return
+        }
         if let indexPaths = self.tableView.indexPathsForVisibleRows {
             if indexPaths.first == nil {
                 return
             }
             self.delegate?.agendaScrolledToDay(indexPaths.first!.section)
         }
+    }
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.userStartedScrolling = true
+    }
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            self.userStartedScrolling = false
+        }
+    }
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.userStartedScrolling = false
     }
     
     func dateForSection(section: Int) -> NSDate? {
