@@ -10,7 +10,13 @@ import UIKit
 
 let calendarCellIdentifier: String = "calendarCell"
 
+protocol CalendarDelegate {
+    func calendarSelectedDayFromFirst(day: Int)
+}
+
 class CalendarViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    var delegate: CalendarDelegate?
+    
     var collectionView: UICollectionView?
     var itemSide: CGFloat = 0
     var minimumInteritemSpacing: CGFloat = 0
@@ -130,7 +136,9 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        print("Selected item")
         (self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell)?.reloadDisplay()
+        self.delegate?.calendarSelectedDayFromFirst(indexPath.item)
     }
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         (self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell)?.reloadDisplay()

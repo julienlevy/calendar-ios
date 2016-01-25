@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainPageViewController: UIViewController {
+class MainPageViewController: UIViewController, CalendarDelegate {
     var calendarViewController: CalendarViewController?
     var agendaViewController: AgendaViewController?
     
@@ -31,6 +31,8 @@ class MainPageViewController: UIViewController {
             self.calendarViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!)
             self.agendaViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!, savedEventsByDays: self.eventsByDays)
         }
+        
+        calendarViewController?.delegate = self
         
         self.view.addSubview(calendarViewController!.view)
         self.view.addSubview(agendaViewController!.view)
@@ -95,6 +97,10 @@ class MainPageViewController: UIViewController {
         let bottom: NSLayoutConstraint = NSLayoutConstraint(item: self.agendaViewController!.view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         
         self.view.addConstraints([top, left, right, bottom])
+    }
+    
+    func calendarSelectedDayFromFirst(day: Int) {
+        self.agendaViewController?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: day), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
