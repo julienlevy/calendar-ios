@@ -160,6 +160,8 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         if indexPath == nil {
             return
         }
+        //Necessary to do the scrolling independantly because .None doesnt scroll in select but scrolls minimally in scroll function
+        self.collectionView?.scrollToItemAtIndexPath(indexPath!, atScrollPosition: scrollPosition, animated: animated)
         let cell = self.collectionView?.cellForItemAtIndexPath(indexPath!) as? CalendarViewCell
         cell?.reloadDisplay()
         self.currentSelectedCell = cell
