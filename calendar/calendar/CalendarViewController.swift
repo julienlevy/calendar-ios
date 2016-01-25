@@ -27,6 +27,9 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
     let monthFormatter: NSDateFormatter = NSDateFormatter()
     
+    var overlayView: UIView = UIView()
+    var overlayHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    
     var dayHeader: UIView = UIView()
     var headerColor: UIColor = UIColor.lightGrayColor()
     
@@ -60,10 +63,17 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView?.allowsSelection = true
         
         self.dayHeader.backgroundColor = self.headerColor
+        self.overlayView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        
+        self.overlayView.hidden = true
+        
         self.view.addSubview(self.dayHeader)
-        self.view.addSubview(collectionView!)
+        self.view.addSubview(self.collectionView!)
+        self.collectionView?.addSubview(self.overlayView)
+        
         self.setCollectionViewConstraints()
         self.setDayHeaderConstraints()
+        self.setOverlayConstraints()
         
         self.setUpDaysOfHeader()
     }
@@ -73,13 +83,14 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
         let index: Int = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: NSDate(), options: NSCalendarOptions.MatchFirst).day
         self.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: index, inSection: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.Top)
+        print(self.overlayView.frame)
     }
     func setCollectionViewConstraints() {
         self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.dayHeader, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
-        let left: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
-        let right: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
-        let bottom: NSLayoutConstraint = NSLayoutConstraint(item: collectionView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.dayHeader, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        let left: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
+        let right: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
+        let bottom: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         
         self.view.addConstraints([top, left, right, bottom])
     }
@@ -91,6 +102,15 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         let height: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         
         self.view.addConstraints([top, left, right, height])
+    }
+    func setOverlayConstraints() {
+        self.overlayView.translatesAutoresizingMaskIntoConstraints = false
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.overlayView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.overlayView.superview, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
+        let left: NSLayoutConstraint = NSLayoutConstraint(item: self.overlayView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.overlayView.superview, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
+        let right: NSLayoutConstraint = NSLayoutConstraint(item: self.overlayView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.overlayView.superview, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: 0)
+        overlayHeightConstraint = NSLayoutConstraint(item: self.overlayView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 0)
+        
+        self.collectionView!.addConstraints([top, left, right, overlayHeightConstraint])
     }
     func setUpDaysOfHeader() {
         //Remove 1 to count from 0
@@ -151,6 +171,20 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath) {
         (self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell)?.reloadDisplay()
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        overlayHeightConstraint.constant = (self.collectionView?.contentSize.height)!
+        self.collectionView?.layoutIfNeeded()
+        self.overlayView.hidden = false
+    }
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            self.overlayView.hidden = true
+        }
+    }
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.overlayView.hidden = true
     }
     
     func selectAndDisplayItemInCollectionViewAtIndexPath(indexPath: NSIndexPath?, animated: Bool, scrollPosition: UICollectionViewScrollPosition) {
