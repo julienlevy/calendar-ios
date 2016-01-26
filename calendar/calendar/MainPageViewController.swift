@@ -8,6 +8,8 @@
 
 import UIKit
 
+let kEventColor = "kEventColor"
+
 class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate {
     var calendarViewController: CalendarViewController?
     var agendaViewController: AgendaViewController?
@@ -68,7 +70,7 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     }
     func orderEventsByDay() {
         let numberOfDays = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: self.lastDate!, options: NSCalendarOptions.MatchFirst).day
-        let savedEvents: [Event] = [firstEvent, thirdEvent, secondEvent, otherDayEvent, fullDaysEvent] //Should get events from local database and API check
+        let savedEvents: [Event] = demoEvents() //Should get events from local database and API check
         
         self.eventsByDays = [[Event]?](count: numberOfDays, repeatedValue: nil)
         for event in savedEvents {
