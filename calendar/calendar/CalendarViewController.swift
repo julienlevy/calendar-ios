@@ -23,6 +23,8 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var missingPixelsWithDivision: Int = 0
     var currentSelectedCell: CalendarViewCell?
     
+    var eventsByDays: [[Event]?] = [[Event]?]()
+    
     var firstDate: NSDate?
     var lastDate: NSDate?
     var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
@@ -36,9 +38,11 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var dayHeader: UIView = UIView()
     var headerColor: UIColor = UIColor.lightGrayColor()
     
-    func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate) {
+    func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
         self.firstDate = calendarFirstDate
         self.lastDate = calendarLastDate
+        self.eventsByDays = savedEventsByDays
+        
         self.collectionView?.reloadData()
     }
     
@@ -171,11 +175,16 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
                 dateComponents.day = indexPath.item
                 let cellDate = self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
                 let day: Int = self.calendar.component(NSCalendarUnit.Day, fromDate: cellDate!)
+                var nbEvents: Int? = self.eventsByDays[indexPath.item]?.count
+                if nbEvents == nil {
+                    nbEvents = 0
+                }
                 
                 cell.setCellInfo(day,
                     month: self.shortMonthFormatter.stringFromDate(cellDate!),
                     past: cellDate!.timeIntervalSinceNow.isSignMinus,
-                    today: self.calendar.isDateInToday(cellDate!))
+                    today: self.calendar.isDateInToday(cellDate!),
+                    events: nbEvents!)
                 
                 if day == 15 {
                     self.addMonthLabel(self.longMonthFormatter.stringFromDate(cellDate!), onRowOfCell: cell)

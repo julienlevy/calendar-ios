@@ -32,7 +32,7 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
         self.agendaViewController = AgendaViewController()
         
         if self.firstDate != nil && self.lastDate != nil {
-            self.calendarViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!)
+            self.calendarViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!, savedEventsByDays: self.eventsByDays)
             self.agendaViewController?.initData(self.firstDate!, calendarLastDate: self.lastDate!, savedEventsByDays: self.eventsByDays)
         }
         
