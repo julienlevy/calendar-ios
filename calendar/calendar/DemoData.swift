@@ -20,3 +20,4 @@ let secondEvent: Event = Event(eventTitle: "Second event", eventDate: firstEvent
 let thirdEvent: Event = Event(eventTitle: "Third event", eventDate: firstEvent.date.dateByAddingTimeInterval(third), eventDuration: 15, eventContainingCalendar: kPersonalCalendar)
 
 let otherDayEvent: Event = Event(eventTitle: "Other day event", eventDate: firstEvent.date.dateByAddingTimeInterval(otherDay), eventDuration: 170, eventContainingCalendar: kPersonalCalendar)
+let fullDaysEvent: Event = Event(eventTitle: "Full day event", eventDate: firstEvent.date.dateByAddingTimeInterval(otherDay), eventAllDay: true, eventDuration: 2, eventContainingCalendar: kPersonalCalendar)

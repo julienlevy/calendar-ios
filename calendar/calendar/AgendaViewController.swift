@@ -128,8 +128,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if let event = dayObject as? Event {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
                     cell.titleLabel.text = event.title
-                    cell.timeLabel.text = self.timeFormatter.stringFromDate(event.date)
-                    cell.durationLabel.text = readableDurationFromMinutes(event.duration)
+                    cell.timeLabel.text = (event.allDay ? "ALL DAY" : self.timeFormatter.stringFromDate(event.date))
+                    cell.durationLabel.text = (event.allDay ? "" : readableDurationFromMinutes(event.duration))
                     return cell
                 }
             }
@@ -147,8 +147,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let event: Event = self.eventsByDays[indexPath.section]![indexPath.row]
                     
                     cell.titleLabel.text = event.title
-                    cell.timeLabel.text = self.timeFormatter.stringFromDate(event.date)
-                    cell.durationLabel.text = readableDurationFromMinutes(event.duration)
+                    cell.timeLabel.text = (event.allDay ? "ALL DAY" : self.timeFormatter.stringFromDate(event.date))
+                    cell.durationLabel.text = (event.allDay ? "" : readableDurationFromMinutes(event.duration))
                 }
             }
             return cell
@@ -245,7 +245,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             
             //At this point events can't be nil
-            if self.calendar.component(NSCalendarUnit.Hour, fromDate: events![eventIndex].date) < delimiters[weatherIndex].values.first! {
+            if events![eventIndex].allDay || self.calendar.component(NSCalendarUnit.Hour, fromDate: events![eventIndex].date) < delimiters[weatherIndex].values.first! {
                 result.append(events![eventIndex])
                 eventIndex++
             }
