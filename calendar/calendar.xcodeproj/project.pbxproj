@@ -119,8 +119,8 @@
 			children = (
 				0D3687861C5393D7007622D3 /* CalendarViewController.swift */,
 				0D3687BA1C53F061007622D3 /* CalendarViewCell.swift */,
-				0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */,
 				0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */,
+				0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";

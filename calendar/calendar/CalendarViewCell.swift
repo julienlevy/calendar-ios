@@ -16,12 +16,14 @@ class CalendarViewCell: UICollectionViewCell {
     
     let dayLabel = UILabel()
     let monthLabel = UILabel()
-    var selectedView: SelectedView = SelectedView()
-    var highlightedView: HighlightedView = HighlightedView()
+    var selectedView: CircleView = CircleView(color: UIColor.blueColor())
+    var highlightedView: CircleView = CircleView(color: UIColor.lightGrayColor())
     
     var monthHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
 
     override init(frame: CGRect) {
+        
+        
         super.init(frame: frame)
         
         self.setSubviewsAttributes()
