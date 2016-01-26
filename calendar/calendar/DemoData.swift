@@ -13,7 +13,7 @@ let kPersonalCalendar = "kPersonalCalendar"
 //let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
 let secondsInHours: NSTimeInterval = 1.5 * 60 * 60
 let third: NSTimeInterval = 2 * 60 * 60
-let otherDay: NSTimeInterval = 100 * 60 * 60
+let otherDay: NSTimeInterval = 48 * 60 * 60
 
 let firstEvent: Event = Event(eventTitle: "First event", eventDate: NSDate(), eventDuration: 140, eventContainingCalendar: kPersonalCalendar)
 let secondEvent: Event = Event(eventTitle: "Second event", eventDate: firstEvent.date.dateByAddingTimeInterval(secondsInHours), eventDuration: 140, eventContainingCalendar: kPersonalCalendar)

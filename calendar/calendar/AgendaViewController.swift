@@ -24,6 +24,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var userStartedScrolling: Bool = false
     
     var eventsByDays: [[Event]?] = [[Event]?]()
+    var todayCells: [AnyObject] = [AnyObject]()
+    var tomorrowCells: [AnyObject] = [AnyObject]()
     
     var firstDate: NSDate?
     var lastDate: NSDate?
@@ -35,7 +37,19 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.firstDate = calendarFirstDate
         self.lastDate = calendarLastDate
         self.eventsByDays = savedEventsByDays
+        
+        self.setTodayAndTomorrowCellsOrder()
         self.tableView.reloadData()
+    }
+    func setTodayAndTomorrowCellsOrder() {
+        if self.firstDate == nil {
+            return
+        }
+        let todayIndex: Int = self.sectionForDate(NSDate())
+        let timesDelimiters: [[String: Int]] = [["Morning": 6], ["Afternoon": 12], ["Evening": 18]]
+        
+        self.todayCells = self.orderEvents(self.eventsByDays[todayIndex], withDelimiters: timesDelimiters)
+        self.tomorrowCells = self.orderEvents(self.eventsByDays[todayIndex + 1], withDelimiters: timesDelimiters)
     }
     
     override func viewDidLoad() {
@@ -62,7 +76,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if firstDate == nil {
             return
         }
-        let section: Int = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: NSDate(), options: NSCalendarOptions.MatchFirst).day
+        let section: Int = self.sectionForDate(NSDate())
         self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: section), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
     }
     func setTableViewConstraints() {
@@ -83,7 +97,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if self.firstDate == nil || self.lastDate == nil {
             return 1
         }
-        return self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: self.lastDate!, options: NSCalendarOptions.MatchFirst).day
+        return self.sectionForDate(self.lastDate!)
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // TODO: maybe refacto eventsByDay to be initialized with empty array and not optional arrays...
@@ -109,26 +123,22 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         let cellDate = dateForSection(indexPath.section)
         if self.calendar.isDateInToday(cellDate!) || self.calendar.isDateInTomorrow(cellDate!) {
-            // TODO: order with weather as well
-            if indexPath.row < 3 {
-                if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
-                    cell.label.text = ["Morning", "Afternoon", "Evening"][indexPath.row]
-                    cell.weatherIcon.backgroundColor = UIColor.yellowColor()
+            let dayObject = (self.calendar.isDateInToday(cellDate!) ? self.todayCells[indexPath.item] : self.tomorrowCells[indexPath.item])
+            
+            if let event = dayObject as? Event {
+                if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
+                    cell.titleLabel.text = event.title
+                    cell.timeLabel.text = self.timeFormatter.stringFromDate(event.date)
+                    cell.durationLabel.text = readableDurationFromMinutes(event.duration)
                     return cell
                 }
             }
-            if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
-                if self.eventsByDays[indexPath.section] != nil {
-                    //Minus 3 for weather cells
-                    if indexPath.row - 3 < self.eventsByDays[indexPath.section]!.count {
-                        let event: Event = self.eventsByDays[indexPath.section]![indexPath.row - 3]
-                        
-                        cell.titleLabel.text = event.title
-                        cell.timeLabel.text = self.timeFormatter.stringFromDate(event.date)
-                        cell.durationLabel.text = readableDurationFromMinutes(event.duration)
-                    }
+            else if let moment = dayObject as? String {
+                if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
+                    cell.label.text = moment
+                    cell.weatherIcon.backgroundColor = UIColor.yellowColor()
+                    return cell
                 }
-                return cell
             }
         }
         if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
@@ -140,12 +150,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     cell.timeLabel.text = self.timeFormatter.stringFromDate(event.date)
                     cell.durationLabel.text = readableDurationFromMinutes(event.duration)
                 }
-                else {
-                    print("Problem with eventsByDay in date " + String(dateForSection(indexPath.section)))
-                }
-            }
-            else {
-                print("Problem with eventsByDay in date " + String(dateForSection(indexPath.section)))
             }
             return cell
         }
@@ -210,12 +214,47 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         dateComponents.day = section
         return self.calendar.dateByAddingComponents(dateComponents, toDate: self.firstDate!, options: NSCalendarOptions.MatchFirst)
     }
-    
+    func sectionForDate(date: NSDate) -> Int {
+        return self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: date, options: NSCalendarOptions.MatchFirst).day
+    }
     func readableDurationFromMinutes(duration: Int) -> String {
         let hours = Int(duration / 60)
         let minutes = duration % 60
 
         //Prints 0m if the duration if null
         return (hours != 0 ? String(hours) + "h " : "") + (minutes != 0 || hours == 0 ? String(minutes) + "m" : "")
+    }
+    func orderEvents(events: [Event]?, withDelimiters delimiters: [[String: Int]]) -> [AnyObject] {
+        var result: [AnyObject] = [AnyObject]()
+        
+        //Doing this allows to input nil array and return just the delimiters
+        let countEvents: Int = (events == nil ? 0 : events!.count)
+        
+        var eventIndex: Int = 0
+        var weatherIndex: Int = 0
+        while eventIndex < countEvents || weatherIndex < delimiters.count {
+            if eventIndex >= countEvents {
+                result.append(delimiters[weatherIndex].keys.first!)
+                weatherIndex++
+                continue
+            }
+            if weatherIndex >= delimiters.count {
+                result.append(events![eventIndex])
+                eventIndex++
+                continue
+            }
+            
+            //At this point events can't be nil
+            if self.calendar.component(NSCalendarUnit.Hour, fromDate: events![eventIndex].date) < delimiters[weatherIndex].values.first! {
+                result.append(events![eventIndex])
+                eventIndex++
+            }
+            else {
+                result.append(delimiters[weatherIndex].keys.first!)
+                weatherIndex++
+            }
+        }
+        
+        return result
     }
 }

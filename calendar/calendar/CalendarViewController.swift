@@ -162,7 +162,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         if self.firstDate == nil || self.lastDate == nil {
             return 0
         }
-        //nil doesn't work for the NSCalendarOptions
         return self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: self.lastDate!, options: NSCalendarOptions.MatchFirst).day
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
