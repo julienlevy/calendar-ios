@@ -235,17 +235,35 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         // TODO: to implement to always scroll to full cell?
     }
     
+    
     func selectAndDisplayItemInCollectionViewAtIndexPath(indexPath: NSIndexPath?, animated: Bool, scrollPosition: UICollectionViewScrollPosition) {
         //Selecting new cell, unselects currently selected cell but doesn't triggger UICollectionView delegate functions
         self.collectionView?.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: scrollPosition)
         self.currentSelectedCell?.reloadDisplay()
         if indexPath == nil {
+            print("indexPath is nil")
             return
         }
         //Necessary to do the scrolling independantly because .None doesnt scroll in select but scrolls minimally in scroll function
         self.collectionView?.scrollToItemAtIndexPath(indexPath!, atScrollPosition: scrollPosition, animated: animated)
-        let cell = self.collectionView?.cellForItemAtIndexPath(indexPath!) as? CalendarViewCell
-        cell?.reloadDisplay()
+        
+        var cell: CalendarViewCell? = (self.collectionView?.cellForItemAtIndexPath(indexPath!)) as? CalendarViewCell
+        
+        //Following is necessary to ensure that the cell is not nil because cellForRow return nil if cell is not on display (for first selection for example)
+        if cell ==  nil {
+            print("cell was nil: ")
+            self.collectionView?.layoutIfNeeded()
+            self.collectionView?.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: scrollPosition)
+            cell = (self.collectionView?.cellForItemAtIndexPath(indexPath!)) as? CalendarViewCell
+        }
+        if cell == nil {
+            print("Cell is STILL nil")
+            self.collectionView?.layoutIfNeeded()
+            self.collectionView?.reloadData()
+            self.collectionView?.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: scrollPosition)
+            cell = (self.collectionView?.cellForItemAtIndexPath(indexPath!)) as? CalendarViewCell
+        }
+        
         self.currentSelectedCell = cell
     }
     
