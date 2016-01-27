@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WeatherAgendaCell: UITableViewCell {
+class WeatherAgendaCell: AgendaCell {
     var label: UILabel = UILabel()
     var weatherIcon: UIImageView = UIImageView()
     var temperatureLabel: UILabel = UILabel()

@@ -26,6 +26,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var eventsByDays: [[Event]?] = [[Event]?]()
     var todayCells: [AnyObject] = [AnyObject]()
     var tomorrowCells: [AnyObject] = [AnyObject]()
+    var currentEventIndex: Int = 0
     
     var firstDate: NSDate?
     var lastDate: NSDate?
@@ -50,6 +51,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.todayCells = self.orderEvents(self.eventsByDays[todayIndex], withDelimiters: timesDelimiters)
         self.tomorrowCells = self.orderEvents(self.eventsByDays[todayIndex + 1], withDelimiters: timesDelimiters)
+        self.currentEventIndex = self.getCurrentEventIndex()
     }
     
     override func viewDidLoad() {
@@ -121,9 +123,11 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 return cell
             }
         }
-        let cellDate = dateForSection(indexPath.section)
-        if self.calendar.isDateInToday(cellDate!) || self.calendar.isDateInTomorrow(cellDate!) {
-            let dayObject = (self.calendar.isDateInToday(cellDate!) ? self.todayCells[indexPath.item] : self.tomorrowCells[indexPath.item])
+        let cellDate: NSDate? = dateForSection(indexPath.section)
+        let isToday: Bool  = self.calendar.isDateInToday(cellDate!)
+        let isTomorrow: Bool = self.calendar.isDateInTomorrow(cellDate!)
+        if isToday || isTomorrow {
+            let dayObject: AnyObject = (isToday ? self.todayCells[indexPath.item] : self.tomorrowCells[indexPath.item])
             
             if let event = dayObject as? Event {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
@@ -131,6 +135,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     cell.timeLabel.text = (event.allDay ? "ALL DAY" : self.timeFormatter.stringFromDate(event.date))
                     cell.durationLabel.text = (event.allDay ? "" : readableDurationFromMinutes(event.duration))
                     cell.eventTypeView.backgroundColor = colorForEvent(event.containingCalendar)
+                    cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
+                    cell.showTriangleIfNeeded()
                     return cell
                 }
             }
@@ -138,6 +144,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
                     cell.label.text = moment
                     cell.weatherIcon.backgroundColor = UIColor.yellowColor()
+                    cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
+                    cell.showTriangleIfNeeded()
                     return cell
                 }
             }
@@ -258,5 +266,39 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         return result
+    }
+    func getCurrentEventIndex() -> Int {
+        for i in 0..<self.todayCells.count {
+            if let event = self.todayCells[i] as? Event {
+                if event.allDay {
+                    continue
+                }
+                //First event comprising current time
+                let durationTimeInterval: NSTimeInterval = NSTimeInterval(event.duration * 60)
+                if event.date.compare(NSDate()) != (event.date.dateByAddingTimeInterval(durationTimeInterval).compare(NSDate())) {
+                    return i
+                }
+                let twoHoursTimeInterval: NSTimeInterval = NSTimeInterval(2 * 60 * 60)
+                if NSDate().dateByAddingTimeInterval(twoHoursTimeInterval).compare(event.date) == NSComparisonResult.OrderedDescending {
+                    return i
+                }
+            }
+        }
+        //In case we haven't found a matching event
+        let hour: Int = self.calendar.component(NSCalendarUnit.Hour, fromDate: NSDate())
+        for i in 0..<self.todayCells.count {
+            if let period = self.todayCells[i] as? String {
+                if period == "Morning" && hour < 12 {
+                    return i
+                }
+                if period == "Afternoon" && hour < 18 && hour >= 12 {
+                    return i
+                }
+                if period == "Evening" && hour >= 18 {
+                    return i
+                }
+            }
+        }
+        return 0
     }
 }

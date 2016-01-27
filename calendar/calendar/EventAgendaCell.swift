@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EventAgendaCell: UITableViewCell {
+class EventAgendaCell: AgendaCell {
     var timeLabel: UILabel = UILabel()
     var durationLabel: UILabel = UILabel()
     var eventTypeView: EventTypeView = EventTypeView()
