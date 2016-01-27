@@ -10,7 +10,7 @@ import UIKit
 
 class WeatherAgendaCell: AgendaCell {
     var label: UILabel = UILabel()
-    var weatherIcon: UIView = UIView()
+    var weatherIcon: UIImageView = UIImageView()
     var temperatureLabel: UILabel = UILabel()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -25,7 +25,7 @@ class WeatherAgendaCell: AgendaCell {
         self.label.font = UIFont.systemFontOfSize(12)
         self.temperatureLabel.font = UIFont.systemFontOfSize(12)
         
-        self.weatherIcon.backgroundColor = UIColor.magentaColor()
+        self.weatherIcon.contentMode = UIViewContentMode.ScaleAspectFit
         
         self.addSubview(self.label)
         self.addSubview(self.weatherIcon)
@@ -42,11 +42,9 @@ class WeatherAgendaCell: AgendaCell {
         let left: NSLayoutConstraint = NSLayoutConstraint(item: self.label, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: rowLateralInset)
         let bottom: NSLayoutConstraint = NSLayoutConstraint(item: self.label, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: -temperatureRowVerticalInset)
         
-        
         self.temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         let centerTemperature: NSLayoutConstraint = NSLayoutConstraint(item: self.temperatureLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.label, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
         let rightTemperature: NSLayoutConstraint = NSLayoutConstraint(item: self.temperatureLabel, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: -rowLateralInset)
-        
         
         self.weatherIcon.translatesAutoresizingMaskIntoConstraints = false
         let centerWeather: NSLayoutConstraint = NSLayoutConstraint(item: self.weatherIcon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.label, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)

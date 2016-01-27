@@ -34,6 +34,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var dayFormatter: NSDateFormatter = NSDateFormatter()
     var timeFormatter: NSDateFormatter = NSDateFormatter()
     
+    var weatherForecasts: [String: String] = [String: String]()
+    
     func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
         self.firstDate = calendarFirstDate
         self.lastDate = calendarLastDate
@@ -74,9 +76,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         setTableViewConstraints()
     }
     override func viewDidAppear(animated: Bool) {
-        if firstDate == nil {
-            return
-        }
         let section: Int = self.sectionForDate(NSDate())
         self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: section), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
     }
@@ -142,7 +141,15 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             else if let moment = dayObject as? String {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
                     cell.label.text = moment
-                    cell.weatherIcon.backgroundColor = UIColor.yellowColor()
+                    let key = (isToday ? "today" : "tomorrow") + "_" + moment
+                    cell.weatherIcon.hidden = true
+                    if self.weatherForecasts[key] != nil {
+                        if refToWeatherImageName[self.weatherForecasts[key]!] != nil {
+                            cell.weatherIcon.hidden = false
+                            cell.weatherIcon.image = UIImage(named: refToWeatherImageName[self.weatherForecasts[key]!]!)
+                        }
+                    }
+                    
                     cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
                     cell.showTriangleIfNeeded()
                     return cell
@@ -153,11 +160,11 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if self.eventsByDays[indexPath.section] != nil {
                 if indexPath.row < self.eventsByDays[indexPath.section]!.count {
                     let event: Event = self.eventsByDays[indexPath.section]![indexPath.row]
-                    
                     cell.titleLabel.text = event.title
                     cell.timeLabel.text = (event.allDay ? "ALL DAY" : self.timeFormatter.stringFromDate(event.date))
                     cell.durationLabel.text = (event.allDay ? "" : readableDurationFromMinutes(event.duration))
                     cell.eventTypeView.backgroundColor = colorForEvent(event.containingCalendar)
+                    cell.showTriangleIfNeeded()
                 }
             }
             return cell
@@ -216,6 +223,13 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.userStartedScrolling = false
+    }
+    
+    func reloadTodayAndTomorrow() {
+        let todaySectionIndex: Int = self.sectionForDate(NSDate())
+        self.tableView.reloadSections(NSIndexSet(index: todaySectionIndex), withRowAnimation: .None)
+        self.tableView.reloadSections(NSIndexSet(index: todaySectionIndex + 1), withRowAnimation: .None)
+        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: todaySectionIndex), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
     }
     
     func dateForSection(section: Int) -> NSDate? {
