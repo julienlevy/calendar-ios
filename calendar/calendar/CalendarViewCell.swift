@@ -68,6 +68,7 @@ class CalendarViewCell: UICollectionViewCell {
         
         self.selectedView.hidden = !self.selected
         self.highlightedView.hidden = !self.highlighted
+        self.eventsView.hidden = (self.selected || self.highlighted)
         
         self.eventsView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.2 * CGFloat(self.numberOfEvents))
         
@@ -125,13 +126,13 @@ class CalendarViewCell: UICollectionViewCell {
         self.selectedView.translatesAutoresizingMaskIntoConstraints = false
         let selectedCenterX: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
         let selectedCenterY: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
-        let selectedWidth: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: -2 * calendarVerticalInset)
+        let selectedWidth: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: -15)
         let selectedProportion: NSLayoutConstraint = NSLayoutConstraint(item: self.selectedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.selectedView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
         
         self.highlightedView.translatesAutoresizingMaskIntoConstraints = false
         let highlightedCenterX: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
         let highlightedCenterY: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
-        let highlightedWidth: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: -2 * calendarVerticalInset)
+        let highlightedWidth: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: -15)
         let highlightedProportion: NSLayoutConstraint = NSLayoutConstraint(item: self.highlightedView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.highlightedView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
         
         self.addConstraints([topMonth, centerXMonth, topDay, leftDay, bottomDay, selectedCenterX, selectedCenterY, selectedWidth, selectedProportion, highlightedCenterX, highlightedCenterY, highlightedWidth, highlightedProportion, eventsCenterX, eventsWidth, eventsProportion, bottomEvents, monthHeightConstraint])
