@@ -19,8 +19,8 @@ class WeatherAgendaCell: UITableViewCell {
         self.label.text = "Morning"
         self.temperatureLabel.text = "0°"
         
-        self.label.textColor = sunriseSpecialColor
-        self.temperatureLabel.textColor = normalDayColor
+        self.label.textColor = UIColor.sunriseSpecialColor()
+        self.temperatureLabel.textColor = UIColor.sunriseGrayTextColor()
         
         self.label.font = UIFont.systemFontOfSize(12)
         self.temperatureLabel.font = UIFont.systemFontOfSize(12)

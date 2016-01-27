@@ -36,7 +36,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var alreadyAddedMonths: [String] = [String]()
     
     var dayHeader: UIView = UIView()
-    var headerColor: UIColor = UIColor.lightGrayColor()
     
     func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
         self.firstDate = calendarFirstDate
@@ -49,7 +48,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.view.backgroundColor = UIColor.lightGrayColor()
+        self.view.backgroundColor = UIColor.sunriseDefaultGrayBackgrund()
         
         self.shortMonthFormatter.dateFormat = "MMM"
         self.longMonthFormatter.dateFormat = "MMMM"
@@ -71,7 +70,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView?.dataSource = self
         self.collectionView?.allowsSelection = true
         
-        self.dayHeader.backgroundColor = self.headerColor
+        self.dayHeader.backgroundColor = UIColor.sunriseDefaultGrayBackgrund()
         self.overlayView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.7)
         
         self.overlayView.alpha = 0
@@ -131,14 +130,14 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView!.addConstraints([top, left, right, overlayHeightConstraint])
     }
     func setUpDaysOfHeader() {
-        //Remove 1 to count from 0
-        //TODO replace with normal order
         let symbols = self.calendar.veryShortWeekdaySymbols
         for i in 0...(symbols.count-1) {
             let label = UILabel(frame: CGRectMake(CGFloat(i) * itemSide, 0, CGFloat(itemSide), 20))
             label.text = symbols[i]
             label.textAlignment = .Center
-            label.textColor = UIColor.blackColor()
+            //Weekend is gray
+            label.textColor = (5 - i > 0 ? UIColor.blackColor() : UIColor.sunriseGrayTextColor())
+            label.font = UIFont.systemFontOfSize(12.0)
             self.dayHeader.addSubview(label)
         }
     }

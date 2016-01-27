@@ -15,7 +15,7 @@ class NoEventAgendaCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.label.text = "No event"
-        self.label.textColor = normalDayColor
+        self.label.textColor = UIColor.sunriseGrayTextColor()
         self.label.font = UIFont.systemFontOfSize(16)
         self.addSubview(self.label)
         

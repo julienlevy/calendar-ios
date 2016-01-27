@@ -25,9 +25,9 @@ class EventAgendaCell: UITableViewCell {
         self.titleLabel.text = "Sunrise iOS Challenge"
         self.eventTypeView.backgroundColor = UIColor.blueColor()
         
-        self.timeLabel.textColor = todayColor
-        self.durationLabel.textColor = normalDayColor
-        self.titleLabel.textColor = todayColor
+        self.timeLabel.textColor = UIColor.blackColor()
+        self.durationLabel.textColor = UIColor.sunriseGrayTextColor()
+        self.titleLabel.textColor = UIColor.blackColor()
         
         self.timeLabel.font = UIFont.systemFontOfSize(12)
         self.durationLabel.font = UIFont.systemFontOfSize(12)

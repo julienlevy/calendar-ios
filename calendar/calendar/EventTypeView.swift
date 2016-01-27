@@ -13,7 +13,7 @@ class EventTypeView: UIView {
     init() {
         super.init(frame: CGRectZero)
 
-        self.backgroundColor = UIColor.blueColor()
+        self.backgroundColor = UIColor.sunriseBlueColor()
     }
     override init(frame: CGRect) {
         super.init(frame: frame)

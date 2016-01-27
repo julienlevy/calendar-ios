@@ -24,6 +24,8 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = UIColor.sunriseDefaultGrayBackgrund()
 
         self.setDatesLimits()
         self.orderEventsByDay()

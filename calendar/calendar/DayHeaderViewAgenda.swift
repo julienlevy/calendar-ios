@@ -16,7 +16,7 @@ class DayHeaderViewAgenda: UIView {
         
         self.backgroundColor = UIColor.groupTableViewBackgroundColor()
         self.titleLabel.text = title
-        self.titleLabel.textColor = (isToday ? UIColor.blueColor() : normalDayColor)
+        self.titleLabel.textColor = (isToday ? UIColor.sunriseBlueColor() : UIColor.sunriseGrayTextColor())
         self.titleLabel.font = UIFont.systemFontOfSize(14)
         self.titleLabel.frame = self.bounds
         self.addSubview(self.titleLabel)

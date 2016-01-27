@@ -20,10 +20,29 @@ let rowEventTitleYOrigin: CGFloat = 80.0
 
 let calendarVerticalInset: CGFloat = 5.0
 
-
-let sunriseSpecialColor: UIColor = UIColor.redColor()
-
-let todayColor: UIColor = UIColor.blackColor()
-let normalDayColor: UIColor = UIColor.grayColor()
-let pastBackgroundColor: UIColor = UIColor.lightGrayColor()
-let normalBackgroundColor: UIColor = UIColor.whiteColor()
+extension UIColor {
+    class func sunriseSpecialColor() -> UIColor {
+        return UIColor(red: 247.0/255, green: 88.0/255, blue: 94.0/255, alpha: 1.0)
+    }
+    class func sunriseBlueColor() -> UIColor {
+        return UIColor(red: 47.0/255, green: 139.0/255, blue: 225.0/255, alpha: 1.0)
+    }
+    class func sunriseCalendarHighlightedColor() -> UIColor {
+        return UIColor(red: 239.0/255, green: 239.0/255, blue: 244.0/255, alpha: 1.0)
+    }
+    
+    class func sunriseGrayTextColor() -> UIColor {
+        return UIColor(red: 142.0/255, green: 142.0/255, blue: 147.0/255, alpha: 1.0)
+    }
+    class func sunriseDefaultGrayBackgrund() -> UIColor {
+        return UIColor(white: 245.0/255, alpha: 1.0)
+    }
+    class func sunrisePastCalendarGrayBackground() -> UIColor {
+        return UIColor(white: 248.0/255, alpha: 1.0)
+    }
+    class func sunriseFutureCalendarGrayBackground() -> UIColor {
+        return UIColor.whiteColor()
+    }
+    
+    
+}

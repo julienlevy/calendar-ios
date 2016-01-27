@@ -18,8 +18,8 @@ class CalendarViewCell: UICollectionViewCell {
     let dayLabel = UILabel()
     let monthLabel = UILabel()
     var eventsView: CircleView = CircleView(color: UIColor.clearColor())
-    var selectedView: CircleView = CircleView(color: UIColor.blueColor())
-    var highlightedView: CircleView = CircleView(color: UIColor.lightGrayColor())
+    var selectedView: CircleView = CircleView(color: UIColor.sunriseBlueColor())
+    var highlightedView: CircleView = CircleView(color: UIColor.sunriseCalendarHighlightedColor())
     
     var monthHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
 
@@ -64,7 +64,7 @@ class CalendarViewCell: UICollectionViewCell {
         self.layoutIfNeeded()
     }
     func setSubviewsAttributes(){
-        self.backgroundColor = (self.isPast && !self.isToday ? pastBackgroundColor : normalBackgroundColor)
+        self.backgroundColor = (self.isPast && !self.isToday ? UIColor.sunrisePastCalendarGrayBackground() : UIColor.whiteColor())
         
         self.selectedView.hidden = !self.selected
         self.highlightedView.hidden = !self.highlighted
@@ -77,7 +77,7 @@ class CalendarViewCell: UICollectionViewCell {
         self.dayLabel.textAlignment = .Center
         self.monthLabel.textAlignment = .Center
         
-        self.monthLabel.textColor = sunriseSpecialColor
+        self.monthLabel.textColor = UIColor.sunriseSpecialColor()
         self.dayLabel.textColor = textColorForState()
         
         self.dayLabel.font = UIFont.systemFontOfSize(16)
@@ -92,12 +92,12 @@ class CalendarViewCell: UICollectionViewCell {
             return UIColor.whiteColor()
         }
         if self.day == 1 {
-            return sunriseSpecialColor
+            return UIColor.sunriseSpecialColor()
         }
         if self.isToday {
-            return todayColor
+            return UIColor.blackColor()
         }
-        return normalDayColor
+        return UIColor.sunriseGrayTextColor()
     }
     
     func shouldDisplayMonth() -> Bool {
