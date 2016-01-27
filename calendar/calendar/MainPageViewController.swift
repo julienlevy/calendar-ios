@@ -58,12 +58,12 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     }
     
     func setDatesLimits() {
-        //Going 3 months before now & then getting for first sunday after this date
+        //Going 3 months before now & then getting for first monday after this date
         let monthOffset = NSDateComponents()
         monthOffset.month = -3
         let before = self.calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
         let sundayComp = NSDateComponents()
-        sundayComp.weekday = 1
+        sundayComp.weekday = 2
         self.firstDate = self.calendar.nextDateAfterDate(before!, matchingComponents: sundayComp, options: NSCalendarOptions.MatchPreviousTimePreservingSmallerUnits)
         
         //Last date anyday 3 months from now

@@ -130,7 +130,10 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView!.addConstraints([top, left, right, overlayHeightConstraint])
     }
     func setUpDaysOfHeader() {
-        let symbols = self.calendar.veryShortWeekdaySymbols
+        var symbols = self.calendar.veryShortWeekdaySymbols
+        //Starting week on monday instead of default sunday
+        let sunday: String = symbols.removeFirst()
+        symbols.append(sunday)
         for i in 0...(symbols.count-1) {
             let label = UILabel(frame: CGRectMake(CGFloat(i) * itemSide, 0, CGFloat(itemSide), 20))
             label.text = symbols[i]
