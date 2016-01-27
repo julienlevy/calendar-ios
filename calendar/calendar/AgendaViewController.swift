@@ -132,6 +132,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     cell.titleLabel.text = event.title
                     cell.timeLabel.text = (event.allDay ? "ALL DAY" : self.timeFormatter.stringFromDate(event.date))
                     cell.durationLabel.text = (event.allDay ? "" : readableDurationFromMinutes(event.duration))
+                    cell.memberView.setMembers(event.members)
+                    
                     cell.eventTypeView.backgroundColor = colorForEvent(event.containingCalendar)
                     cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
                     cell.showTriangleIfNeeded()

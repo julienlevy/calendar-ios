@@ -29,6 +29,7 @@
 		0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */; };
 		0DAECEA01C58E53000050CB1 /* AgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECE9F1C58E53000050CB1 /* AgendaCell.swift */; };
 		0DAECEA21C58F30E00050CB1 /* TriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEA11C58F30E00050CB1 /* TriangleView.swift */; };
+		0DAECEA41C59583800050CB1 /* MemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEA31C59583800050CB1 /* MemberView.swift */; };
 		FFEF740A8A15584DE4FFF078 /* Pods_calendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E0B4882DDCDC21AE5DE0FEF /* Pods_calendar.framework */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 		0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
 		0DAECE9F1C58E53000050CB1 /* AgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaCell.swift; sourceTree = "<group>"; };
 		0DAECEA11C58F30E00050CB1 /* TriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleView.swift; sourceTree = "<group>"; };
+		0DAECEA31C59583800050CB1 /* MemberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberView.swift; sourceTree = "<group>"; };
 		8E0B4882DDCDC21AE5DE0FEF /* Pods_calendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_calendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA06D32EBD05B5F9CBA15035 /* Pods-calendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-calendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-calendar/Pods-calendar.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,9 +122,8 @@
 				0DAECE9F1C58E53000050CB1 /* AgendaCell.swift */,
 				0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */,
 				0D0E5F2F1C551C74005F88EE /* EventAgendaCell.swift */,
-				0D0E5F331C5556B6005F88EE /* EventTypeView.swift */,
 				0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */,
-				0DAECEA11C58F30E00050CB1 /* TriangleView.swift */,
+				0DAECEA51C59587400050CB1 /* Subviews */,
 			);
 			name = Agenda;
 			sourceTree = "<group>";
@@ -136,6 +137,16 @@
 				0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */,
 			);
 			name = Calendar;
+			sourceTree = "<group>";
+		};
+		0DAECEA51C59587400050CB1 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				0D0E5F331C5556B6005F88EE /* EventTypeView.swift */,
+				0DAECEA11C58F30E00050CB1 /* TriangleView.swift */,
+				0DAECEA31C59583800050CB1 /* MemberView.swift */,
+			);
+			name = Subviews;
 			sourceTree = "<group>";
 		};
 		1A0885113F56A1D29E86564E /* Pods */ = {
@@ -295,6 +306,7 @@
 				0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */,
 				0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */,
 				0D0E5F361C556860005F88EE /* CalendarCircleViews.swift in Sources */,
+				0DAECEA41C59583800050CB1 /* MemberView.swift in Sources */,
 				0D7B5CB51C54EECC00E1FA93 /* WeatherAgendaCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

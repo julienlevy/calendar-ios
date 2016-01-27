@@ -12,12 +12,14 @@ class Contact {
     var firstName: String
     var lastName: String
     var email: String
+    var imageName: String
     
     var company: String? //Should be a company object
     
-    init(contactFName: String, contactLName: String, contactEmail: String) {
+    init(contactFName: String, contactLName: String, contactEmail: String = "example@example.com", contactImageName: String) {
         self.firstName = contactFName
         self.lastName = contactLName
         self.email = contactEmail
+        self.imageName = contactImageName
     }
 }

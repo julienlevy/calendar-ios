@@ -14,7 +14,7 @@ class EventAgendaCell: AgendaCell {
     var eventTypeView: EventTypeView = EventTypeView()
     var titleLabel: UILabel = UILabel()
     
-    var memberView: UIView = UIView()
+    var memberView: MembersView = MembersView()
     var locationView: UIView = UIView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

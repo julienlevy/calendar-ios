@@ -18,14 +18,15 @@ class Event {
     
     var locationName: String?
     var locationCoordinate: (Float, Float)?
-    var people: [Contact]?
+    var members: [Contact]?
     
-    init(eventTitle: String, eventDate: NSDate, eventAllDay: Bool = false, eventDuration: Int, eventContainingCalendar: String, eventDescription: String = "") {
+    init(eventTitle: String, eventDate: NSDate, eventAllDay: Bool = false, eventDuration: Int, eventContainingCalendar: String, eventDescription: String = "", eventMembers: [Contact]? = nil) {
         self.title = eventTitle
         self.date = eventDate
         self.allDay = eventAllDay
         self.duration = eventDuration
         self.containingCalendar = eventContainingCalendar
         self.description = eventDescription
+        self.members = eventMembers
     }
 }
