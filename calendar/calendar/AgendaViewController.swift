@@ -315,14 +315,11 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let hour: Int = self.calendar.component(NSCalendarUnit.Hour, fromDate: NSDate())
         for i in 0..<self.todayCells.count {
             if let period = self.todayCells[i] as? String {
-                if period == "Morning" && hour < 12 {
-                    return i
-                }
-                if period == "Afternoon" && hour < 18 && hour >= 12 {
-                    return i
-                }
-                if period == "Evening" && hour >= 18 {
-                    return i
+                for tuple in dayPeriods {
+                    // Return index of period if the time is before the end of the period (morning will have matched before afternoon anyway)
+                    if tuple.0 == period && hour < tuple.1.1 {
+                        return i
+                    }
                 }
             }
         }
