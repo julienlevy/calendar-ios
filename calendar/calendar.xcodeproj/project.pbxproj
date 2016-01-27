@@ -28,6 +28,7 @@
 		0D7B5CB51C54EECC00E1FA93 /* WeatherAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */; };
 		0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */; };
 		0DAECEA01C58E53000050CB1 /* AgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECE9F1C58E53000050CB1 /* AgendaCell.swift */; };
+		0DAECEA21C58F30E00050CB1 /* TriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEA11C58F30E00050CB1 /* TriangleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherAgendaCell.swift; sourceTree = "<group>"; };
 		0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
 		0DAECE9F1C58E53000050CB1 /* AgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaCell.swift; sourceTree = "<group>"; };
+		0DAECEA11C58F30E00050CB1 /* TriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				0D0E5F2F1C551C74005F88EE /* EventAgendaCell.swift */,
 				0D0E5F331C5556B6005F88EE /* EventTypeView.swift */,
 				0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */,
+				0DAECEA11C58F30E00050CB1 /* TriangleView.swift */,
 			);
 			name = Agenda;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				0D0E5F301C551C74005F88EE /* EventAgendaCell.swift in Sources */,
 				0DAECEA01C58E53000050CB1 /* AgendaCell.swift in Sources */,
 				0D7B5CB31C54EA8100E1FA93 /* Utils.swift in Sources */,
+				0DAECEA21C58F30E00050CB1 /* TriangleView.swift in Sources */,
 				0D7B5CAF1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift in Sources */,
 				0D0E5F2C1C551647005F88EE /* SimplifiedEvent.swift in Sources */,
 				0D3687871C5393D7007622D3 /* CalendarViewController.swift in Sources */,
