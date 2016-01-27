@@ -183,7 +183,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 prefix = "Yesterday • "
             }
         }
-        return DayHeaderViewAgenda(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: prefix + dayString, isToday: isToday)
+        return DayHeaderViewAgenda(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: (prefix + dayString).uppercaseString, isToday: isToday)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {

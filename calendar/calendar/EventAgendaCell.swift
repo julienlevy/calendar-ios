@@ -31,7 +31,7 @@ class EventAgendaCell: UITableViewCell {
         
         self.timeLabel.font = UIFont.systemFontOfSize(12)
         self.durationLabel.font = UIFont.systemFontOfSize(12)
-        self.titleLabel.font = UIFont.systemFontOfSize(13)
+        self.titleLabel.font = UIFont.systemFontOfSize(15)
         
         self.addSubview(self.timeLabel)
         self.addSubview(self.durationLabel)
