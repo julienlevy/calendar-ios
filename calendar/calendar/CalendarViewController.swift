@@ -251,13 +251,11 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         //Following is necessary to ensure that the cell is not nil because cellForRow return nil if cell is not on display (for first selection for example)
         if cell ==  nil {
-            print("cell was nil: ")
             self.collectionView?.layoutIfNeeded()
             self.collectionView?.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: scrollPosition)
             cell = (self.collectionView?.cellForItemAtIndexPath(indexPath!)) as? CalendarViewCell
         }
         if cell == nil {
-            print("Cell is STILL nil")
             self.collectionView?.layoutIfNeeded()
             self.collectionView?.reloadData()
             self.collectionView?.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: scrollPosition)

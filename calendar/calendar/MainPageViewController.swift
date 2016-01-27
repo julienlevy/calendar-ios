@@ -9,8 +9,7 @@
 import UIKit
 import SwiftOpenWeatherMapAPI
 
-let kEventColor = "kEventColor"
-let dayPeriods = ["Morning" : (8, 12), "Afternoon" : (12, 18), "Evening" : (18, 24)]
+let dayPeriods: [(String, (Int, Int))] = [("Morning", (8, 12)), ("Afternoon", (12, 18)), ("Evening", (18, 24))]
 
 class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate {
     var calendarViewController: CalendarViewController?
@@ -112,12 +111,13 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
                 let unix = NSDate(timeIntervalSince1970: dt!)
                 var key = ""
                 key = (self.calendar.isDateInToday(unix) ? "today" : "tomorrow") + "_"
-                for (k, v) in dayPeriods {
+                for tuple in dayPeriods {
+                    let v = tuple.1
                     let hour = self.calendar.component(.Hour, fromDate: unix)
                     if hour >= v.0 && hour < v.1 {
-                        key += k
+                        key += tuple.0
                         if self.weatherForecasts[key] == nil {
-                            self.weatherForecasts[key] = dict[i]["weather"][0]["description"].string
+                            self.weatherForecasts[key] = dict[i]["weather"][0]["icon"].string
                         }
                         break
                     }

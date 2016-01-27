@@ -47,10 +47,9 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             return
         }
         let todayIndex: Int = self.sectionForDate(NSDate())
-        let timesDelimiters: [[String: Int]] = [["Morning": 6], ["Afternoon": 12], ["Evening": 18]]
         
-        self.todayCells = self.orderEvents(self.eventsByDays[todayIndex], withDelimiters: timesDelimiters)
-        self.tomorrowCells = self.orderEvents(self.eventsByDays[todayIndex + 1], withDelimiters: timesDelimiters)
+        self.todayCells = self.orderEvents(self.eventsByDays[todayIndex], withDelimiters: dayPeriods)
+        self.tomorrowCells = self.orderEvents(self.eventsByDays[todayIndex + 1], withDelimiters: dayPeriods)
         self.currentEventIndex = self.getCurrentEventIndex()
     }
     
@@ -234,7 +233,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //Prints 0m if the duration if null
         return (hours != 0 ? String(hours) + "h " : "") + (minutes != 0 || hours == 0 ? String(minutes) + "m" : "")
     }
-    func orderEvents(events: [Event]?, withDelimiters delimiters: [[String: Int]]) -> [AnyObject] {
+    func orderEvents(events: [Event]?, withDelimiters delimiters: [(String, (Int, Int))]) -> [AnyObject] {
         var result: [AnyObject] = [AnyObject]()
         
         //Doing this allows to input nil array and return just the delimiters
@@ -244,7 +243,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         var weatherIndex: Int = 0
         while eventIndex < countEvents || weatherIndex < delimiters.count {
             if eventIndex >= countEvents {
-                result.append(delimiters[weatherIndex].keys.first!)
+                result.append(delimiters[weatherIndex].0)
                 weatherIndex++
                 continue
             }
@@ -255,12 +254,12 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             
             //At this point events can't be nil
-            if events![eventIndex].allDay || self.calendar.component(NSCalendarUnit.Hour, fromDate: events![eventIndex].date) < delimiters[weatherIndex].values.first! {
+            if events![eventIndex].allDay || self.calendar.component(NSCalendarUnit.Hour, fromDate: events![eventIndex].date) < delimiters[weatherIndex].1.0 {
                 result.append(events![eventIndex])
                 eventIndex++
             }
             else {
-                result.append(delimiters[weatherIndex].keys.first!)
+                result.append(delimiters[weatherIndex].0)
                 weatherIndex++
             }
         }
