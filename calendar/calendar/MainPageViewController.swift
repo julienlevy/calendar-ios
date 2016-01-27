@@ -127,10 +127,10 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
                     }
                 }
             }
-            self.agendaViewController?.weatherForecasts = self.weatherForecasts
-            self.agendaViewController?.reloadTodayAndTomorrow()
-            //Reload cells that need reloading
             print(self.weatherForecasts)
+            self.agendaViewController?.weatherForecasts = self.weatherForecasts
+            self.agendaViewController?.reloadTodayAndTomorrowWeathers()
+            //Reload cells that need reloading
         }
     }
     

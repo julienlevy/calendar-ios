@@ -25,6 +25,8 @@ class WeatherAgendaCell: AgendaCell {
         self.label.font = UIFont.systemFontOfSize(12)
         self.temperatureLabel.font = UIFont.systemFontOfSize(12)
         
+        self.temperatureLabel.textAlignment = .Right
+        
         self.temperatureLabel.hidden = true
         self.weatherIcon.hidden = true
         
@@ -40,13 +42,12 @@ class WeatherAgendaCell: AgendaCell {
         fatalError("init(coder:) has not been implemented")
     }
     func setWeather(forecastTuple: (String, Int)) {
-        self.weatherIcon.hidden = false
-        self.temperatureLabel.hidden = false
-        
         if refToWeatherImageName[forecastTuple.0] != nil {
             self.weatherIcon.hidden = false
             self.weatherIcon.image = UIImage(named: refToWeatherImageName[forecastTuple.0]!)
         }
+        
+        self.temperatureLabel.hidden = false
         self.temperatureLabel.text = String(forecastTuple.1) + "°"
     }
     
@@ -59,6 +60,7 @@ class WeatherAgendaCell: AgendaCell {
         self.temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         let centerTemperature: NSLayoutConstraint = NSLayoutConstraint(item: self.temperatureLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.label, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
         let rightTemperature: NSLayoutConstraint = NSLayoutConstraint(item: self.temperatureLabel, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: -rowLateralInset)
+        let temperatureWidth: NSLayoutConstraint = NSLayoutConstraint(item: self.temperatureLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         
         self.weatherIcon.translatesAutoresizingMaskIntoConstraints = false
         let centerWeather: NSLayoutConstraint = NSLayoutConstraint(item: self.weatherIcon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.label, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
@@ -66,6 +68,6 @@ class WeatherAgendaCell: AgendaCell {
         let heightWeather: NSLayoutConstraint = NSLayoutConstraint(item: self.weatherIcon, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         let widthWeather: NSLayoutConstraint = NSLayoutConstraint(item: self.weatherIcon, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         
-        self.addConstraints([top, left, bottom, centerTemperature, rightTemperature, centerWeather, rightWeather, heightWeather, widthWeather])
+        self.addConstraints([top, left, bottom, centerTemperature, rightTemperature, centerWeather, rightWeather, heightWeather, widthWeather, temperatureWidth])
     }
 }

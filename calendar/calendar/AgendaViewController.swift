@@ -141,16 +141,10 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             else if let moment = dayObject as? String {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
                     cell.label.text = moment
-                    cell.weatherIcon.hidden = true
-                    cell.temperatureLabel.hidden = true
                     cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
                     cell.showTriangleIfNeeded()
 
-                    let key = (isToday ? "today" : "tomorrow") + "_" + moment
-                    if self.weatherForecasts[key] != nil {
-                        print("weather forecast is not nil " + key)
-                        cell.setWeather(self.weatherForecasts[key]!)
-                    }
+                    self.setWeatherforCell(cell, isToday: isToday, moment: moment)
                     
                     return cell
                 }
@@ -225,11 +219,31 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.userStartedScrolling = false
     }
     
-    func reloadTodayAndTomorrow() {
+    func reloadTodayAndTomorrowWeathers() {
         let todaySectionIndex: Int = self.sectionForDate(NSDate())
-        self.tableView.reloadSections(NSIndexSet(index: todaySectionIndex), withRowAnimation: .None)
-        self.tableView.reloadSections(NSIndexSet(index: todaySectionIndex + 1), withRowAnimation: .None)
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: todaySectionIndex), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+        for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex) {
+            if let moment = self.todayCells[i] as? String {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex)) as? WeatherAgendaCell {
+                    self.setWeatherforCell(cell, isToday: true, moment: moment)
+                }
+            }
+        }
+        
+        for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex + 1) {
+            if let moment = self.tomorrowCells[i] as? String {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex + 1)) as? WeatherAgendaCell {
+                    self.setWeatherforCell(cell, isToday: false, moment: moment)
+                }
+            }
+        }
+    }
+    func setWeatherforCell(cell: WeatherAgendaCell, isToday: Bool, moment: String) {
+        cell.weatherIcon.hidden = true
+        cell.temperatureLabel.hidden = true
+        let key = (isToday ? "today" : "tomorrow") + "_" + moment
+        if self.weatherForecasts[key] != nil {
+            cell.setWeather(self.weatherForecasts[key]!)
+        }
     }
     
     func dateForSection(section: Int) -> NSDate? {
