@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import SwiftOpenWeatherMapAPI
 
 let kEventColor = "kEventColor"
+let dayPeriods = ["Morning" : (8, 12), "Afternoon" : (12, 18), "Evening" : (18, 24)]
 
 class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate {
     var calendarViewController: CalendarViewController?
@@ -22,6 +24,8 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     
     var eventsByDays: [[Event]?] = [[Event]?]()
     
+    var weatherForecasts: [String: String] = [String: String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,6 +33,8 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
 
         self.setDatesLimits()
         self.orderEventsByDay()
+        self.getWeatherForecasts()
+        
         let screen = UIScreen.mainScreen().bounds.width
         self.calendarCellSide = screen / 7.0
         
@@ -95,6 +101,29 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
                     return $0.date.compare($1.date) == NSComparisonResult.OrderedAscending
                 })
             }
+        }
+    }
+    func getWeatherForecasts() {
+        let weatherAPI = WAPIManager(apiKey: "21ae9c4b261318e5b053951b9a6c456e", temperatureFormat: .Celsius)
+        weatherAPI.forecastWeatherByCityNameAsJson("Paris") { (json) -> Void in
+            let dict = json["list"]
+            for i in 0..<json["list"].count {
+                let dt = dict[i]["dt"].double
+                let unix = NSDate(timeIntervalSince1970: dt!)
+                var key = ""
+                key = (self.calendar.isDateInToday(unix) ? "today" : "tomorrow") + "_"
+                for (k, v) in dayPeriods {
+                    let hour = self.calendar.component(.Hour, fromDate: unix)
+                    if hour >= v.0 && hour < v.1 {
+                        key += k
+                        if self.weatherForecasts[key] == nil {
+                            self.weatherForecasts[key] = dict[i]["weather"][0]["description"].string
+                        }
+                        break
+                    }
+                }
+            }
+            print(self.weatherForecasts)
         }
     }
     
