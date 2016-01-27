@@ -23,7 +23,7 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     
     var eventsByDays: [[Event]?] = [[Event]?]()
     
-    var weatherForecasts: [String: String] = [String: String]()
+    var weatherForecasts: [String: (String, Int)] = [String: (String, Int)]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,7 +117,11 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
                     if hour >= v.0 && hour < v.1 {
                         key += tuple.0
                         if self.weatherForecasts[key] == nil {
-                            self.weatherForecasts[key] = dict[i]["weather"][0]["icon"].string
+                            let weatherImage: String? = dict[i]["weather"][0]["icon"].string
+                            let temperature: Int? = dict[i]["main"]["temp"].int
+                            if weatherImage != nil && temperature != nil {
+                                self.weatherForecasts[key] = (weatherImage!, temperature!)
+                            }
                         }
                         break
                     }

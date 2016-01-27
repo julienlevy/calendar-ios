@@ -25,6 +25,9 @@ class WeatherAgendaCell: AgendaCell {
         self.label.font = UIFont.systemFontOfSize(12)
         self.temperatureLabel.font = UIFont.systemFontOfSize(12)
         
+        self.temperatureLabel.hidden = true
+        self.weatherIcon.hidden = true
+        
         self.weatherIcon.contentMode = UIViewContentMode.ScaleAspectFit
         
         self.addSubview(self.label)
@@ -36,6 +39,17 @@ class WeatherAgendaCell: AgendaCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    func setWeather(forecastTuple: (String, Int)) {
+        self.weatherIcon.hidden = false
+        self.temperatureLabel.hidden = false
+        
+        if refToWeatherImageName[forecastTuple.0] != nil {
+            self.weatherIcon.hidden = false
+            self.weatherIcon.image = UIImage(named: refToWeatherImageName[forecastTuple.0]!)
+        }
+        self.temperatureLabel.text = String(forecastTuple.1) + "°"
+    }
+    
     func setupConstraints() {
         self.label.translatesAutoresizingMaskIntoConstraints = false
         let top: NSLayoutConstraint = NSLayoutConstraint(item: self.label, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: temperatureRowVerticalInset)

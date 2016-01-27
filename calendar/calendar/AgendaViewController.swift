@@ -34,7 +34,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var dayFormatter: NSDateFormatter = NSDateFormatter()
     var timeFormatter: NSDateFormatter = NSDateFormatter()
     
-    var weatherForecasts: [String: String] = [String: String]()
+    var weatherForecasts: [String: (String, Int)] = [String: (String, Int)]()
     
     func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
         self.firstDate = calendarFirstDate
@@ -141,17 +141,17 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             else if let moment = dayObject as? String {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
                     cell.label.text = moment
-                    let key = (isToday ? "today" : "tomorrow") + "_" + moment
                     cell.weatherIcon.hidden = true
-                    if self.weatherForecasts[key] != nil {
-                        if refToWeatherImageName[self.weatherForecasts[key]!] != nil {
-                            cell.weatherIcon.hidden = false
-                            cell.weatherIcon.image = UIImage(named: refToWeatherImageName[self.weatherForecasts[key]!]!)
-                        }
-                    }
-                    
+                    cell.temperatureLabel.hidden = true
                     cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
                     cell.showTriangleIfNeeded()
+
+                    let key = (isToday ? "today" : "tomorrow") + "_" + moment
+                    if self.weatherForecasts[key] != nil {
+                        print("weather forecast is not nil " + key)
+                        cell.setWeather(self.weatherForecasts[key]!)
+                    }
+                    
                     return cell
                 }
             }
