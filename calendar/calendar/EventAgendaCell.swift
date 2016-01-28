@@ -15,7 +15,7 @@ class EventAgendaCell: AgendaCell {
     var titleLabel: UILabel = UILabel()
     
     var memberView: MembersView = MembersView()
-    var locationView: UIView = UIView()
+    var locationView: LocationView = LocationView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,6 +53,7 @@ class EventAgendaCell: AgendaCell {
         self.timeLabel.text = (event.allDay ? "ALL DAY" : formattedTime)
         self.durationLabel.text = (event.allDay ? "" : formattedDuration)
         self.memberView.setMembers(event.members)
+        self.locationView.setLocationName(event.locationName)
         
         self.eventTypeView.backgroundColor = colorForEvent(event.containingCalendar)
     }
@@ -78,11 +79,11 @@ class EventAgendaCell: AgendaCell {
         let widthMaxType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         
         self.memberView.translatesAutoresizingMaskIntoConstraints = false
-        let topMember: NSLayoutConstraint = NSLayoutConstraint(item: self.memberView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 2)
+        let topMember: NSLayoutConstraint = NSLayoutConstraint(item: self.memberView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: rowVerticalSpaceWithin)
         let leftMember: NSLayoutConstraint = NSLayoutConstraint(item: self.memberView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         
         self.locationView.translatesAutoresizingMaskIntoConstraints = false
-        let topLocation: NSLayoutConstraint = NSLayoutConstraint(item: self.locationView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.memberView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 2)
+        let topLocation: NSLayoutConstraint = NSLayoutConstraint(item: self.locationView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.memberView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: rowVerticalSpaceWithin)
         let leftLocation: NSLayoutConstraint = NSLayoutConstraint(item: self.locationView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         
         //Setting bottom as equal to max of 2 views that can be at bottom

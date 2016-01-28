@@ -14,7 +14,10 @@ let minimalRowHeight: CGFloat = 30
 let rowLateralInset: CGFloat = 15.0
 let rowHeaderHeight: CGFloat = 27.0
 let temperatureRowVerticalInset: CGFloat = 10.0
-let rowVerticalInset: CGFloat = 5.0
+
+let rowVerticalInset: CGFloat = 10.0
+let rowVerticalSpaceWithin: CGFloat = 8.0
+
 let rowEventTypeCenterX: CGFloat = 83.0
 let rowEventTitleYOrigin: CGFloat = 103.0
 
