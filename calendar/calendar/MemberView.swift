@@ -9,7 +9,6 @@
 import UIKit
 
 class MembersView: UIView {
-    let imageSpace: CGFloat = 4.0
     
     func setMembers(members: [Contact]?) {
         if members == nil {
@@ -23,10 +22,10 @@ class MembersView: UIView {
             self.addSubview(imageView)
             
             if previousView == nil {
-                self.addConstraintToImageView(imageView, withViewToLeft: self, andAttribute: NSLayoutAttribute.Left)
+                self.addConstraintToImageView(imageView, withViewToLeft: self, andAttribute: NSLayoutAttribute.Left, andSpace: 0)
             }
             else {
-                self.addConstraintToImageView(imageView, withViewToLeft: previousView!, andAttribute: NSLayoutAttribute.Right)
+                self.addConstraintToImageView(imageView, withViewToLeft: previousView!, andAttribute: NSLayoutAttribute.Right, andSpace: 10)
             }
             previousView = imageView
         }
@@ -57,20 +56,20 @@ class MembersView: UIView {
         }
     }
     
-    func addConstraintToImageView(view: UIImageView, withViewToLeft viewToLeft: UIView, andAttribute attribute: NSLayoutAttribute) {
+    func addConstraintToImageView(view: UIImageView, withViewToLeft viewToLeft: UIView, andAttribute attribute: NSLayoutAttribute, andSpace space: CGFloat) {
         view.translatesAutoresizingMaskIntoConstraints = false
         let top: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: rowVerticalSpaceWithin)
         let bottom: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
         let height: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 40)
         let width: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 40)
-        let left: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: viewToLeft, attribute: attribute, multiplier: 1.0, constant: imageSpace)
+        let left: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: viewToLeft, attribute: attribute, multiplier: 1.0, constant: space)
         
         height.priority = 999
         self.addConstraints([top, bottom, height, width, left])
     }
     func addConstraintsToLabel(label: UILabel, withViewToLeft viewToLeft: UIView) {
         label.translatesAutoresizingMaskIntoConstraints = false
-        let left: NSLayoutConstraint = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: viewToLeft, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: imageSpace)
+        let left: NSLayoutConstraint = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: viewToLeft, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: 10)
         let center: NSLayoutConstraint = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: viewToLeft, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
         
         self.addConstraints([left, center])

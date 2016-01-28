@@ -20,11 +20,12 @@ func demoEvents() -> [Event] {
     let twoDays: NSTimeInterval = 48 * 60 * 60
     
     let julienLevy: Contact = Contact(contactFName: "Julien", contactLName: "Levy", contactEmail: "julienlevy6@gmail.com", contactImageName: "julienlevy")
+    let pierrevalade: Contact = Contact(contactFName: "Pierre", contactLName: "Valade", contactImageName: "pierrevalade")
     
     let firstEvent: Event = Event(eventTitle: "Techcrunch Interview", eventDate: NSDate().dateByAddingTimeInterval(fifteenMin), eventDuration: 140, eventContainingCalendar: kPersonalCalendar, eventMembers: [julienLevy], eventLocationName: "Techcrunch London")
 
     let beforeEvent: Event = Event(eventTitle: "Coffee John", eventDate: firstEvent.date.dateByAddingTimeInterval(-oneHourAndAHalf/2), eventDuration: 40, eventContainingCalendar: kPersonalCalendar, eventLocationName: "The Department of Coffee & Social Affairs")
-    let secondEvent: Event = Event(eventTitle: "Lunch Pierre", eventDate: firstEvent.date.dateByAddingTimeInterval(oneHourAndAHalf), eventDuration: 140, eventContainingCalendar: kProfessionalCalendar)
+    let secondEvent: Event = Event(eventTitle: "Lunch Pierre", eventDate: firstEvent.date.dateByAddingTimeInterval(oneHourAndAHalf), eventDuration: 140, eventContainingCalendar: kProfessionalCalendar, eventMembers: [pierrevalade, julienLevy])
     let thirdEvent: Event = Event(eventTitle: "Drink John", eventDate: firstEvent.date.dateByAddingTimeInterval(twoHours), eventDuration: 15, eventContainingCalendar: kPersonalCalendar)
     
     let otherDayEvent: Event = Event(eventTitle: "Concert", eventDate: firstEvent.date.dateByAddingTimeInterval(twoDays), eventDuration: 170, eventContainingCalendar: kPersonalCalendar)
@@ -35,7 +36,7 @@ func demoEvents() -> [Event] {
 
 func colorForEvent(calendar: String) -> UIColor? {
     if calendar == kProfessionalCalendar {
-        return UIColor.greenColor()
+        return UIColor(red: 161.0/255.0, green: 225.0/255.0, blue: 230.0/255.0, alpha: 1.0)
     }
-    return UIColor.blueColor()
+    return UIColor(red: 112.0/255.0, green: 31.0/255.0, blue: 117.0/255.0, alpha: 1.0)
 }
