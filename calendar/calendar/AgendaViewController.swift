@@ -20,7 +20,7 @@ protocol AgendaDelegate {
 class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var delegate: AgendaDelegate?
     
-    var goToToday: UIButton = UIButton()
+    var goToToday: ArrowButton = ArrowButton()
     var tableView: UITableView = UITableView()
     var userStartedScrolling: Bool = false
     
@@ -79,7 +79,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.estimatedRowHeight = minimalRowHeight
         
         self.goToToday.addTarget(self, action: Selector("scrollToNow"), forControlEvents: .TouchUpInside)
-        self.goToToday.backgroundColor = UIColor.sunriseSpecialColor()
         
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.goToToday)
@@ -88,7 +87,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.setTodayButtonConstraints()
     }
     override func viewDidAppear(animated: Bool) {
-        self.scrollToNow()
+        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.currentEventIndex, inSection: self.sectionForDate(NSDate())), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
     }
     func setTableViewConstraints() {
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -270,7 +269,9 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: Scroll view utils
     func scrollToNow() {
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.currentEventIndex, inSection: self.sectionForDate(NSDate())), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+        let section = self.sectionForDate(NSDate())
+        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.currentEventIndex, inSection: section), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+        self.delegate?.agendaScrolledToDay(section)
     }
     
     // MARK: Weather Utils

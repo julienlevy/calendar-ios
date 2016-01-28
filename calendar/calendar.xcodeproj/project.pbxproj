@@ -30,6 +30,7 @@
 		0DAECEA21C58F30E00050CB1 /* TriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEA11C58F30E00050CB1 /* TriangleView.swift */; };
 		0DAECEA41C59583800050CB1 /* MemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEA31C59583800050CB1 /* MemberView.swift */; };
 		0DAECEE91C5A519600050CB1 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEE81C5A519600050CB1 /* LocationView.swift */; };
+		0DAECEEF1C5AD69E00050CB1 /* ArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEEE1C5AD69E00050CB1 /* ArrowButton.swift */; };
 		FFEF740A8A15584DE4FFF078 /* Pods_calendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E0B4882DDCDC21AE5DE0FEF /* Pods_calendar.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		0DAECEA11C58F30E00050CB1 /* TriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleView.swift; sourceTree = "<group>"; };
 		0DAECEA31C59583800050CB1 /* MemberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberView.swift; sourceTree = "<group>"; };
 		0DAECEE81C5A519600050CB1 /* LocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
+		0DAECEEE1C5AD69E00050CB1 /* ArrowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowButton.swift; sourceTree = "<group>"; };
 		8E0B4882DDCDC21AE5DE0FEF /* Pods_calendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_calendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA06D32EBD05B5F9CBA15035 /* Pods-calendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-calendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-calendar/Pods-calendar.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,6 +147,7 @@
 				0DAECEA11C58F30E00050CB1 /* TriangleView.swift */,
 				0DAECEA31C59583800050CB1 /* MemberView.swift */,
 				0DAECEE81C5A519600050CB1 /* LocationView.swift */,
+				0DAECEEE1C5AD69E00050CB1 /* ArrowButton.swift */,
 			);
 			name = Subviews;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				0D3687851C538F6F007622D3 /* MainPageViewController.swift in Sources */,
 				0D3687891C53940A007622D3 /* AgendaViewController.swift in Sources */,
 				0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */,
+				0DAECEEF1C5AD69E00050CB1 /* ArrowButton.swift in Sources */,
 				0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */,
 				0D0E5F361C556860005F88EE /* CalendarCircleViews.swift in Sources */,
 				0DAECEA41C59583800050CB1 /* MemberView.swift in Sources */,

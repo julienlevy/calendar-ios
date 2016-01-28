@@ -66,6 +66,8 @@ extension UIColor {
     class func sunriseFutureCalendarGrayBackground() -> UIColor {
         return UIColor.whiteColor()
     }
-    
+    class func sunriseDarkSpecialColor() -> UIColor {
+        return UIColor(red: 209.0/255, green: 73.0/255, blue: 79.0/255, alpha: 1.0)
+    }
     
 }
