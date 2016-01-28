@@ -76,6 +76,10 @@ class EventAgendaCell: UITableViewCell {
             self.soonLabel.text = soonWarning!
             self.topTimeConstraint.constant = rowVerticalInset / 2
         }
+        else {
+            self.soonLabel.text = ""
+            self.topTimeConstraint.constant = rowVerticalInset
+        }
         
         self.eventTypeView.backgroundColor = colorForEvent(event.containingCalendar)
         

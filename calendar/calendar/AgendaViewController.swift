@@ -26,7 +26,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var eventsByDays: [[Event]?] = [[Event]?]()
     var todayCells: [AnyObject] = [AnyObject]()
     var tomorrowCells: [AnyObject] = [AnyObject]()
-    var currentEventIndex: Int = 0
+    var currentEventIndex: Int = -1
+    var nextEventIndex: Int = -1
     
     var firstDate: NSDate?
     var lastDate: NSDate?
@@ -53,6 +54,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.todayCells = self.orderEvents(self.eventsByDays[todayIndex], withDelimiters: dayPeriods)
         self.tomorrowCells = self.orderEvents(self.eventsByDays[todayIndex + 1], withDelimiters: dayPeriods)
         self.currentEventIndex = self.getCurrentEventIndex()
+        self.nextEventIndex = self.getNextEventIndex()
+        print(self.nextEventIndex)
     }
     
     override func viewDidLoad() {
@@ -134,7 +137,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         formattedTime: self.timeFormatter.stringFromDate(event.date),
                         formattedDuration: readableDurationFromMinutes(event.duration),
                         eventIsCurrent: (isToday && indexPath.item == self.currentEventIndex),
-                        soonWarning: self.readableWarningIfSoonFromDate(event.date)
+                        soonWarning: ((isToday && indexPath.item == self.nextEventIndex) ? self.readableWarningIfSoonFromDate(event.date) : nil)
                     )
                     return cell
                 }
@@ -332,5 +335,20 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         return 0
+    }
+    func getNextEventIndex() -> Int {
+        for i in 0..<self.todayCells.count {
+            if let event = self.todayCells[i] as? Event {
+                if event.allDay {
+                    continue
+                }
+                //First event after current time
+                if NSDate().compare(event.date) == NSComparisonResult.OrderedAscending {
+                    return i
+                }
+            }
+        }
+        //So that it will never match an Index Path
+        return -1
     }
 }
