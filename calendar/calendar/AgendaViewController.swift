@@ -57,7 +57,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tomorrowCells = self.orderEvents(self.eventsByDays[todayIndex + 1], withDelimiters: dayPeriods)
         self.currentEventIndex = self.getCurrentEventIndex()
         self.nextEventIndex = self.getNextEventIndex()
-        print(self.nextEventIndex)
     }
     
     // MARK: View Controller lifecycle and constraints
@@ -215,6 +214,9 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         return DayHeaderViewAgenda(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: (prefix + dayString).uppercaseString, isToday: isToday)
     }
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return dayHeaderViewHeight
+    }
     
     // MARK: scroll view delegate
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -229,6 +231,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        print("Begin draggin")
+        print(self.tableView.contentOffset)
         self.delegate?.agendaWillBeginDragging()
         
         self.userStartedScrolling = true
@@ -241,10 +245,32 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.userStartedScrolling = false
     }
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        print("Ended dragging")
+        let targetOffset: CGPoint = targetContentOffset.memory
+        print(self.tableView.contentOffset)
+        print(targetOffset)
+        let targetIndexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(targetOffset)
+        if targetIndexPath == nil {
+            return
+        }
+        let rect: CGRect = self.tableView.rectForRowAtIndexPath(targetIndexPath!)
+        if fabsf(Float(targetOffset.y - rect.origin.y)) < fabsf(Float((rect.origin.y + rect.height) - targetOffset.y)) {
+            targetContentOffset.memory.y = rect.origin.y - dayHeaderViewHeight
+        }
+        else {
+            if targetIndexPath!.row == self.tableView.numberOfRowsInSection(targetIndexPath!.section) - 1 {
+                targetContentOffset.memory.y = rect.origin.y + rect.height
+            }
+            else {
+                targetContentOffset.memory.y = rect.origin.y + rect.height - dayHeaderViewHeight
+            }
+        }
+    }
     
     // MARK: Scroll view utils
     func scrollToNow() {
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.currentEventIndex, inSection: self.sectionForDate(NSDate())), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.currentEventIndex, inSection: self.sectionForDate(NSDate())), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
     }
     
     // MARK: Weather Utils
