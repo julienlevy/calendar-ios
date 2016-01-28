@@ -129,12 +129,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             if let event = dayObject as? Event {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
-                    cell.titleLabel.text = event.title
-                    cell.timeLabel.text = (event.allDay ? "ALL DAY" : self.timeFormatter.stringFromDate(event.date))
-                    cell.durationLabel.text = (event.allDay ? "" : readableDurationFromMinutes(event.duration))
-                    cell.memberView.setMembers(event.members)
                     
-                    cell.eventTypeView.backgroundColor = colorForEvent(event.containingCalendar)
+                    cell.setEvent(event, formattedTime: self.timeFormatter.stringFromDate(event.date), formattedDuration: readableDurationFromMinutes(event.duration))
                     cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
                     cell.showTriangleIfNeeded()
                     return cell
@@ -142,10 +138,10 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             else if let moment = dayObject as? String {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
+                    
                     cell.label.text = moment
                     cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
                     cell.showTriangleIfNeeded()
-
                     self.setWeatherforCell(cell, isToday: isToday, moment: moment)
                     
                     return cell
@@ -155,11 +151,9 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
             if self.eventsByDays[indexPath.section] != nil {
                 if indexPath.row < self.eventsByDays[indexPath.section]!.count {
+                    
                     let event: Event = self.eventsByDays[indexPath.section]![indexPath.row]
-                    cell.titleLabel.text = event.title
-                    cell.timeLabel.text = (event.allDay ? "ALL DAY" : self.timeFormatter.stringFromDate(event.date))
-                    cell.durationLabel.text = (event.allDay ? "" : readableDurationFromMinutes(event.duration))
-                    cell.eventTypeView.backgroundColor = colorForEvent(event.containingCalendar)
+                    cell.setEvent(event, formattedTime: self.timeFormatter.stringFromDate(event.date), formattedDuration: readableDurationFromMinutes(event.duration))
                     cell.showTriangleIfNeeded()
                 }
             }

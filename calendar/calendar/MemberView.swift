@@ -49,10 +49,8 @@ class MembersView: UIView {
         super.layoutSubviews()
         self.layoutIfNeeded()
         
-        print("laying out subviews")
         for subview in subviews {
             if let imageView = subview as? UIImageView {
-                print("Found an imageView")
                 imageView.layer.cornerRadius = imageView.frame.width/2
                 imageView.clipsToBounds = true
             }

@@ -104,6 +104,9 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     }
     func getWeatherForecasts() {
         let weatherAPI = WAPIManager(apiKey: "21ae9c4b261318e5b053951b9a6c456e", temperatureFormat: .Celsius)
+//        try {
+//            
+//        }
         weatherAPI.forecastWeatherByCityNameAsJson("Paris") { (json) -> Void in
             let dict = json["list"]
             for i in 0..<json["list"].count {
@@ -130,7 +133,6 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
             print(self.weatherForecasts)
             self.agendaViewController?.weatherForecasts = self.weatherForecasts
             self.agendaViewController?.reloadTodayAndTomorrowWeathers()
-            //Reload cells that need reloading
         }
     }
     

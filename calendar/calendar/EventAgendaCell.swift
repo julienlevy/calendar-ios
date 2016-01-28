@@ -47,6 +47,15 @@ class EventAgendaCell: AgendaCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func setEvent(event: Event, formattedTime: String, formattedDuration: String) {
+        self.titleLabel.text = event.title
+        self.timeLabel.text = (event.allDay ? "ALL DAY" : formattedTime)
+        self.durationLabel.text = (event.allDay ? "" : formattedDuration)
+        self.memberView.setMembers(event.members)
+        
+        self.eventTypeView.backgroundColor = colorForEvent(event.containingCalendar)
+    }
 
     func setupConstraints() {
         self.timeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +71,7 @@ class EventAgendaCell: AgendaCell {
         let leftTitle: NSLayoutConstraint = NSLayoutConstraint(item: self.titleLabel, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: rowEventTitleYOrigin)
         
         self.eventTypeView.translatesAutoresizingMaskIntoConstraints = false
-        let centerYType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 2)
+        let centerYType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
         let centerXType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: rowEventTypeCenterX)
         let proportionType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.eventTypeView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
         let widthMinType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 10)
