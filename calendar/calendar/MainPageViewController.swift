@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import SwiftOpenWeatherMapAPI
+import SwiftyJSON
 
 let dayPeriods: [(String, (Int, Int))] = [("Morning", (8, 12)), ("Afternoon", (12, 18)), ("Evening", (18, 24))]
 
@@ -118,35 +119,40 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     func getWeatherForecastsAtCoordinate(coordinate: CLLocationCoordinate2D) {
         let weatherAPI = WAPIManager(apiKey: "21ae9c4b261318e5b053951b9a6c456e", temperatureFormat: .Celsius)
 
-        weatherAPI.forecastWeatherByCoordinatesAsJson(coordinate) { (json) -> Void in
+        weatherAPI.forecastWeatherByCoordinatesAsJson(coordinate, data: { (json) -> Void in
+            
             let dict = json["list"]
             for i in 0..<json["list"].count {
-                let dt = dict[i]["dt"].double
-                let unix = NSDate(timeIntervalSince1970: dt!)
-                var key = ""
-                key = (self.calendar.isDateInToday(unix) ? "today" : "tomorrow") + "_"
-                for tuple in dayPeriods {
-                    let v = tuple.1
-                    let hour = self.calendar.component(.Hour, fromDate: unix)
-                    if hour >= v.0 && hour < v.1 {
-                        key += tuple.0
-                        if self.weatherForecasts[key] == nil {
-                            let weatherImage: String? = dict[i]["weather"][0]["icon"].string
-                            let temperature: Int? = dict[i]["main"]["temp"].int
-                            if weatherImage != nil && temperature != nil {
-                                self.weatherForecasts[key] = (weatherImage!, temperature!)
-                            }
-                        }
-                        break
+                self.addWeatherAPIResultToForecasts(dict[i])
+            }
+            weatherAPI.currentWeatherByCoordinatesAsJson(coordinate, data: { (json) -> Void in
+                self.addWeatherAPIResultToForecasts(json)
+                
+                print(self.weatherForecasts)
+                self.agendaViewController?.weatherForecasts = self.weatherForecasts
+                self.agendaViewController?.reloadTodayAndTomorrowWeathers()
+            })
+        })
+    }
+    func addWeatherAPIResultToForecasts(data: JSON) {
+        let dt = data["dt"].double
+        let unix = NSDate(timeIntervalSince1970: dt!)
+        var key = ""
+        key = (self.calendar.isDateInToday(unix) ? "today" : "tomorrow") + "_"
+        for tuple in dayPeriods {
+            let v = tuple.1
+            let hour = self.calendar.component(.Hour, fromDate: unix)
+            if hour >= v.0 && hour < v.1 {
+                key += tuple.0
+                if self.weatherForecasts[key] == nil {
+                    let weatherImage: String? = data["weather"][0]["icon"].string
+                    let temperature: Int? = data["main"]["temp"].int
+                    if weatherImage != nil && temperature != nil {
+                        self.weatherForecasts[key] = (weatherImage!, temperature!)
                     }
                 }
+                break
             }
-            print(self.weatherForecasts)
-            self.agendaViewController?.weatherForecasts = self.weatherForecasts
-            self.agendaViewController?.reloadTodayAndTomorrowWeathers()
-        }
-        weatherAPI.currentWeatherByCoordinatesAsJson(coordinate) { (json) -> Void in
-            print(json)
         }
     }
     
