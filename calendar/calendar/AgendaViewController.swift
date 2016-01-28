@@ -130,9 +130,12 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if let event = dayObject as? Event {
                 if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
                     
-                    cell.setEvent(event, formattedTime: self.timeFormatter.stringFromDate(event.date), formattedDuration: readableDurationFromMinutes(event.duration))
-                    cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
-                    cell.showTriangleIfNeeded()
+                    cell.setEvent(event,
+                        formattedTime: self.timeFormatter.stringFromDate(event.date),
+                        formattedDuration: readableDurationFromMinutes(event.duration),
+                        eventIsCurrent: (isToday && indexPath.item == self.currentEventIndex),
+                        soonWarning: self.readableWarningIfSoonFromDate(event.date)
+                    )
                     return cell
                 }
             }
@@ -140,8 +143,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
                     
                     cell.label.text = moment
-                    cell.isCurrent = (isToday && indexPath.item == self.currentEventIndex)
-                    cell.showTriangleIfNeeded()
+                    cell.triangleCurrentView.hidden = !(isToday && indexPath.item == self.currentEventIndex)
                     self.setWeatherforCell(cell, isToday: isToday, moment: moment)
                     
                     return cell
@@ -153,8 +155,10 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 if indexPath.row < self.eventsByDays[indexPath.section]!.count {
                     
                     let event: Event = self.eventsByDays[indexPath.section]![indexPath.row]
-                    cell.setEvent(event, formattedTime: self.timeFormatter.stringFromDate(event.date), formattedDuration: readableDurationFromMinutes(event.duration))
-                    cell.showTriangleIfNeeded()
+                    cell.setEvent(event,
+                        formattedTime: self.timeFormatter.stringFromDate(event.date),
+                        formattedDuration: readableDurationFromMinutes(event.duration)
+                    )
                 }
             }
             return cell
@@ -257,6 +261,14 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //Prints 0m if the duration if null
         return (hours != 0 ? String(hours) + "h " : "") + (minutes != 0 || hours == 0 ? String(minutes) + "m" : "")
     }
+    func readableWarningIfSoonFromDate(date: NSDate) -> String? {
+        let minutes = self.calendar.components(NSCalendarUnit.Minute, fromDate: NSDate(), toDate: date, options: NSCalendarOptions.MatchFirst).minute
+        if minutes <= 60 && minutes >= 0 {
+            return "In \(minutes) min"
+        }
+        return nil
+    }
+    
     func orderEvents(events: [Event]?, withDelimiters delimiters: [(String, (Int, Int))]) -> [AnyObject] {
         var result: [AnyObject] = [AnyObject]()
         
@@ -302,7 +314,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     return i
                 }
                 let twoHoursTimeInterval: NSTimeInterval = NSTimeInterval(2 * 60 * 60)
-                if NSDate().dateByAddingTimeInterval(twoHoursTimeInterval).compare(event.date) == NSComparisonResult.OrderedDescending {
+                if NSDate().dateByAddingTimeInterval(twoHoursTimeInterval).compare(event.date) != NSDate().compare(event.date) {
                     return i
                 }
             }

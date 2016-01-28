@@ -22,7 +22,7 @@ func demoEvents() -> [Event] {
     
     let firstEvent: Event = Event(eventTitle: "Techcrunch Interview", eventDate: NSDate(), eventDuration: 140, eventContainingCalendar: kPersonalCalendar, eventMembers: [julienLevy], eventLocationName: "Techcrunch London")
 
-    let beforeEvent: Event = Event(eventTitle: "Coffee John", eventDate: firstEvent.date.dateByAddingTimeInterval(-secondsInHours/2), eventDuration: 140, eventContainingCalendar: kPersonalCalendar, eventLocationName: "The Department of Coffee & Social Affairs")
+    let beforeEvent: Event = Event(eventTitle: "Coffee John", eventDate: firstEvent.date.dateByAddingTimeInterval(-secondsInHours/2), eventDuration: 40, eventContainingCalendar: kPersonalCalendar, eventLocationName: "The Department of Coffee & Social Affairs")
     let secondEvent: Event = Event(eventTitle: "Lunch Pierre", eventDate: firstEvent.date.dateByAddingTimeInterval(secondsInHours), eventDuration: 140, eventContainingCalendar: kProfessionalCalendar)
     let thirdEvent: Event = Event(eventTitle: "Drink John", eventDate: firstEvent.date.dateByAddingTimeInterval(third), eventDuration: 15, eventContainingCalendar: kPersonalCalendar)
     
