@@ -41,6 +41,7 @@ extension WAPIManager {
         Alamofire.request(method).responseJSON { (_, _, data) in
             guard let js: AnyObject = data.value where data.isSuccess else {
 //                fatalError(data.error.debugDescription)
+                print(data.error.debugDescription)
                 return
             }
 
