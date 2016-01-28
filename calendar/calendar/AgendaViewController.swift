@@ -20,13 +20,14 @@ protocol AgendaDelegate {
 class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var delegate: AgendaDelegate?
     
+    var goToToday: UIButton = UIButton()
     var tableView: UITableView = UITableView()
     var userStartedScrolling: Bool = false
     
     var eventsByDays: [[Event]?] = [[Event]?]()
     var todayCells: [AnyObject] = [AnyObject]()
     var tomorrowCells: [AnyObject] = [AnyObject]()
-    var currentEventIndex: Int = -1
+    var currentEventIndex: Int = 0
     var nextEventIndex: Int = -1
     
     var firstDate: NSDate?
@@ -77,12 +78,18 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = minimalRowHeight
+        
+        self.goToToday.addTarget(self, action: Selector("scrollToNow"), forControlEvents: .TouchUpInside)
+        self.goToToday.backgroundColor = UIColor.sunriseSpecialColor()
+        
         self.view.addSubview(self.tableView)
-        setTableViewConstraints()
+        self.view.addSubview(self.goToToday)
+        
+        self.setTableViewConstraints()
+        self.setTodayButtonConstraints()
     }
     override func viewDidAppear(animated: Bool) {
-        let section: Int = self.sectionForDate(NSDate())
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: section), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+        self.scrollToNow()
     }
     func setTableViewConstraints() {
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -92,6 +99,16 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let bottom: NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         
         self.view.addConstraints([top, left, right, bottom])
+    }
+    func setTodayButtonConstraints() {
+        self.goToToday.translatesAutoresizingMaskIntoConstraints = false
+        let left: NSLayoutConstraint = NSLayoutConstraint(item: self.goToToday, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 10)
+        let bottom: NSLayoutConstraint = NSLayoutConstraint(item: self.goToToday, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: -10)
+        
+        let width: NSLayoutConstraint = NSLayoutConstraint(item: self.goToToday, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30)
+        let height: NSLayoutConstraint = NSLayoutConstraint(item: self.goToToday, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30)
+        
+        self.view.addConstraints([left, bottom, width, height])
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -225,7 +242,12 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.userStartedScrolling = false
     }
     
-    // Weather Utils
+    // MARK: Scroll view utils
+    func scrollToNow() {
+        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.currentEventIndex, inSection: self.sectionForDate(NSDate())), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+    }
+    
+    // MARK: Weather Utils
     func reloadTodayAndTomorrowWeathers() {
         let todaySectionIndex: Int = self.sectionForDate(NSDate())
         for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex) {
@@ -253,7 +275,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    //Date utils
+    // MARK: Date utils
     func dateForSection(section: Int) -> NSDate? {
         let dateComponents = NSDateComponents()
         dateComponents.day = section
@@ -277,7 +299,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return nil
     }
     
-    //Events utils
+    // MARK: Events utils
     func orderEvents(events: [Event]?, withDelimiters delimiters: [(String, (Int, Int))]) -> [AnyObject] {
         var result: [AnyObject] = [AnyObject]()
         
