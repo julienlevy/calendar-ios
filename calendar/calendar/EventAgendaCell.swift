@@ -79,11 +79,11 @@ class EventAgendaCell: AgendaCell {
         let widthMaxType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         
         self.memberView.translatesAutoresizingMaskIntoConstraints = false
-        let topMember: NSLayoutConstraint = NSLayoutConstraint(item: self.memberView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: rowVerticalSpaceWithin)
+        let topMember: NSLayoutConstraint = NSLayoutConstraint(item: self.memberView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         let leftMember: NSLayoutConstraint = NSLayoutConstraint(item: self.memberView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         
         self.locationView.translatesAutoresizingMaskIntoConstraints = false
-        let topLocation: NSLayoutConstraint = NSLayoutConstraint(item: self.locationView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.memberView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: rowVerticalSpaceWithin)
+        let topLocation: NSLayoutConstraint = NSLayoutConstraint(item: self.locationView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.memberView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         let leftLocation: NSLayoutConstraint = NSLayoutConstraint(item: self.locationView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         
         //Setting bottom as equal to max of 2 views that can be at bottom

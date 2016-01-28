@@ -46,7 +46,7 @@ class LocationView: UIView {
     
     func setupConstraints() {
         self.iconView.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.iconView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0)
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.iconView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: rowVerticalSpaceWithin)
         let bottom: NSLayoutConstraint = NSLayoutConstraint(item: self.iconView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
         let height: NSLayoutConstraint = NSLayoutConstraint(item: self.iconView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 10)
         let width: NSLayoutConstraint = NSLayoutConstraint(item: self.iconView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 10)
@@ -56,7 +56,7 @@ class LocationView: UIView {
         
         self.locationNameLabel.translatesAutoresizingMaskIntoConstraints = false
         let leftLabel: NSLayoutConstraint = NSLayoutConstraint(item: self.locationNameLabel, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.iconView, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: 2)
-        let centerLabel: NSLayoutConstraint = NSLayoutConstraint(item: self.locationNameLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
+        let centerLabel: NSLayoutConstraint = NSLayoutConstraint(item: self.locationNameLabel, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.iconView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
         
         self.addConstraints([top, bottom, height, width, left, leftLabel, centerLabel])
     }

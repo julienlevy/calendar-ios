@@ -59,7 +59,7 @@ class MembersView: UIView {
     
     func addConstraintToImageView(view: UIImageView, withViewToLeft viewToLeft: UIView, andAttribute attribute: NSLayoutAttribute) {
         view.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0)
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: rowVerticalSpaceWithin)
         let bottom: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
         let height: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 40)
         let width: NSLayoutConstraint = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 40)
@@ -71,7 +71,7 @@ class MembersView: UIView {
     func addConstraintsToLabel(label: UILabel, withViewToLeft viewToLeft: UIView) {
         label.translatesAutoresizingMaskIntoConstraints = false
         let left: NSLayoutConstraint = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: viewToLeft, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: imageSpace)
-        let center: NSLayoutConstraint = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
+        let center: NSLayoutConstraint = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: viewToLeft, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
         
         self.addConstraints([left, center])
     }
