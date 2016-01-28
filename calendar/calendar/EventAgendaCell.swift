@@ -90,6 +90,11 @@ class EventAgendaCell: AgendaCell {
         let bottomDuration: NSLayoutConstraint = NSLayoutConstraint(item: self.durationLabel, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: -rowVerticalInset)
         let bottomLocation: NSLayoutConstraint = NSLayoutConstraint(item: self.locationView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: -rowVerticalInset)
         
+        //Resolves layout warning due to table view encapsulated height but doesn't change display
+        for constraint in [topTime, leftTime, topDuration, leftDuration, topTitle, leftTitle, centerXType, centerYType, proportionType,widthMinType, widthMaxType, topMember, leftMember, topLocation, leftLocation, bottomDuration, bottomLocation] {
+            constraint.priority = 999
+        }
+        
         self.addConstraints([topTime, leftTime, topDuration, leftDuration, topTitle, leftTitle, centerXType, centerYType, proportionType,widthMinType, widthMaxType, topMember, leftMember, topLocation, leftLocation, bottomDuration, bottomLocation])
     }
 }
