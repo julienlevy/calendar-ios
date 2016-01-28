@@ -83,9 +83,6 @@ class CalendarViewCell: UICollectionViewCell {
         
         self.dayLabel.font = UIFont.systemFontOfSize(16)
         self.monthLabel.font = UIFont.systemFontOfSize(12)
-        
-//        self.dayLabel.backgroundColor = UIColor.magentaColor()
-//        self.monthLabel.backgroundColor = UIColor.greenColor()
     }
     
     func textColorForState() -> UIColor {

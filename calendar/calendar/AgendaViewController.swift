@@ -37,6 +37,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var weatherForecasts: [String: (String, Int)] = [String: (String, Int)]()
     
+    // MARK: inits to call from parent view controller
     func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
         self.firstDate = calendarFirstDate
         self.lastDate = calendarLastDate
@@ -58,6 +59,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         print(self.nextEventIndex)
     }
     
+    // MARK: View Controller lifecycle and constraints
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -96,6 +98,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: table view datasource
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if self.firstDate == nil || self.lastDate == nil {
             return 1
@@ -172,7 +175,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         return UITableViewCell()
     }
-
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Template Line Date"
     }
@@ -197,6 +199,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return DayHeaderViewAgenda(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: (prefix + dayString).uppercaseString, isToday: isToday)
     }
     
+    // MARK: scroll view delegate
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if !self.userStartedScrolling {
             return
@@ -222,6 +225,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.userStartedScrolling = false
     }
     
+    // Weather Utils
     func reloadTodayAndTomorrowWeathers() {
         let todaySectionIndex: Int = self.sectionForDate(NSDate())
         for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex) {
@@ -249,6 +253,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    //Date utils
     func dateForSection(section: Int) -> NSDate? {
         let dateComponents = NSDateComponents()
         dateComponents.day = section
@@ -272,6 +277,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return nil
     }
     
+    //Events utils
     func orderEvents(events: [Event]?, withDelimiters delimiters: [(String, (Int, Int))]) -> [AnyObject] {
         var result: [AnyObject] = [AnyObject]()
         

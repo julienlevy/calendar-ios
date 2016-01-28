@@ -45,6 +45,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView?.reloadData()
     }
     
+    // MARK: View controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -85,16 +86,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         self.setUpDaysOfHeader()
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if self.collectionView == nil {
-            return CGSizeZero
-        }
-        let indexInRow = indexPath.item % 7
-        
-        //Only integer width and adds 1 pixel to first in row according to missing pixels by division so that the sum reaches the end of the line perfectly
-        return CGSize(width: self.itemSide + (self.missingPixelsWithDivision - indexInRow > 0 ? 1 : 0), height: self.itemSide)
-    }
-
     override func viewDidAppear(animated: Bool) {
         if firstDate == nil {
             return
@@ -102,6 +93,12 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         let index: Int = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: NSDate(), options: NSCalendarOptions.MatchFirst).day
         self.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: index, inSection: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.Top)
     }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: Subviews setups
     func setCollectionViewConstraints() {
         self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
         let top: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.dayHeader, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
@@ -161,6 +158,18 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         })
     }
     
+    // MARK: Collection view layout delegate
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        if self.collectionView == nil {
+            return CGSizeZero
+        }
+        let indexInRow = indexPath.item % 7
+        
+        //Only integer width and adds 1 pixel to first in row according to missing pixels by division so that the sum reaches the end of the line perfectly
+        return CGSize(width: self.itemSide + (self.missingPixelsWithDivision - indexInRow > 0 ? 1 : 0), height: self.itemSide)
+    }
+    
+    // MARK: Collection view datasource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -200,6 +209,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         return cell
     }
     
+    // MARK: Collection view delegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell
         cell?.reloadDisplay()
@@ -216,6 +226,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         (self.collectionView?.cellForItemAtIndexPath(indexPath) as? CalendarViewCell)?.reloadDisplay()
     }
     
+    // MARK: scroll view delegate
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         overlayHeightConstraint.constant = (self.collectionView?.contentSize.height)!
         self.collectionView?.layoutIfNeeded()
@@ -235,7 +246,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         // TODO: to implement to always scroll to full cell?
     }
     
-    
+    // MARK: collection view utils
     func selectAndDisplayItemInCollectionViewAtIndexPath(indexPath: NSIndexPath?, animated: Bool, scrollPosition: UICollectionViewScrollPosition) {
         //Selecting new cell, unselects currently selected cell but doesn't triggger UICollectionView delegate functions
         self.collectionView?.selectItemAtIndexPath(indexPath, animated: animated, scrollPosition: scrollPosition)
@@ -265,8 +276,4 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.currentSelectedCell = cell
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }
