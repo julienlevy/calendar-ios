@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import CoreLocation
+import SwiftOpenWeatherMapAPI
+import SwiftyJSON
 
 let noEventCellIdentifier: String = "noEventCellIdentifier"
 let weatherCellIdentifier: String = "weatherCellIdentifier"
@@ -17,7 +20,7 @@ protocol AgendaDelegate {
     func agendaWillBeginDragging()
 }
 
-class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     var delegate: AgendaDelegate?
     
     var goToToday: ArrowButton = ArrowButton()
@@ -37,6 +40,11 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var timeFormatter: NSDateFormatter = NSDateFormatter()
     
     var weatherForecasts: [String: (String, Int)] = [String: (String, Int)]()
+    //This array has a different format to limit API calls:  we will compare with the coordinates of weather we already have
+    var eventWeatherForecasts: [String: (String, Int)] = [String: (String, Int)]()
+    
+    let locationManager: CLLocationManager = CLLocationManager()
+    var userLocation: CLLocation?
     
     // MARK: inits to call from parent view controller
     func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
@@ -85,6 +93,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.setTableViewConstraints()
         self.setTodayButtonConstraints()
+        
+        self.getUserLocationForWeather()
     }
     override func viewDidAppear(animated: Bool) {
         self.scrollToRowAtIndexPathAndDisplayArrowButton(NSIndexPath(forRow: self.currentEventIndex, inSection: self.sectionForDate(NSDate())), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
@@ -135,16 +145,10 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return (numberOfEvents + additionalCells == 0 ? 1 : numberOfEvents + additionalCells)
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let rows: Int = tableView.numberOfRowsInSection(indexPath.section)
-        //rows == 1 not to display No event for today or tomorrow
-        if rows == 1 && self.eventsByDays[indexPath.section] == nil {
-            if let cell = tableView.dequeueReusableCellWithIdentifier(noEventCellIdentifier) as? NoEventAgendaCell {
-                return cell
-            }
-        }
         let cellDate: NSDate? = dateForSection(indexPath.section)
         let isToday: Bool  = self.calendar.isDateInToday(cellDate!)
         let isTomorrow: Bool = self.calendar.isDateInTomorrow(cellDate!)
+        
         if isToday || isTomorrow {
             let dayObject: AnyObject = (isToday ? self.todayCells[indexPath.item] : self.tomorrowCells[indexPath.item])
             
@@ -157,6 +161,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         eventIsCurrent: (isToday && indexPath.item == self.currentEventIndex),
                         soonWarning: ((isToday && indexPath.item == self.nextEventIndex) ? self.readableWarningIfSoonFromDate(event.date) : nil)
                     )
+                    
                     return cell
                 }
             }
@@ -165,24 +170,33 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     
                     cell.label.text = moment
                     cell.triangleCurrentView.hidden = !(isToday && indexPath.item == self.currentEventIndex)
-                    self.setWeatherforCell(cell, isToday: isToday, moment: moment)
+                    self.setWeatherforMoment(cell, isToday: isToday, moment: moment)
                     
                     return cell
                 }
             }
         }
-        if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
-            if self.eventsByDays[indexPath.section] != nil {
-                if indexPath.row < self.eventsByDays[indexPath.section]!.count {
+        else { //Not Today or Tomorrow
+            if let events = self.eventsByDays[indexPath.section] { // Has events
+                if indexPath.row < events.count {
                     
-                    let event: Event = self.eventsByDays[indexPath.section]![indexPath.row]
-                    cell.setEvent(event,
-                        formattedTime: self.timeFormatter.stringFromDate(event.date),
-                        formattedDuration: readableDurationFromMinutes(event.duration)
-                    )
+                    let event: Event = events[indexPath.row]
+                    if let cell = tableView.dequeueReusableCellWithIdentifier(eventCellIdentifier) as? EventAgendaCell {
+                        
+                        cell.setEvent(event,
+                            formattedTime: self.timeFormatter.stringFromDate(event.date),
+                            formattedDuration: readableDurationFromMinutes(event.duration)
+                        )
+                        return cell
+                    }
                 }
             }
-            return cell
+            else { // No events
+                if let cell = tableView.dequeueReusableCellWithIdentifier(noEventCellIdentifier) as? NoEventAgendaCell {
+                    
+                    return cell
+                }
+            }
         }
         
         if let cell = tableView.dequeueReusableCellWithIdentifier("cell") {
@@ -235,8 +249,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        print("Begin draggin")
-        print(self.tableView.contentOffset)
+        
         self.delegate?.agendaWillBeginDragging()
         
         self.userStartedScrolling = true
@@ -303,31 +316,159 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         })
     }
     
+    // MARK: Weather API calls
+    func getUserLocationForWeather() {
+        print(CLLocationManager.authorizationStatus())
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            self.locationManager.delegate = self
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+            self.locationManager.requestLocation()
+        }
+    }
+    func getWeatherForecastsAtUserCoordinate(coordinate: CLLocationCoordinate2D) {
+        let weatherAPI = WAPIManager(apiKey: "21ae9c4b261318e5b053951b9a6c456e", temperatureFormat: .Celsius)
+        
+        weatherAPI.forecastWeatherByCoordinatesAsJson(coordinate, data: { (json) -> Void in
+            
+            let dict = json["list"]
+            for i in 0..<json["list"].count {
+                self.addWeatherAPIResultToLocalForecasts(dict[i])
+            }
+            weatherAPI.currentWeatherByCoordinatesAsJson(coordinate, data: { (json) -> Void in
+                self.addWeatherAPIResultToLocalForecasts(json)
+                
+                print(self.weatherForecasts)
+//                self.weatherForecasts = self.weatherForecasts
+                self.reloadTodayAndTomorrowWeathers()
+            })
+        })
+    }
+    func addWeatherAPIResultToLocalForecasts(data: JSON) {
+        let dt = data["dt"].double
+        let unix = NSDate(timeIntervalSince1970: dt!)
+        var key = ""
+        key = (self.calendar.isDateInToday(unix) ? "today" : "tomorrow") + "_"
+        for tuple in dayPeriods {
+            let v = tuple.1
+            let hour = self.calendar.component(.Hour, fromDate: unix)
+            if hour >= v.0 && hour < v.1 {
+                key += tuple.0
+                if self.weatherForecasts[key] == nil {
+                    let weatherImage: String? = data["weather"][0]["icon"].string
+                    let temperature: Int? = data["main"]["temp"].int
+                    if weatherImage != nil && temperature != nil {
+                        self.weatherForecasts[key] = (weatherImage!, temperature!)
+                    }
+                }
+                break
+            }
+        }
+    }
+    func getWeatherForEventCell(cell: EventAgendaCell, event: Event) {
+        // Called only on cells that have a non nil locationCoordinate
+        if self.userLocation == nil {
+            return
+        }
+        
+        if let location = event.locationCoordinate {
+            // Returns distance in meters
+            if location.distanceFromLocation(self.userLocation!) < 100000.0 {
+                return
+            }
+            
+            let weatherAPI = WAPIManager(apiKey: "21ae9c4b261318e5b053951b9a6c456e", temperatureFormat: .Celsius)
+            
+            print("Checking weather for event: " + event.title)
+            weatherAPI.forecastWeatherByCoordinatesAsJson(location.coordinate, data: { (json) -> Void in
+                let dict = json["list"]
+                for i in 0..<json["list"].count {
+                    let dt = dict[i]["dt"].double
+                    let unix = NSDate(timeIntervalSince1970: dt!)
+                    
+                    if unix.dateByAddingTimeInterval(NSTimeInterval(4 * 60 * 60)).compare(event.date) != unix.compare(event.date) {
+                        
+                        let weatherImage: String? = dict[i]["weather"][0]["icon"].string
+                        let temperature: Int? = dict[i]["main"]["temp"].int
+                        if weatherImage != nil && temperature != nil {
+                            print("Found weather for event: " + event.title)
+
+                            self.eventWeatherForecasts[self.dictKeyFromIndexPath(self.tableView.indexPathForCell(cell)!)] = (weatherImage!, temperature!)
+                            self.setWeatherForEvent(cell, event: event)
+                            
+                            break
+                        }
+                    }
+                }
+            })
+        }
+    }
+    
+    // MARK: CLLocationManager delegate
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            self.userLocation = location
+            print(location.coordinate.latitude)
+            print(location.coordinate.longitude)
+            print("Will call weather API")
+            self.getWeatherForecastsAtUserCoordinate(location.coordinate)
+            
+            self.startGettingWeathersForTodayAndTomorrowEvents()
+        }
+    }
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print("Current weather")
+        print(error)
+    }
+    
     // MARK: Weather Utils
-    func reloadTodayAndTomorrowWeathers() {
+    func startGettingWeathersForTodayAndTomorrowEvents() {
         let todaySectionIndex: Int = self.sectionForDate(NSDate())
         for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex) {
-            if let moment = self.todayCells[i] as? String {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex)) as? WeatherAgendaCell {
-                    self.setWeatherforCell(cell, isToday: true, moment: moment)
+            if let event = self.todayCells[i] as? Event {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex)) as? EventAgendaCell {
+                    
+                    if event.locationCoordinate != nil {
+                        
+                        self.getWeatherForEventCell(cell, event: event)
+                    }
                 }
             }
         }
-        
         for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex + 1) {
-            if let moment = self.tomorrowCells[i] as? String {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex + 1)) as? WeatherAgendaCell {
-                    self.setWeatherforCell(cell, isToday: false, moment: moment)
+            if let event = self.tomorrowCells[i] as? Event {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex + 1)) as? EventAgendaCell {
+                    
+                    if event.locationCoordinate != nil {
+                        
+                        self.getWeatherForEventCell(cell, event: event)
+                    }
                 }
             }
         }
     }
-    func setWeatherforCell(cell: WeatherAgendaCell, isToday: Bool, moment: String) {
+    func reloadTodayAndTomorrowWeathers() {
+        
+    }
+    func setWeatherforMoment(cell: WeatherAgendaCell, isToday: Bool, moment: String) {
         cell.weatherIcon.hidden = true
         cell.temperatureLabel.hidden = true
         let key = (isToday ? "today" : "tomorrow") + "_" + moment
         if self.weatherForecasts[key] != nil {
             cell.setWeather(self.weatherForecasts[key]!)
+        }
+    }
+    func setWeatherForEvent(cell: EventAgendaCell, event: Event) {
+//        cell.weatherView.hidden = true
+        print("About to set weather for cell")
+        let indexPath = self.tableView.indexPathForCell(cell)
+        if indexPath == nil {
+            return
+        }
+        if self.weatherForecasts[self.dictKeyFromIndexPath(indexPath!)] != nil {
+            print(self.weatherForecasts[self.dictKeyFromIndexPath(indexPath!)])
+//            cell.setWeather(
         }
     }
     
@@ -434,5 +575,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         //So that it will never match an Index Path
         return -1
+    }
+    func dictKeyFromIndexPath(indexPath: NSIndexPath) -> String {
+        return String(indexPath.row) + "_" + String(indexPath.section)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class Event {
     var title: String
@@ -17,10 +18,10 @@ class Event {
     var description: String = ""
     
     var locationName: String?
-    var locationCoordinate: (Float, Float)?
+    var locationCoordinate: CLLocation?
     var members: [Contact]?
     
-    init(eventTitle: String, eventDate: NSDate, eventAllDay: Bool = false, eventDuration: Int, eventContainingCalendar: String, eventDescription: String = "", eventMembers: [Contact]? = nil, eventLocationName: String? = nil) {
+    init(eventTitle: String, eventDate: NSDate, eventAllDay: Bool = false, eventDuration: Int, eventContainingCalendar: String, eventDescription: String = "", eventMembers: [Contact]? = nil, eventLocationName: String? = nil, eventLocationCoordinate: CLLocation? = nil) {
         self.title = eventTitle
         self.date = eventDate
         self.allDay = eventAllDay
@@ -29,5 +30,6 @@ class Event {
         self.description = eventDescription
         self.members = eventMembers
         self.locationName = eventLocationName
+        self.locationCoordinate = eventLocationCoordinate
     }
 }

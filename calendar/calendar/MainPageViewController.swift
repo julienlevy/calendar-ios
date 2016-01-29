@@ -7,13 +7,10 @@
 //
 
 import UIKit
-import CoreLocation
-import SwiftOpenWeatherMapAPI
-import SwiftyJSON
 
 let dayPeriods: [(String, (Int, Int))] = [("Morning", (8, 12)), ("Afternoon", (12, 18)), ("Evening", (18, 24))]
 
-class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate, CLLocationManagerDelegate {
+class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate {
     var calendarViewController: CalendarViewController?
     var agendaViewController: AgendaViewController?
     var calendarCellSide: CGFloat = 0
@@ -25,9 +22,6 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     
     var eventsByDays: [[Event]?] = [[Event]?]()
     
-    var weatherForecasts: [String: (String, Int)] = [String: (String, Int)]()
-    
-    let locationManager: CLLocationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,8 +56,6 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
         
         self.setCalendarLayoutConstraints()
         self.setAgendaLayoutConstraints()
-        
-        self.getUserLocationForWeather()
     }
     
     func setDatesLimits() {
@@ -106,69 +98,7 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
             }
         }
     }
-    func getUserLocationForWeather() {
-        print(CLLocationManager.authorizationStatus())
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            self.locationManager.delegate = self
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-            self.locationManager.requestLocation()
-        }
-    }
-    func getWeatherForecastsAtCoordinate(coordinate: CLLocationCoordinate2D) {
-        let weatherAPI = WAPIManager(apiKey: "21ae9c4b261318e5b053951b9a6c456e", temperatureFormat: .Celsius)
-
-        weatherAPI.forecastWeatherByCoordinatesAsJson(coordinate, data: { (json) -> Void in
-            
-            let dict = json["list"]
-            for i in 0..<json["list"].count {
-                self.addWeatherAPIResultToForecasts(dict[i])
-            }
-            weatherAPI.currentWeatherByCoordinatesAsJson(coordinate, data: { (json) -> Void in
-                self.addWeatherAPIResultToForecasts(json)
-                
-                print(self.weatherForecasts)
-                self.agendaViewController?.weatherForecasts = self.weatherForecasts
-                self.agendaViewController?.reloadTodayAndTomorrowWeathers()
-            })
-        })
-    }
-    func addWeatherAPIResultToForecasts(data: JSON) {
-        let dt = data["dt"].double
-        let unix = NSDate(timeIntervalSince1970: dt!)
-        var key = ""
-        key = (self.calendar.isDateInToday(unix) ? "today" : "tomorrow") + "_"
-        for tuple in dayPeriods {
-            let v = tuple.1
-            let hour = self.calendar.component(.Hour, fromDate: unix)
-            if hour >= v.0 && hour < v.1 {
-                key += tuple.0
-                if self.weatherForecasts[key] == nil {
-                    let weatherImage: String? = data["weather"][0]["icon"].string
-                    let temperature: Int? = data["main"]["temp"].int
-                    if weatherImage != nil && temperature != nil {
-                        self.weatherForecasts[key] = (weatherImage!, temperature!)
-                    }
-                }
-                break
-            }
-        }
-    }
     
-    // MARK: CLLocationManager delegate
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            print(location.coordinate.latitude)
-            print(location.coordinate.longitude)
-            print("Will call weather API")
-            self.getWeatherForecastsAtCoordinate(location.coordinate)
-        }
-    }
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("Current weather")
-        print(error)
-    }
     
     func setCalendarLayoutConstraints() {
         self.calendarViewController?.view.translatesAutoresizingMaskIntoConstraints = false
