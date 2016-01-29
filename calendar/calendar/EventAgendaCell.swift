@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EventAgendaCell: UITableViewCell {
+class EventAgendaCell: WeatherAgendaTableViewCell {
 //    var isCurrent: Bool = false
     
     var triangleCurrentView: TriangleView = TriangleView()
@@ -57,7 +57,7 @@ class EventAgendaCell: UITableViewCell {
         self.addSubview(self.memberView)
         self.addSubview(self.locationView)
         
-        self.setupConstraints()
+        self.setupEventConstraints()
         
         //To resize memberView and location view : sizeToFit() or clipsToBounds
     }
@@ -86,7 +86,7 @@ class EventAgendaCell: UITableViewCell {
         self.layoutIfNeeded()
     }
 
-    func setupConstraints() {
+    func setupEventConstraints() {
         self.soonLabel.translatesAutoresizingMaskIntoConstraints = false
         let topSoon: NSLayoutConstraint = NSLayoutConstraint(item: self.soonLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
         let leftSoon: NSLayoutConstraint = NSLayoutConstraint(item: self.soonLabel, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)

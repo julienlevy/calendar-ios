@@ -25,12 +25,13 @@
 		0D7B5CAF1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */; };
 		0D7B5CB11C54E7DB00E1FA93 /* NoEventAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */; };
 		0D7B5CB31C54EA8100E1FA93 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB21C54EA8100E1FA93 /* Utils.swift */; };
-		0D7B5CB51C54EECC00E1FA93 /* WeatherAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */; };
+		0D7B5CB51C54EECC00E1FA93 /* DayPeriodAgendaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7B5CB41C54EECC00E1FA93 /* DayPeriodAgendaCell.swift */; };
 		0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */; };
 		0DAECEA21C58F30E00050CB1 /* TriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEA11C58F30E00050CB1 /* TriangleView.swift */; };
 		0DAECEA41C59583800050CB1 /* MemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEA31C59583800050CB1 /* MemberView.swift */; };
 		0DAECEE91C5A519600050CB1 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEE81C5A519600050CB1 /* LocationView.swift */; };
 		0DAECEEF1C5AD69E00050CB1 /* ArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEEE1C5AD69E00050CB1 /* ArrowButton.swift */; };
+		0DAECEF11C5BD87400050CB1 /* WeatherAgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAECEF01C5BD87400050CB1 /* WeatherAgendaTableViewCell.swift */; };
 		FFEF740A8A15584DE4FFF078 /* Pods_calendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E0B4882DDCDC21AE5DE0FEF /* Pods_calendar.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,12 +57,13 @@
 		0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayHeaderViewAgenda.swift; sourceTree = "<group>"; };
 		0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoEventAgendaCell.swift; sourceTree = "<group>"; };
 		0D7B5CB21C54EA8100E1FA93 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherAgendaCell.swift; sourceTree = "<group>"; };
+		0D7B5CB41C54EECC00E1FA93 /* DayPeriodAgendaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayPeriodAgendaCell.swift; sourceTree = "<group>"; };
 		0DAECE9D1C567C7400050CB1 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
 		0DAECEA11C58F30E00050CB1 /* TriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleView.swift; sourceTree = "<group>"; };
 		0DAECEA31C59583800050CB1 /* MemberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberView.swift; sourceTree = "<group>"; };
 		0DAECEE81C5A519600050CB1 /* LocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		0DAECEEE1C5AD69E00050CB1 /* ArrowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowButton.swift; sourceTree = "<group>"; };
+		0DAECEF01C5BD87400050CB1 /* WeatherAgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherAgendaTableViewCell.swift; sourceTree = "<group>"; };
 		8E0B4882DDCDC21AE5DE0FEF /* Pods_calendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_calendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA06D32EBD05B5F9CBA15035 /* Pods-calendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-calendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-calendar/Pods-calendar.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,7 +123,8 @@
 			children = (
 				0D3687881C53940A007622D3 /* AgendaViewController.swift */,
 				0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */,
-				0D7B5CB41C54EECC00E1FA93 /* WeatherAgendaCell.swift */,
+				0D7B5CB41C54EECC00E1FA93 /* DayPeriodAgendaCell.swift */,
+				0DAECEF01C5BD87400050CB1 /* WeatherAgendaTableViewCell.swift */,
 				0D0E5F2F1C551C74005F88EE /* EventAgendaCell.swift */,
 				0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */,
 				0DAECEA51C59587400050CB1 /* Subviews */,
@@ -309,9 +312,10 @@
 				0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */,
 				0DAECEEF1C5AD69E00050CB1 /* ArrowButton.swift in Sources */,
 				0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */,
+				0DAECEF11C5BD87400050CB1 /* WeatherAgendaTableViewCell.swift in Sources */,
 				0D0E5F361C556860005F88EE /* CalendarCircleViews.swift in Sources */,
 				0DAECEA41C59583800050CB1 /* MemberView.swift in Sources */,
-				0D7B5CB51C54EECC00E1FA93 /* WeatherAgendaCell.swift in Sources */,
+				0D7B5CB51C54EECC00E1FA93 /* DayPeriodAgendaCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

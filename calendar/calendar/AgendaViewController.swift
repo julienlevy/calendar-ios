@@ -12,7 +12,7 @@ import SwiftOpenWeatherMapAPI
 import SwiftyJSON
 
 let noEventCellIdentifier: String = "noEventCellIdentifier"
-let weatherCellIdentifier: String = "weatherCellIdentifier"
+let dayPeriodCellIdentifier: String = "dayPeriodCellIdentifier"
 let eventCellIdentifier: String = "eventCellIdentifier"
 
 protocol AgendaDelegate {
@@ -40,7 +40,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var timeFormatter: NSDateFormatter = NSDateFormatter()
     
     var weatherForecasts: [String: (String, Int)] = [String: (String, Int)]()
-    //This array has a different format to limit API calls:  we will compare with the coordinates of weather we already have
+    // TODO: sort weather for events by location to limit API calls if several events are far from user but close together (very likely)
     var eventWeatherForecasts: [String: (String, Int)] = [String: (String, Int)]()
     
     let locationManager: CLLocationManager = CLLocationManager()
@@ -80,7 +80,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         self.tableView.registerClass(NoEventAgendaCell.self, forCellReuseIdentifier: noEventCellIdentifier)
-        self.tableView.registerClass(WeatherAgendaCell.self, forCellReuseIdentifier: weatherCellIdentifier)
+        self.tableView.registerClass(DayPeriodAgendaCell.self, forCellReuseIdentifier: dayPeriodCellIdentifier)
         self.tableView.registerClass(EventAgendaCell.self, forCellReuseIdentifier: eventCellIdentifier)
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -166,7 +166,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
             else if let moment = dayObject as? String {
-                if let cell = tableView.dequeueReusableCellWithIdentifier(weatherCellIdentifier) as? WeatherAgendaCell {
+                if let cell = tableView.dequeueReusableCellWithIdentifier(dayPeriodCellIdentifier) as? DayPeriodAgendaCell {
                     
                     cell.label.text = moment
                     cell.triangleCurrentView.hidden = !(isToday && indexPath.item == self.currentEventIndex)
@@ -451,7 +451,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func reloadTodayAndTomorrowWeathers() {
         
     }
-    func setWeatherforMoment(cell: WeatherAgendaCell, isToday: Bool, moment: String) {
+    func setWeatherforMoment(cell: DayPeriodAgendaCell, isToday: Bool, moment: String) {
         cell.weatherIcon.hidden = true
         cell.temperatureLabel.hidden = true
         let key = (isToday ? "today" : "tomorrow") + "_" + moment
@@ -466,9 +466,12 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if indexPath == nil {
             return
         }
-        if self.weatherForecasts[self.dictKeyFromIndexPath(indexPath!)] != nil {
-            print(self.weatherForecasts[self.dictKeyFromIndexPath(indexPath!)])
-//            cell.setWeather(
+        if self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath!)] != nil {
+            print(self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath!)])
+            cell.setWeather(self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath!)]!)
+        }
+        else {
+            print("eventWeatherForecasts object is nil")
         }
     }
     
