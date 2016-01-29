@@ -303,6 +303,9 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if indexPath.row == self.currentEventIndex && indexPath.section == self.sectionForDate(NSDate()) {
             self.hideArrowButton()
         }
+        else {
+            self.showArrowButton()
+        }
     }
     
     func showArrowButton() {
