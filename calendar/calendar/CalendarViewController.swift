@@ -35,7 +35,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     var overlayHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
     var alreadyAddedMonths: [String] = [String]()
     
-    var dayHeader: UIView = UIView()
     
     func initData(calendarFirstDate: NSDate, calendarLastDate: NSDate, savedEventsByDays: [[Event]?]) {
         self.firstDate = calendarFirstDate
@@ -58,6 +57,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.itemSide = CGFloat(Int(screen / 7.0))
         self.missingPixelsWithDivision = Int(screen - CGFloat(Int(screen/7.0) * 7))
         
+        
         let collectionViewLayout: CalendarViewFlowLayout = CalendarViewFlowLayout()
         collectionViewLayout.scrollDirection = UICollectionViewScrollDirection.Vertical
         collectionViewLayout.minimumInteritemSpacing = 0
@@ -71,20 +71,15 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView?.dataSource = self
         self.collectionView?.allowsSelection = true
         
-        self.dayHeader.backgroundColor = UIColor.sunriseDefaultGrayBackgrund()
         self.overlayView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.7)
         
         self.overlayView.alpha = 0
         
-        self.view.addSubview(self.dayHeader)
         self.view.addSubview(self.collectionView!)
         self.collectionView?.addSubview(self.overlayView)
         
         self.setCollectionViewConstraints()
-        self.setDayHeaderConstraints()
         self.setOverlayConstraints()
-        
-        self.setUpDaysOfHeader()
     }
     override func viewDidAppear(animated: Bool) {
         if firstDate == nil {
@@ -101,21 +96,12 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: Subviews setups
     func setCollectionViewConstraints() {
         self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.dayHeader, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
         let left: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         let right: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
         let bottom: NSLayoutConstraint = NSLayoutConstraint(item: self.collectionView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         
         self.view.addConstraints([top, left, right, bottom])
-    }
-    func setDayHeaderConstraints() {
-        self.dayHeader.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
-        let left: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
-        let right: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
-        let height: NSLayoutConstraint = NSLayoutConstraint(item: self.dayHeader, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: dayHeaderViewHeight)
-        
-        self.view.addConstraints([top, left, right, height])
     }
     func setOverlayConstraints() {
         self.overlayView.translatesAutoresizingMaskIntoConstraints = false
@@ -125,21 +111,6 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         overlayHeightConstraint = NSLayoutConstraint(item: self.overlayView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 0)
         
         self.collectionView!.addConstraints([top, left, right, overlayHeightConstraint])
-    }
-    func setUpDaysOfHeader() {
-        var symbols = self.calendar.veryShortWeekdaySymbols
-        //Starting week on monday instead of default sunday
-        let sunday: String = symbols.removeFirst()
-        symbols.append(sunday)
-        for i in 0...(symbols.count-1) {
-            let label = UILabel(frame: CGRectMake(CGFloat(i) * itemSide, 0, CGFloat(itemSide), 20))
-            label.text = symbols[i]
-            label.textAlignment = .Center
-            //Weekend is gray
-            label.textColor = (5 - i > 0 ? UIColor.blackColor() : UIColor.sunriseGrayTextColor())
-            label.font = UIFont.systemFontOfSize(12.0)
-            self.dayHeader.addSubview(label)
-        }
     }
     func addMonthLabel(month: String, onRowOfCell: UICollectionViewCell) {
         if self.alreadyAddedMonths.contains(month) {
@@ -254,7 +225,8 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
         if indexPath == nil {
             return
         }
-        //Necessary to do the scrolling independantly because .None doesnt scroll in select but scrolls minimally in scroll function
+
+        //Necessary to do the scrolling independantly because .None doesnt scroll in selectCell but scrolls minimally in scroll function
         self.collectionView?.scrollToItemAtIndexPath(indexPath!, atScrollPosition: scrollPosition, animated: animated)
         
         var cell: CalendarViewCell? = (self.collectionView?.cellForItemAtIndexPath(indexPath!)) as? CalendarViewCell

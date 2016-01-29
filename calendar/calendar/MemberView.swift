@@ -11,11 +11,17 @@ import UIKit
 class MembersView: UIView {
     
     func setMembers(members: [Contact]?) {
+        for subview in subviews {
+            subview.removeFromSuperview()
+        }
+        
         if members == nil {
             return
         }
         var previousView: UIImageView? = nil
+        
         for contact in members! {
+//            let contact = members![i]
             let imageView = UIImageView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 40, height: 40)))
             imageView.image = UIImage(named: contact.imageName)
             imageView.contentMode = .ScaleAspectFit

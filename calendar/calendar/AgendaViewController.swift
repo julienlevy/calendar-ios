@@ -228,7 +228,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return DayHeaderViewAgenda(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: rowHeaderHeight), title: (prefix + dayString).uppercaseString, isToday: isToday)
     }
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return dayHeaderViewHeight
+        return agendaHeaderHeight
     }
     
     // MARK: table view delegate
@@ -263,7 +263,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.userStartedScrolling = false
         
         let offset = self.tableView.contentOffset
-        let indexPath = self.tableView.indexPathForRowAtPoint(CGPoint(x: offset.x, y: offset.y + dayHeaderViewHeight))
+        let indexPath = self.tableView.indexPathForRowAtPoint(CGPoint(x: offset.x, y: offset.y + agendaHeaderHeight))
         if indexPath!.row == self.currentEventIndex && indexPath!.section == self.sectionForDate(NSDate()) {
             self.hideArrowButton()
         }
@@ -280,14 +280,14 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         let rect: CGRect = self.tableView.rectForRowAtIndexPath(targetIndexPath!)
         if fabsf(Float(targetOffset.y - rect.origin.y)) < fabsf(Float((rect.origin.y + rect.height) - targetOffset.y)) {
-            targetContentOffset.memory.y = rect.origin.y - dayHeaderViewHeight
+            targetContentOffset.memory.y = rect.origin.y - agendaHeaderHeight
         }
         else {
             if targetIndexPath!.row == self.tableView.numberOfRowsInSection(targetIndexPath!.section) - 1 {
                 targetContentOffset.memory.y = rect.origin.y + rect.height
             }
             else {
-                targetContentOffset.memory.y = rect.origin.y + rect.height - dayHeaderViewHeight
+                targetContentOffset.memory.y = rect.origin.y + rect.height - agendaHeaderHeight
             }
         }
     }

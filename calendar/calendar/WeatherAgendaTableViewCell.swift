@@ -62,6 +62,6 @@ class WeatherAgendaTableViewCell: UITableViewCell {
         let heightWeather: NSLayoutConstraint = NSLayoutConstraint(item: self.weatherIcon, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         let widthWeather: NSLayoutConstraint = NSLayoutConstraint(item: self.weatherIcon, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 20)
         
-        self.addConstraints([self.weatherTopConstraint, rightTemperature, centerWeather, rightWeather, heightWeather, widthWeather, temperatureWidth])
+        self.addConstraints([self.weatherTopConstraint, rightTemperature, centerWeather, rightWeather, heightWeather, widthWeather])
     }
 }

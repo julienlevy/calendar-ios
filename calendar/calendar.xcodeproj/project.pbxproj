@@ -13,6 +13,7 @@
 		0D0E5F321C552CCA005F88EE /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F311C552CCA005F88EE /* DemoData.swift */; };
 		0D0E5F341C5556B6005F88EE /* EventTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F331C5556B6005F88EE /* EventTypeView.swift */; };
 		0D0E5F361C556860005F88EE /* CalendarCircleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */; };
+		0D19B54E1C5C0DAA00AB8511 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19B54D1C5C0DAA00AB8511 /* NavigationBar.swift */; };
 		0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687721C537A67007622D3 /* AppDelegate.swift */; };
 		0D3687751C537A67007622D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687741C537A67007622D3 /* ViewController.swift */; };
 		0D3687781C537A67007622D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D3687761C537A67007622D3 /* Main.storyboard */; };
@@ -43,6 +44,7 @@
 		0D0E5F311C552CCA005F88EE /* DemoData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
 		0D0E5F331C5556B6005F88EE /* EventTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTypeView.swift; sourceTree = "<group>"; };
 		0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCircleViews.swift; sourceTree = "<group>"; };
+		0D19B54D1C5C0DAA00AB8511 /* NavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		0D36876F1C537A67007622D3 /* calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = calendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D3687721C537A67007622D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D3687741C537A67007622D3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				0D3687721C537A67007622D3 /* AppDelegate.swift */,
 				0D3687741C537A67007622D3 /* ViewController.swift */,
 				0D3687841C538F6F007622D3 /* MainPageViewController.swift */,
+				0D19B54D1C5C0DAA00AB8511 /* NavigationBar.swift */,
 				0D7B5CB21C54EA8100E1FA93 /* Utils.swift */,
 				0D0E5F2B1C551647005F88EE /* SimplifiedEvent.swift */,
 				0D0E5F2D1C5519CB005F88EE /* Contact.swift */,
@@ -300,6 +303,7 @@
 				0D7B5CB11C54E7DB00E1FA93 /* NoEventAgendaCell.swift in Sources */,
 				0DAECEE91C5A519600050CB1 /* LocationView.swift in Sources */,
 				0D0E5F301C551C74005F88EE /* EventAgendaCell.swift in Sources */,
+				0D19B54E1C5C0DAA00AB8511 /* NavigationBar.swift in Sources */,
 				0D7B5CB31C54EA8100E1FA93 /* Utils.swift in Sources */,
 				0DAECEA21C58F30E00050CB1 /* TriangleView.swift in Sources */,
 				0D7B5CAF1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift in Sources */,

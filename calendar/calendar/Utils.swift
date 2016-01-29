@@ -10,6 +10,8 @@ import UIKit
 
 let dayHeaderViewHeight: CGFloat = 20
 
+let agendaHeaderHeight: CGFloat = 20
+
 let minimalRowHeight: CGFloat = 30
 let rowLateralInset: CGFloat = 15.0
 let rowHeaderHeight: CGFloat = 27.0

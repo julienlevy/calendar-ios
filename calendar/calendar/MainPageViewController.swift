@@ -102,10 +102,10 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     
     func setCalendarLayoutConstraints() {
         self.calendarViewController?.view.translatesAutoresizingMaskIntoConstraints = false
-        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.TopMargin, multiplier: 1, constant: UIApplication.sharedApplication().statusBarFrame.height)
+        let top: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.TopMargin, multiplier: 1, constant: self.navigationController!.navigationBar.bounds.height + dayHeaderViewHeight)
         let left: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
         let right: NSLayoutConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
-        calendarHeightConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 5 * self.calendarCellSide + dayHeaderViewHeight)
+        calendarHeightConstraint = NSLayoutConstraint(item: self.calendarViewController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 5 * self.calendarCellSide)
         
         self.view.addConstraints([top, left, right, calendarHeightConstraint])
     }
@@ -127,13 +127,13 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
         self.calendarViewController?.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: day, inSection: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.None)
     }
     func calendarWillBeginDragging() {
-        calendarHeightConstraint.constant = 5 * self.calendarCellSide + dayHeaderViewHeight
+        calendarHeightConstraint.constant = 5 * self.calendarCellSide
         UIView.animateWithDuration(0.2, animations: {
             self.view.layoutIfNeeded()
         })
     }
     func agendaWillBeginDragging() {
-        calendarHeightConstraint.constant = 2 * self.calendarCellSide + dayHeaderViewHeight
+        calendarHeightConstraint.constant = 2 * self.calendarCellSide
         UIView.animateWithDuration(0.2, animations: {
             self.view.layoutIfNeeded()
         })
