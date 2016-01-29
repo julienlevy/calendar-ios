@@ -123,8 +123,8 @@
 			children = (
 				0D3687881C53940A007622D3 /* AgendaViewController.swift */,
 				0D7B5CB01C54E7DB00E1FA93 /* NoEventAgendaCell.swift */,
-				0D7B5CB41C54EECC00E1FA93 /* DayPeriodAgendaCell.swift */,
 				0DAECEF01C5BD87400050CB1 /* WeatherAgendaTableViewCell.swift */,
+				0D7B5CB41C54EECC00E1FA93 /* DayPeriodAgendaCell.swift */,
 				0D0E5F2F1C551C74005F88EE /* EventAgendaCell.swift */,
 				0D7B5CAE1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift */,
 				0DAECEA51C59587400050CB1 /* Subviews */,

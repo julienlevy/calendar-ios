@@ -340,7 +340,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.addWeatherAPIResultToLocalForecasts(json)
                 
                 print(self.weatherForecasts)
-//                self.weatherForecasts = self.weatherForecasts
                 self.reloadTodayAndTomorrowWeathers()
             })
         })
@@ -392,8 +391,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         let weatherImage: String? = dict[i]["weather"][0]["icon"].string
                         let temperature: Int? = dict[i]["main"]["temp"].int
                         if weatherImage != nil && temperature != nil {
-                            print("Found weather for event: " + event.title)
-
                             self.eventWeatherForecasts[self.dictKeyFromIndexPath(self.tableView.indexPathForCell(cell)!)] = (weatherImage!, temperature!)
                             self.setWeatherForEvent(cell, event: event)
                             
@@ -409,16 +406,14 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             self.userLocation = location
-            print(location.coordinate.latitude)
-            print(location.coordinate.longitude)
-            print("Will call weather API")
+
             self.getWeatherForecastsAtUserCoordinate(location.coordinate)
             
             self.startGettingWeathersForTodayAndTomorrowEvents()
         }
     }
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("Current weather")
+        print("Location error")
         print(error)
     }
     
@@ -460,18 +455,13 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     func setWeatherForEvent(cell: EventAgendaCell, event: Event) {
-//        cell.weatherView.hidden = true
-        print("About to set weather for cell")
         let indexPath = self.tableView.indexPathForCell(cell)
         if indexPath == nil {
             return
         }
-        if self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath!)] != nil {
-            print(self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath!)])
-            cell.setWeather(self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath!)]!)
-        }
-        else {
-            print("eventWeatherForecasts object is nil")
+        if let forecast = self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath!)] {
+            
+            cell.setWeather(forecast)
         }
     }
     

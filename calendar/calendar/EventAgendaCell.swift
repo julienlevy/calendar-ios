@@ -26,6 +26,8 @@ class EventAgendaCell: WeatherAgendaTableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.weatherTopConstraint.constant = rowVerticalInset
+        
         self.timeLabel.text = "09:41"
         self.durationLabel.text = "2h 30m"
         self.titleLabel.text = "Sunrise iOS Challenge"

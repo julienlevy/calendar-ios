@@ -17,6 +17,8 @@ class WeatherAgendaTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.weatherTopConstraint.constant = temperatureRowVerticalInset
+        
         self.temperatureLabel.textColor = UIColor.sunriseGrayTextColor()
         
         self.temperatureLabel.font = UIFont.systemFontOfSize(12)
