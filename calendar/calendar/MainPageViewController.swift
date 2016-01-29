@@ -124,7 +124,7 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
         self.agendaViewController?.scrollToRowAtIndexPathAndDisplayArrowButton(NSIndexPath(forRow: 0, inSection: day), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
     }
     func agendaScrolledToDay(day: Int) {
-        self.calendarViewController?.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: day, inSection: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.None)
+        self.calendarViewController?.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: day, inSection: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.Bottom)
     }
     func calendarWillBeginDragging() {
         calendarHeightConstraint.constant = 5 * self.calendarCellSide

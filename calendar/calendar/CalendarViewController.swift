@@ -86,7 +86,7 @@ class CalendarViewController: UIViewController, UICollectionViewDelegate, UIColl
             return
         }
         let index: Int = self.calendar.components(NSCalendarUnit.Day, fromDate: self.firstDate!, toDate: NSDate(), options: NSCalendarOptions.MatchFirst).day
-        self.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: index, inSection: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.Top)
+        self.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: index, inSection: 0), animated: false, scrollPosition: UICollectionViewScrollPosition.Bottom)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

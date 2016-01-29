@@ -10,3 +10,5 @@ For now the distance criteria I used is 100km.
 As it was developed only with demo data, there might be performances issues with real data, specifically with the loading and ordering of saved events.
 
 The pod I installed raises a fatal error if there is no network, so I commented the fatalerror line in SwiftOpenWeatherMapAPI/API/WAPIManager.swift and replaced it with a return.
+
+There seem to be a bug with UICollectionView's methods scrollToItem for the UIScrollPosition.Top (slight offset, if you use .None which picks between .Top and .Bottom there is always a problem in the top direction only) so I scrolled the collectionView to .Bottom all the time even though it makes much more sense to display the days to some by default than the past days.
