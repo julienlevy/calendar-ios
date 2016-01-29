@@ -87,7 +87,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.setTodayButtonConstraints()
     }
     override func viewDidAppear(animated: Bool) {
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.currentEventIndex, inSection: self.sectionForDate(NSDate())), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+        self.scrollToRowAtIndexPathAndDisplayArrowButton(NSIndexPath(forRow: self.currentEventIndex, inSection: self.sectionForDate(NSDate())), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
     }
     func setTableViewConstraints() {
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -113,7 +113,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Dispose of any resources that can be recreated.
     }
     
-    //MARK: table view datasource
+    // MARK: table view datasource
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if self.firstDate == nil || self.lastDate == nil {
             return 1
@@ -217,6 +217,11 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return dayHeaderViewHeight
     }
     
+    // MARK: table view delegate
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
     // MARK: scroll view delegate
     func scrollViewDidScroll(scrollView: UIScrollView) {
         if !self.userStartedScrolling {
@@ -243,12 +248,19 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.userStartedScrolling = false
+        
+        let offset = self.tableView.contentOffset
+        let indexPath = self.tableView.indexPathForRowAtPoint(CGPoint(x: offset.x, y: offset.y + dayHeaderViewHeight))
+        if indexPath!.row == self.currentEventIndex && indexPath!.section == self.sectionForDate(NSDate()) {
+            self.hideArrowButton()
+        }
+        else {
+            self.showArrowButton()
+        }
+       
     }
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        print("Ended dragging")
         let targetOffset: CGPoint = targetContentOffset.memory
-        print(self.tableView.contentOffset)
-        print(targetOffset)
         let targetIndexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(targetOffset)
         if targetIndexPath == nil {
             return
@@ -270,8 +282,25 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: Scroll view utils
     func scrollToNow() {
         let section = self.sectionForDate(NSDate())
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: self.currentEventIndex, inSection: section), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+        self.scrollToRowAtIndexPathAndDisplayArrowButton(NSIndexPath(forRow: self.currentEventIndex, inSection: section), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
         self.delegate?.agendaScrolledToDay(section)
+    }
+    func scrollToRowAtIndexPathAndDisplayArrowButton(indexPath: NSIndexPath, atScrollPosition: UITableViewScrollPosition, animated: Bool) {
+        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: atScrollPosition, animated: animated)
+        if indexPath.row == self.currentEventIndex && indexPath.section == self.sectionForDate(NSDate()) {
+            self.hideArrowButton()
+        }
+    }
+    
+    func showArrowButton() {
+        UIView.animateWithDuration(0.3, animations: {
+            self.goToToday.alpha = 1
+        })
+    }
+    func hideArrowButton() {
+        UIView.animateWithDuration(0.3, animations: {
+            self.goToToday.alpha = 0
+        })
     }
     
     // MARK: Weather Utils

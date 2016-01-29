@@ -191,7 +191,7 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
     
     // MARK: Agenda & Calendar Delegates
     func calendarSelectedDayFromFirst(day: Int) {
-        self.agendaViewController?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: day), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+        self.agendaViewController?.scrollToRowAtIndexPathAndDisplayArrowButton(NSIndexPath(forRow: 0, inSection: day), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
     }
     func agendaScrolledToDay(day: Int) {
         self.calendarViewController?.selectAndDisplayItemInCollectionViewAtIndexPath(NSIndexPath(forItem: day, inSection: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.None)
