@@ -82,5 +82,4 @@ class NavigationBar: UINavigationBar {
         
         self.addConstraints([topIcon, centerIcon, height, width, bottomHeader, leftHeader, rightHeader, heightHeader])
     }
-
 }

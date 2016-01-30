@@ -14,6 +14,11 @@
 		0D0E5F341C5556B6005F88EE /* EventTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F331C5556B6005F88EE /* EventTypeView.swift */; };
 		0D0E5F361C556860005F88EE /* CalendarCircleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */; };
 		0D19B54E1C5C0DAA00AB8511 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19B54D1C5C0DAA00AB8511 /* NavigationBar.swift */; };
+		0D19B5521C5C2BB000AB8511 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19B5511C5C2BB000AB8511 /* NavigationController.swift */; };
+		0D19B5581C5D239C00AB8511 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19B5571C5D239C00AB8511 /* ConnectViewController.swift */; };
+		0D19B55A1C5D23C300AB8511 /* EmailConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19B5591C5D23C300AB8511 /* EmailConnectViewController.swift */; };
+		0D19B55C1C5D23CE00AB8511 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19B55B1C5D23CE00AB8511 /* SetupViewController.swift */; };
+		0D19B5631C5D262C00AB8511 /* AuthorizationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D19B5621C5D262C00AB8511 /* AuthorizationCell.swift */; };
 		0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687721C537A67007622D3 /* AppDelegate.swift */; };
 		0D3687751C537A67007622D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3687741C537A67007622D3 /* ViewController.swift */; };
 		0D3687781C537A67007622D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D3687761C537A67007622D3 /* Main.storyboard */; };
@@ -45,6 +50,11 @@
 		0D0E5F331C5556B6005F88EE /* EventTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTypeView.swift; sourceTree = "<group>"; };
 		0D0E5F351C556860005F88EE /* CalendarCircleViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCircleViews.swift; sourceTree = "<group>"; };
 		0D19B54D1C5C0DAA00AB8511 /* NavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		0D19B5511C5C2BB000AB8511 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		0D19B5571C5D239C00AB8511 /* ConnectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
+		0D19B5591C5D23C300AB8511 /* EmailConnectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailConnectViewController.swift; sourceTree = "<group>"; };
+		0D19B55B1C5D23CE00AB8511 /* SetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
+		0D19B5621C5D262C00AB8511 /* AuthorizationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationCell.swift; sourceTree = "<group>"; };
 		0D36876F1C537A67007622D3 /* calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = calendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D3687721C537A67007622D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D3687741C537A67007622D3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +92,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D19B55D1C5D23D500AB8511 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				0D19B5571C5D239C00AB8511 /* ConnectViewController.swift */,
+				0D19B5591C5D23C300AB8511 /* EmailConnectViewController.swift */,
+				0D19B55B1C5D23CE00AB8511 /* SetupViewController.swift */,
+				0D19B5621C5D262C00AB8511 /* AuthorizationCell.swift */,
+			);
+			name = Onboarding;
+			sourceTree = "<group>";
+		};
 		0D3687661C537A67007622D3 = {
 			isa = PBXGroup;
 			children = (
@@ -105,14 +126,16 @@
 			children = (
 				0D3687721C537A67007622D3 /* AppDelegate.swift */,
 				0D3687741C537A67007622D3 /* ViewController.swift */,
-				0D3687841C538F6F007622D3 /* MainPageViewController.swift */,
+				0D19B5511C5C2BB000AB8511 /* NavigationController.swift */,
 				0D19B54D1C5C0DAA00AB8511 /* NavigationBar.swift */,
+				0D3687841C538F6F007622D3 /* MainPageViewController.swift */,
 				0D7B5CB21C54EA8100E1FA93 /* Utils.swift */,
 				0D0E5F2B1C551647005F88EE /* SimplifiedEvent.swift */,
 				0D0E5F2D1C5519CB005F88EE /* Contact.swift */,
 				0D0E5F311C552CCA005F88EE /* DemoData.swift */,
 				0D7B5CB81C54EEFB00E1FA93 /* Calendar */,
 				0D7B5CB61C54EEE100E1FA93 /* Agenda */,
+				0D19B55D1C5D23D500AB8511 /* Onboarding */,
 				0D3687761C537A67007622D3 /* Main.storyboard */,
 				0D3687791C537A67007622D3 /* Assets.xcassets */,
 				0D36877B1C537A67007622D3 /* LaunchScreen.storyboard */,
@@ -298,21 +321,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D0E5F2E1C5519CB005F88EE /* Contact.swift in Sources */,
+				0D19B5521C5C2BB000AB8511 /* NavigationController.swift in Sources */,
 				0D3687BB1C53F061007622D3 /* CalendarViewCell.swift in Sources */,
 				0D0E5F321C552CCA005F88EE /* DemoData.swift in Sources */,
 				0D7B5CB11C54E7DB00E1FA93 /* NoEventAgendaCell.swift in Sources */,
+				0D19B5581C5D239C00AB8511 /* ConnectViewController.swift in Sources */,
 				0DAECEE91C5A519600050CB1 /* LocationView.swift in Sources */,
+				0D19B55C1C5D23CE00AB8511 /* SetupViewController.swift in Sources */,
 				0D0E5F301C551C74005F88EE /* EventAgendaCell.swift in Sources */,
 				0D19B54E1C5C0DAA00AB8511 /* NavigationBar.swift in Sources */,
 				0D7B5CB31C54EA8100E1FA93 /* Utils.swift in Sources */,
 				0DAECEA21C58F30E00050CB1 /* TriangleView.swift in Sources */,
 				0D7B5CAF1C54D8FD00E1FA93 /* DayHeaderViewAgenda.swift in Sources */,
 				0D0E5F2C1C551647005F88EE /* SimplifiedEvent.swift in Sources */,
+				0D19B5631C5D262C00AB8511 /* AuthorizationCell.swift in Sources */,
 				0D3687871C5393D7007622D3 /* CalendarViewController.swift in Sources */,
 				0D0E5F341C5556B6005F88EE /* EventTypeView.swift in Sources */,
 				0D3687751C537A67007622D3 /* ViewController.swift in Sources */,
 				0D3687851C538F6F007622D3 /* MainPageViewController.swift in Sources */,
 				0D3687891C53940A007622D3 /* AgendaViewController.swift in Sources */,
+				0D19B55A1C5D23C300AB8511 /* EmailConnectViewController.swift in Sources */,
 				0DAECE9E1C567C7400050CB1 /* CalendarViewFlowLayout.swift in Sources */,
 				0DAECEEF1C5AD69E00050CB1 /* ArrowButton.swift in Sources */,
 				0D3687731C537A67007622D3 /* AppDelegate.swift in Sources */,
