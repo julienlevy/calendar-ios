@@ -385,11 +385,13 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             print("Checking weather for event: " + event.title)
             weatherAPI.forecastWeatherByCoordinatesAsJson(location.coordinate, data: { (json) -> Void in
                 let dict = json["list"]
+                print(dict)
                 for i in 0..<json["list"].count {
                     let dt = dict[i]["dt"].double
                     let unix = NSDate(timeIntervalSince1970: dt!)
                     
-                    if unix.dateByAddingTimeInterval(NSTimeInterval(4 * 60 * 60)).compare(event.date) != unix.compare(event.date) {
+                    if event.date.dateByAddingTimeInterval(NSTimeInterval(4 * 60 * 60)).compare(unix) != event.date.compare(unix) {
+                        print("Found a weather for event " + event.title)
                         
                         let weatherImage: String? = dict[i]["weather"][0]["icon"].string
                         let temperature: Int? = dict[i]["main"]["temp"].int

@@ -110,10 +110,6 @@ class EmailConnectViewController: UIViewController, UITextFieldDelegate {
         
         return true
     }
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        print(textField.text)
-        return true
-    }
     
     func setCorrespondingDefault(textField: UITextField) {
         if textField == self.emailTextField {
