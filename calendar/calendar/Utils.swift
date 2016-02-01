@@ -16,6 +16,7 @@ let minimalRowHeight: CGFloat = 30
 let rowLateralInset: CGFloat = 15.0
 let rowHeaderHeight: CGFloat = 27.0
 let temperatureRowVerticalInset: CGFloat = 10.0
+let cityNameToWeatherIconSpace: CGFloat = 4.0
 
 let rowVerticalInset: CGFloat = 15.0
 let rowVerticalSpaceWithin: CGFloat = 8.0

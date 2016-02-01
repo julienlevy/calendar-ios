@@ -44,6 +44,8 @@ class EventAgendaCell: WeatherAgendaTableViewCell {
         self.titleLabel.font = UIFont.systemFontOfSize(15)
         self.soonLabel.font = UIFont.systemFontOfSize(11)
         
+        self.titleLabel.numberOfLines = 0
+        
         self.soonLabel.backgroundColor = UIColor.sunriseSpecialColor()
         self.soonLabel.textAlignment = .Center
         
@@ -112,6 +114,7 @@ class EventAgendaCell: WeatherAgendaTableViewCell {
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
         let topTitle: NSLayoutConstraint = NSLayoutConstraint(item: self.titleLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.timeLabel, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
         let leftTitle: NSLayoutConstraint = NSLayoutConstraint(item: self.titleLabel, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: rowEventTitleYOrigin)
+        let rightTitle: NSLayoutConstraint = NSLayoutConstraint(item: self.titleLabel, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self.weatherIcon, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: -rowLateralInset)
         
         self.eventTypeView.translatesAutoresizingMaskIntoConstraints = false
         let centerYType: NSLayoutConstraint = NSLayoutConstraint(item: self.eventTypeView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.titleLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
@@ -137,6 +140,6 @@ class EventAgendaCell: WeatherAgendaTableViewCell {
             constraint.priority = 999
         }
         
-        self.addConstraints([topSoon, leftSoon, widthSoon, topTimeConstraint, leftTime, topDuration, leftDuration, topTitle, leftTitle, centerXType, centerYType, proportionType,widthMinType, widthMaxType, topMember, leftMember, topLocation, leftLocation, bottomDuration, bottomLocation, topTriangle, leftTriangle, heightTriangle, widthProportion])
+        self.addConstraints([topSoon, leftSoon, widthSoon, topTimeConstraint, leftTime, topDuration, leftDuration, topTitle, leftTitle, rightTitle, centerXType, centerYType, proportionType,widthMinType, widthMaxType, topMember, leftMember, topLocation, leftLocation, bottomDuration, bottomLocation, topTriangle, leftTriangle, heightTriangle, widthProportion])
     }
 }

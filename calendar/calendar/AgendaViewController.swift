@@ -161,8 +161,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         eventIsCurrent: (isToday && indexPath.item == self.currentEventIndex),
                         soonWarning: ((isToday && indexPath.item == self.nextEventIndex) ? self.readableWarningIfSoonFromDate(event.date) : nil)
                     )
-                    self.setWeatherForEvent(cell, event: event)
-                    
+                    self.setWeatherForEvent(cell, indexPath: indexPath, event: event)
+
                     return cell
                 }
             }
@@ -188,6 +188,8 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             formattedTime: self.timeFormatter.stringFromDate(event.date),
                             formattedDuration: readableDurationFromMinutes(event.duration)
                         )
+                        self.setWeatherForEvent(cell, indexPath: indexPath, event: event)
+
                         return cell
                     }
                 }
@@ -402,7 +404,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         if weatherImage != nil && temperature != nil {
                             self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath)] = (weatherImage!, temperature!)
                             if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? EventAgendaCell {
-                                self.setWeatherForEvent(cell, event: event)
+                                self.setWeatherForEvent(cell, indexPath: indexPath, event: event)
                             }
                             
                             break
@@ -468,21 +470,20 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     func setWeatherforMoment(cell: DayPeriodAgendaCell, isToday: Bool, moment: String) {
+        cell.cityLabel.text = ""
         cell.weatherIcon.hidden = true
         cell.temperatureLabel.hidden = true
         let key = (isToday ? "today" : "tomorrow") + "_" + moment
         if self.weatherForecasts[key] != nil {
-            cell.setWeather(self.weatherForecasts[key]!)
+            cell.setWeather(self.weatherForecasts[key]!, cityName: "")
         }
     }
-    func setWeatherForEvent(cell: EventAgendaCell, event: Event) {
-        let indexPath = self.tableView.indexPathForCell(cell)
-        if indexPath == nil {
-            return
-        }
-        if let forecast = self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath!)] {
-            
-            cell.setWeather(forecast)
+    func setWeatherForEvent(cell: EventAgendaCell, indexPath: NSIndexPath, event: Event) {
+        cell.cityLabel.text = ""
+        cell.weatherIcon.hidden = true
+        cell.temperatureLabel.hidden = true
+        if let forecast = self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath)] {
+            cell.setWeather(forecast, cityName: event.city)
         }
     }
     

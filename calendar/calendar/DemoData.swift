@@ -38,15 +38,15 @@ func demoEvents() -> [Event] {
     let nowEvent: Event = Event(eventTitle: "Recruitment Meeting", eventDate: date.dateByAddingTimeInterval(-oneHourAndAHalf/2), eventDuration: 40, eventContainingCalendar: kProfessionalCalendar, eventLocationName: "East Meeting Room")
     let nextEvent: Event = Event(eventTitle: "Growth Meeting", eventDate: date.dateByAddingTimeInterval(fifteenMin), eventDuration: 75, eventContainingCalendar: kProfessionalCalendar, eventLocationName: "Lower Meeting Room")
     
-    let tomorrowMorningLondon: Event = Event(eventTitle: "Techcrunch Interview", eventDate: calendar.dateBySettingHour(8, minute: 0, second: 12, ofDate: date, options: NSCalendarOptions.MatchFirst)!
-        , eventDuration: 90, eventContainingCalendar: kProfessionalCalendar, eventMembers: [romaindillet], eventLocationName: "Techcrunch London", eventLocationCoordinate: london)
+    let tomorrowMorningLondon: Event = Event(eventTitle: "Techcrunch Interview", eventDate: calendar.dateBySettingHour(8, minute: 0, second: 12, ofDate: tomorrow, options: NSCalendarOptions.MatchFirst)!
+        , eventDuration: 90, eventContainingCalendar: kProfessionalCalendar, eventMembers: [romaindillet], eventLocationName: "Techcrunch London", eventLocationCoordinate: london, eventCity: "London")
     
     let trainEvent: Event = Event(eventTitle: "London - Paris", eventDate: calendar.dateBySettingHour(10, minute: 30, second: 12, ofDate: tomorrow, options: NSCalendarOptions.MatchFirst)!
-        , eventDuration: 60, eventContainingCalendar: kPersonalCalendar, eventMembers: [romaindillet], eventLocationName: "St Pancras", eventLocationCoordinate: london)
+        , eventDuration: 60, eventContainingCalendar: kPersonalCalendar, eventMembers: [romaindillet], eventLocationName: "King's Cross St Pancras", eventLocationCoordinate: london, eventCity: "London")
     
-    let lunchParis: Event = Event(eventTitle: "Lunch Pierre", eventDate: calendar.dateBySettingHour(13, minute: 30, second: 12, ofDate: tomorrow, options: NSCalendarOptions.MatchFirst)!, eventDuration: 45, eventContainingCalendar: kProfessionalCalendar, eventMembers: [pierrevalade], eventLocationName: "Healthy Burgers Café", eventLocationCoordinate: paris)
+    let lunchParis: Event = Event(eventTitle: "Lunch Pierre", eventDate: calendar.dateBySettingHour(13, minute: 30, second: 12, ofDate: tomorrow, options: NSCalendarOptions.MatchFirst)!, eventDuration: 45, eventContainingCalendar: kProfessionalCalendar, eventMembers: [pierrevalade], eventLocationName: "Healthy Burgers Café", eventLocationCoordinate: paris, eventCity: "Paris")
     
-    let eveningParis: Event = Event(eventTitle: "Team Drinks", eventDate: calendar.dateBySettingHour(19, minute: 0, second: 12, ofDate: tomorrow, options: NSCalendarOptions.MatchFirst)!, eventDuration: 15, eventContainingCalendar: kProfessionalCalendar, eventMembers: [pierrevalade, joeydong], eventLocationName: "The Brick and Mortar, Paris", eventLocationCoordinate: paris)
+    let eveningParis: Event = Event(eventTitle: "Team Drinks", eventDate: calendar.dateBySettingHour(19, minute: 0, second: 12, ofDate: tomorrow, options: NSCalendarOptions.MatchFirst)!, eventDuration: 15, eventContainingCalendar: kProfessionalCalendar, eventMembers: [pierrevalade, joeydong], eventLocationName: "The Brick and Mortar, Paris", eventLocationCoordinate: paris, eventCity: "Paris")
     
     let otherDayEvent: Event = Event(eventTitle: "Concert", eventDate: calendar.dateBySettingHour(19, minute: 0, second: 12, ofDate: date.dateByAddingTimeInterval(twoDays), options: NSCalendarOptions.MatchFirst)!, eventDuration: 170, eventContainingCalendar: kPersonalCalendar)
     
