@@ -58,14 +58,6 @@ class AuthorizationCell: UITableViewCell {
         self.enableButton.layer.cornerRadius = 2.0
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        print("awake from nib")
-        print(self.titleLabel)
-        
-    }
-    
     func setupConstraints() {
         let verticalInset: CGFloat = 10
         let lateralInset: CGFloat = 20

@@ -292,13 +292,13 @@
                                     <constraint firstItem="INe-x1-tpC" firstAttribute="height" secondItem="xpX-W1-qsS" secondAttribute="height" id="s3M-k7-Pv8"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="sunrise" translatesAutoresizingMaskIntoConstraints="NO" id="LJl-2C-3ZM">
-                                <rect key="frame" x="264" y="105" width="70" height="70"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sunrise" translatesAutoresizingMaskIntoConstraints="NO" id="LJl-2C-3ZM">
+                                <rect key="frame" x="265" y="105" width="70" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="LJl-2C-3ZM" secondAttribute="height" id="I08-Jx-6xV"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="singleLineEtched" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZSg-f4-zOm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZSg-f4-zOm">
                                 <rect key="frame" x="0.0" y="308" width="600" height="200"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -329,8 +329,8 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="red-done" translatesAutoresizingMaskIntoConstraints="NO" id="EMW-Kg-JZ5">
-                                <rect key="frame" x="508" y="188" width="30" height="30"/>
+                            <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="red-done" translatesAutoresizingMaskIntoConstraints="NO" id="EMW-Kg-JZ5">
+                                <rect key="frame" x="510" y="188" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="EMW-Kg-JZ5" secondAttribute="height" id="VYu-dy-Tad"/>
                                     <constraint firstAttribute="width" constant="30" id="wek-c8-8wd"/>

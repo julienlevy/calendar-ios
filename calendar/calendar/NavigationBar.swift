@@ -65,9 +65,6 @@ class NavigationBar: UINavigationBar {
         }
     }
     func setupConstraints() {
-        print(self.isMemberOfClass(UIView))
-        print(self.isKindOfClass(UIView))
-        
         self.iconButton.translatesAutoresizingMaskIntoConstraints = false
         let topIcon = NSLayoutConstraint(item: self.iconButton, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
         let centerIcon: NSLayoutConstraint = NSLayoutConstraint(item: self.iconButton, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)

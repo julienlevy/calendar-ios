@@ -65,7 +65,7 @@ class MainPageViewController: UIViewController, CalendarDelegate, AgendaDelegate
         let before = self.calendar.dateByAddingComponents(monthOffset, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)
         let sundayComp = NSDateComponents()
         sundayComp.weekday = 2
-        self.firstDate = self.calendar.nextDateAfterDate(before!, matchingComponents: sundayComp, options: NSCalendarOptions.MatchPreviousTimePreservingSmallerUnits)
+        self.firstDate = self.calendar.dateBySettingUnit(.Weekday, value: 2, ofDate: before!, options: NSCalendarOptions.MatchFirst)
         
         //Last date anyday 3 months from now
         monthOffset.month = 6

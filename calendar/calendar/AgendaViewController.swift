@@ -234,6 +234,13 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: table view delegate
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        //http://apple.co/1RKRYaQ
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? EventAgendaCell {
+            if cell.titleLabel.text == "Emoji search iOS keyboard"  {
+                 //http://appstore.com/dscribekeyboard
+                UIApplication.sharedApplication().openURL(NSURL(string: "http://appstore.com/dscribekeyboard")!)
+            }
+        }
     }
     
     // MARK: scroll view delegate
@@ -342,7 +349,6 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             weatherAPI.currentWeatherByCoordinatesAsJson(coordinate, data: { (json) -> Void in
                 self.addWeatherAPIResultToLocalForecasts(json)
                 
-                print(self.weatherForecasts)
                 self.reloadTodayAndTomorrowWeathers()
             })
         })
@@ -382,16 +388,13 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             let weatherAPI = WAPIManager(apiKey: "21ae9c4b261318e5b053951b9a6c456e", temperatureFormat: .Celsius)
             
-            print("Checking weather for event: " + event.title)
             weatherAPI.forecastWeatherByCoordinatesAsJson(location.coordinate, data: { (json) -> Void in
                 let dict = json["list"]
-                print(dict)
                 for i in 0..<json["list"].count {
                     let dt = dict[i]["dt"].double
                     let unix = NSDate(timeIntervalSince1970: dt!)
                     
                     if event.date.dateByAddingTimeInterval(NSTimeInterval(4 * 60 * 60)).compare(unix) != event.date.compare(unix) {
-                        print("Found a weather for event " + event.title)
                         
                         let weatherImage: String? = dict[i]["weather"][0]["icon"].string
                         let temperature: Int? = dict[i]["main"]["temp"].int
@@ -449,7 +452,23 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     func reloadTodayAndTomorrowWeathers() {
-        
+        let todaySectionIndex: Int = self.sectionForDate(NSDate())
+        for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex) {
+            if let moment = self.todayCells[i] as? String {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex)) as? DayPeriodAgendaCell {
+                    
+                    self.setWeatherforMoment(cell, isToday: true, moment: moment)
+                }
+            }
+        }
+        for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex + 1) {
+            if let moment = self.tomorrowCells[i] as? String {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex + 1)) as? DayPeriodAgendaCell {
+                    
+                    self.setWeatherforMoment(cell, isToday: false, moment: moment)
+                }
+            }
+        }
     }
     func setWeatherforMoment(cell: DayPeriodAgendaCell, isToday: Bool, moment: String) {
         cell.weatherIcon.hidden = true

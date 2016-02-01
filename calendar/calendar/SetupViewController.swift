@@ -88,9 +88,6 @@ class SetupViewController: UIViewController, UITableViewDataSource {
                 cell.enableButton.addTarget(self, action: Selector(cellDetails[key]!["target"]!), forControlEvents: .TouchUpInside)
                 cell.layoutIfNeeded()
             }
-            else {
-                print(cellDetails)
-            }
             
             return cell
         }
