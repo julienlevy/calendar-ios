@@ -161,6 +161,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         eventIsCurrent: (isToday && indexPath.item == self.currentEventIndex),
                         soonWarning: ((isToday && indexPath.item == self.nextEventIndex) ? self.readableWarningIfSoonFromDate(event.date) : nil)
                     )
+                    self.setWeatherForEvent(cell, event: event)
                     
                     return cell
                 }
@@ -374,7 +375,7 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
-    func getWeatherForEventCell(cell: EventAgendaCell, event: Event) {
+    func getWeatherForEventIndexPath(indexPath: NSIndexPath, event: Event) {
         // Called only on cells that have a non nil locationCoordinate
         if self.userLocation == nil {
             return
@@ -399,8 +400,10 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         let weatherImage: String? = dict[i]["weather"][0]["icon"].string
                         let temperature: Int? = dict[i]["main"]["temp"].int
                         if weatherImage != nil && temperature != nil {
-                            self.eventWeatherForecasts[self.dictKeyFromIndexPath(self.tableView.indexPathForCell(cell)!)] = (weatherImage!, temperature!)
-                            self.setWeatherForEvent(cell, event: event)
+                            self.eventWeatherForecasts[self.dictKeyFromIndexPath(indexPath)] = (weatherImage!, temperature!)
+                            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? EventAgendaCell {
+                                self.setWeatherForEvent(cell, event: event)
+                            }
                             
                             break
                         }
@@ -430,23 +433,17 @@ class AgendaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let todaySectionIndex: Int = self.sectionForDate(NSDate())
         for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex) {
             if let event = self.todayCells[i] as? Event {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex)) as? EventAgendaCell {
+                if event.locationCoordinate != nil {
                     
-                    if event.locationCoordinate != nil {
-                        
-                        self.getWeatherForEventCell(cell, event: event)
-                    }
+                    self.getWeatherForEventIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex), event: event)
                 }
             }
         }
         for i in 0..<self.tableView.numberOfRowsInSection(todaySectionIndex + 1) {
             if let event = self.tomorrowCells[i] as? Event {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex + 1)) as? EventAgendaCell {
+                if event.locationCoordinate != nil {
                     
-                    if event.locationCoordinate != nil {
-                        
-                        self.getWeatherForEventCell(cell, event: event)
-                    }
+                    self.getWeatherForEventIndexPath(NSIndexPath(forRow: i, inSection: todaySectionIndex + 1), event: event)
                 }
             }
         }
