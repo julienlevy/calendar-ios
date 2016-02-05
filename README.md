@@ -14,6 +14,8 @@ I also implemented a quick onboarding design if you click on the design icon in 
 I only did the second half of the onboarding, about connecting and setting up the user, not the first part about letting the user dive into sunrise's universe.
 I changed the connect with email (you may use registered@email.com to try an already registered account), and how authorizations are asked.
 
+### Meet Keyboard Onboarding
+I added a video of the onboarding I just made for a another keyboard to show a possible improvement to the Meet onboarding, not having to show a video to explain how to install the keybaord but directly link the user to the right page in Settings to make it really easy to install. This may show only if Meet is not installed and you can't reach "Let's try the keyboard" without it. It would reduce the number of options the user has and limit the information he needs to remember.
 
 ### Issues
 As it was developed only with demo data, there might be performances issues with real data, specifically with the loading and ordering of saved events.
